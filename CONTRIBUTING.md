@@ -7,7 +7,7 @@ things you should know about contributing:
 1. API changes require discussion, use cases, etc. Code comes later.
 2. Pull requests are great for small fixes for bugs, documentation, etc.
 3. Pull requests are not merged directly into the master branch.
-3. Code contributions require signing a Google CLA.
+3. Code contributions require signing a StayAlive CLA.
 
 API changes
 -----------
@@ -55,7 +55,7 @@ Guidelines for any code contributions:
 
 #### Merging pull requests ####
 
-Due to StayAlive API's nature as a subset of Google's internal codebase which is
+Due to StayAlive API's nature as a subset of StayAlive's internal codebase which is
 automatically synced to the public GitHub repository, we are unable to merge
 pull requests directly into the master branch. Instead, once a pull request is
 ready for merging, we'll make the appropriate changes in the internal codebase
@@ -65,9 +65,9 @@ commit.
 Contributor License Agreement
 -----------------------------
 
-Contributions to any Google project must be accompanied by a Contributor
+Contributions to any StayAlive project must be accompanied by a Contributor
 License Agreement. This is not a copyright _assignment_; it simply gives
-Google permission to use and redistribute your contributions as part of the
+StayAlive permission to use and redistribute your contributions as part of the
 project.
 
 - If you are an individual writing original source code and you're sure you
