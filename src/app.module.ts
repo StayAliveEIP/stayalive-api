@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { envValidation } from "./validation/envValidation";
 import { ConfigModule } from "@nestjs/config";
 import { MongooseModule } from '@nestjs/mongoose';
+import { RedisModule } from "./redis/redis.module";
 
 @Module({
   imports: [
@@ -13,6 +14,8 @@ import { MongooseModule } from '@nestjs/mongoose';
     MongooseModule.forRoot(process.env.MONGODB_URI, {
       dbName: process.env.MONGODB_DATABASE,
     }),
+    // Add the Redis module.
+    RedisModule,
   ],
   controllers: [AppController],
   providers: [AppService],
