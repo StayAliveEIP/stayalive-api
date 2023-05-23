@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { envValidation } from "./validation/envValidation";
-import { ConfigModule } from "@nestjs/config";
+import { envValidation } from './validation/envValidation';
+import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { RedisModule } from "./redis/redis.module";
+import { RedisModule } from './redis/redis.module';
+import { RedisService } from './redis/redis.service';
+import { AuthModule } from './routes/auth/auth.module';
 
 @Module({
   imports: [
@@ -16,8 +18,9 @@ import { RedisModule } from "./redis/redis.module";
     }),
     // Add the Redis module.
     RedisModule,
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, RedisService],
 })
 export class AppModule {}
