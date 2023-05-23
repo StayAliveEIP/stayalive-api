@@ -1,18 +1,37 @@
 import { Body, Controller, Logger, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginDTO, RegisterDTO } from './auth.dto';
+import {
+  LoginDTO,
+  LoginResponse,
+  RegisterDTO,
+  RegisterResponse,
+} from './auth.dto';
+import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller()
+@ApiTags('Authentification')
 export class AuthController {
   constructor(private readonly service: AuthService) {}
 
   @Post('/auth/register')
-  async register(@Body() body: RegisterDTO): Promise<any> {
+  @ApiBody({ type: RegisterDTO })
+  @ApiResponse({
+    status: 200,
+    description: 'The account was created.',
+    type: RegisterResponse,
+  })
+  async register(@Body() body: RegisterDTO): Promise<RegisterResponse> {
     return this.service.register(body);
   }
 
   @Post('/auth/login')
-  async login(@Body() body: LoginDTO): Promise<any> {
+  @ApiBody({ type: LoginDTO })
+  @ApiResponse({
+    status: 200,
+    description: 'The rescuer was logged in.',
+    type: LoginResponse,
+  })
+  async login(@Body() body: LoginDTO): Promise<LoginResponse> {
     return this.service.login(body);
   }
 }

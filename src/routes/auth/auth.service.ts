@@ -1,5 +1,10 @@
 import { Body, Injectable, NotFoundException, Post } from '@nestjs/common';
-import { LoginDTO, RegisterDTO } from './auth.dto';
+import {
+  LoginDTO,
+  LoginResponse,
+  RegisterDTO,
+  RegisterResponse,
+} from './auth.dto';
 import { Rescuer } from '../../schemas/rescuer.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
@@ -15,7 +20,7 @@ export class AuthService {
     @InjectModel(Rescuer.name) private rescuerModel: Model<Rescuer>,
   ) {}
 
-  async register(body: RegisterDTO): Promise<any> {
+  async register(body: RegisterDTO): Promise<RegisterResponse> {
     const passwordEncrypted = cryptPassword(body.password);
 
     const rescuer: Rescuer = {
@@ -53,7 +58,7 @@ export class AuthService {
    * and the password is correct.
    * @param body The body of the request.
    */
-  async login(body: LoginDTO): Promise<any> {
+  async login(body: LoginDTO): Promise<LoginResponse> {
     const user: Rescuer = await this.rescuerModel.findOne({
       'email.email': body.email,
     });
