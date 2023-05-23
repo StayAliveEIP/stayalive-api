@@ -23,6 +23,13 @@ export class AuthService {
   async register(body: RegisterDTO): Promise<RegisterResponse> {
     const passwordEncrypted = cryptPassword(body.password);
 
+    const user: Rescuer = await this.rescuerModel.findOne({
+      'email.email': body.email,
+    });
+    if (user) {
+      throw new NotFoundException('Un compte existe déjà avec cet email.');
+    }
+
     const rescuer: Rescuer = {
       _id: new Types.ObjectId(),
       firstname: body.firstname,
