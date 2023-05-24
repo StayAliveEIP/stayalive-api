@@ -14,6 +14,14 @@ $ npm install
 
 ## Running the app
 
+### Docker
+
+```bash
+docker-compose up
+```
+
+### Native
+
 ```bash
 # development
 $ npm run start

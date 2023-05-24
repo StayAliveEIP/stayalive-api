@@ -1,6 +1,3 @@
 # Feature 
- - [x] New CI pipeline
- - [x] New CD pipeline
- - [x] Authentication routes
- - [x] Connection to database
- - [x] Schemas for Database
+ - [x] Model for forgot password route
+ - [x] Docker compose to run the project locally
