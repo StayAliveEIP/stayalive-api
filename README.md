@@ -14,6 +14,14 @@ $ npm install
 
 ## Running the app
 
+### Docker
+
+```bash
+docker-compose up
+```
+
+### Native
+
 ```bash
 # development
 $ npm run start
@@ -36,11 +44,4 @@ $ npm run test:e2e
 
 # test coverage
 $ npm run test:cov
-```
-
-## Dot env
-
-```txt
-MONGODB_URI=mongodb://localhost:27017/stayalive
-MONGODB_DATABASE=stayalive
 ```

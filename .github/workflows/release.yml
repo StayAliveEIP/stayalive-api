@@ -4,10 +4,10 @@ on:
   push:
     branches:
       - master
-
+      - main
 
 jobs:
-  build-and-deploy-back:
+  build-and-deploy:
     name: Build and deploy back
     runs-on: ubuntu-latest
     steps:
@@ -26,6 +26,7 @@ jobs:
         uses: docker/build-push-action@v3.2.0
         with:
           context: .
+          dockerfile: Dockerfile.prod
           tags: stayalive/stayalive-api:${{ env.PACKAGE_VERSION }}, stayalive/stayalive-api:latest
           push: true
       - name: Create Release
