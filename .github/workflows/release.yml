@@ -27,7 +27,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile.prod
-          tags: stayalive/stayalive-api:${{ env.PACKAGE_VERSION }}, stayalive/stayalive-api:latest
+          tags: bastiencantet/stayalive-api:${{ env.PACKAGE_VERSION }}, bastiencantet/stayalive-api:latest
           push: true
       - name: Create Release
         id: create_release
