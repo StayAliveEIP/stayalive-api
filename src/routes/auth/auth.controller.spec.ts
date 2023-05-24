@@ -6,6 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Rescuer, RescuerSchema } from '../../schemas/rescuer.schema';
 import { ConfigModule } from '@nestjs/config';
 import { envValidation } from '../../validation/envValidation';
+import mongoose from 'mongoose';
 
 describe('AuthController', () => {
   let appController: AuthController;
@@ -36,19 +37,25 @@ describe('AuthController', () => {
     appController = app.get<AuthController>(AuthController);
   });
 
-  describe('Register the rescuer', () => {
-    it('should pass the register and get the message', async () => {
-      const body: RegisterDTO = {
-        email: email,
-        firstname: 'test',
-        lastname: 'test',
-        password: 'password123!',
-        phone: '0102030405',
-      };
-      const registerResponse = await appController.register(body);
-      expect(registerResponse.message).toBe(
-        'Votre compte à bien été enregistré, vous pouvez maintenant vous connecter !',
-      );
+  afterAll(async () => {
+    await mongoose.disconnect();
+  });
+
+  describe('Register and login the rescuer', () => {
+    describe('Register the rescuer', () => {
+      it('should pass the register and get the message', async () => {
+        const body: RegisterDTO = {
+          email: email,
+          firstname: 'test',
+          lastname: 'test',
+          password: 'password123!',
+          phone: '0102030405',
+        };
+        const registerResponse = await appController.register(body);
+        expect(registerResponse.message).toBe(
+          'Votre compte à bien été enregistré, vous pouvez maintenant vous connecter !',
+        );
+      });
     });
 
     describe('Login the rescuer', () => {
