@@ -48,10 +48,10 @@ export class AuthService {
       },
       password: {
         password: passwordEncrypted,
-        verified: false,
-        lastCodeSent: null,
-        code: null,
+        lastChange: new Date(),
       },
+
+      connected: false,
     };
     await this.rescuerModel.create(rescuer);
     return {

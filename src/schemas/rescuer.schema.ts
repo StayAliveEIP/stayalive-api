@@ -51,17 +51,16 @@ export class Rescuer {
     _id: false,
     type: {
       password: { type: String, required: true },
-      lastCodeSent: { type: Date, required: false, default: null },
-      code: { type: String, required: false, default: null },
-      verified: { type: Boolean, required: false, default: false },
+      lastChange: { type: Date, required: false, default: null },
     },
   })
   password: {
     password: string;
-    lastCodeSent: Date | null;
-    code: string | null;
-    verified: boolean;
+    lastChange: Date | null;
   };
+
+  @Prop({ required: true })
+  connected: boolean;
 }
 
 export const RescuerSchema = SchemaFactory.createForClass(Rescuer);
