@@ -1,7 +1,8 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Request, UseGuards } from '@nestjs/common';
 import { AccountService } from './account.service';
 import { JwtAuthGuard } from '../../guards/auth.guard';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { AccountIndexResponse } from './account.dto';
 
 @Controller()
 @ApiTags('Account')
@@ -10,7 +11,12 @@ export class AccountController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/account')
-  async index(): Promise<any> {
-    return this.service.index();
+  @ApiResponse({
+    status: 200,
+    description: 'The information about your account',
+    type: AccountIndexResponse,
+  })
+  async index(@Request() req: Request): Promise<AccountIndexResponse> {
+    return this.service.index(req);
   }
 }
