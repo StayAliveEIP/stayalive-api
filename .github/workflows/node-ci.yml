@@ -21,10 +21,12 @@ jobs:
         uses: supercharge/redis-github-action@1.5.0
       - name: Inject .env file
         run: |
-          echo ${{ secrets.ENV_FILE }} | base64 --decode > .env
+          echo ${{ secrets.DOT_ENV_BASE64 }} | base64 --decode > .env
       - name: Install dependencies
         run: npm ci
       - name: Build
         run: npm run build
       - name: Run tests
         run: npm run test
+      - name: Run linting
+        run: npm run lint
