@@ -1,8 +1,9 @@
 FROM node AS prod
 ENV NODE_ENV="prod"
 WORKDIR /app
+COPY .env .
 COPY . .
 RUN npm install
 RUN npm run build
-EXPOSE 80
-CMD ["node", "dist/main"]
+EXPOSE 3000
+CMD ["npm", "run", "start:prod"]
