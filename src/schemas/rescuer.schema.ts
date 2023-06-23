@@ -58,9 +58,6 @@ export class Rescuer {
     password: string;
     lastChange: Date | null;
   };
-
-  @Prop({ required: true })
-  connected: boolean;
 }
 
 export const RescuerSchema = SchemaFactory.createForClass(Rescuer);

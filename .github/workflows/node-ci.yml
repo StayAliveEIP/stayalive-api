@@ -19,6 +19,15 @@ jobs:
           mongodb-port: 27017
       - name: Start Redis Database
         uses: supercharge/redis-github-action@1.5.0
+      - name: Pull the Set Up Database Repository
+        uses: actions/checkout@v3
+        with:
+          repository: otopilot/setup-database
+          path: ./setup-database
+      - name: Run script to configure database
+        run: |
+          cd ./setup-database && chmod +x setup-database.sh
+          ./setup-database.sh "mongodb://127.0.0.1:27017/stayalive"
       - name: Inject .env file
         run: |
           echo ${{ secrets.DOT_ENV_BASE64 }} | base64 --decode > .env
