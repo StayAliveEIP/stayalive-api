@@ -7,6 +7,7 @@ import { Rescuer, RescuerSchema } from '../../schemas/rescuer.schema';
 import { ConfigModule } from '@nestjs/config';
 import { envValidation } from '../../validation/envValidation';
 import mongoose from 'mongoose';
+import { MailJetModule } from '../../services/mailjet/mailjet.module';
 
 describe('AuthController', () => {
   let appController: AuthController;
@@ -22,6 +23,7 @@ describe('AuthController', () => {
           isGlobal: true,
           validationSchema: envValidation,
         }),
+        MailJetModule,
         // Connect to the MongoDB database.
         MongooseModule.forRoot(process.env.MONGODB_URI, {
           dbName: process.env.MONGODB_DATABASE,

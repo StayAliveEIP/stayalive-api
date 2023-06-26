@@ -21,7 +21,7 @@ export class AuthService {
   ) {}
 
   async register(body: RegisterDTO): Promise<RegisterResponse> {
-    const passwordEncrypted = cryptPassword(body.password);
+    const passwordEncrypted: string = cryptPassword(body.password);
 
     const user: Rescuer = await this.rescuerModel.findOne({
       'email.email': body.email,
@@ -48,7 +48,9 @@ export class AuthService {
       },
       password: {
         password: passwordEncrypted,
-        lastChange: new Date(),
+        token: null,
+        lastTokenSent: null,
+        lastChange: null,
       },
     };
     await this.rescuerModel.create(rescuer);

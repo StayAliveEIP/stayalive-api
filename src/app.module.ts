@@ -4,11 +4,11 @@ import { AppService } from './app.service';
 import { envValidation } from './validation/envValidation';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { RedisModule } from './redis/redis.module';
-import { RedisService } from './redis/redis.service';
 import { AuthModule } from './routes/auth/auth.module';
 import { AccountModule } from './routes/account/account.module';
 import { ForgotPasswordModule } from './routes/account/forgotPassword/forgotPassword.module';
+import { RedisModule } from './services/redis/redis.module';
+import { RedisService } from './services/redis/redis.service';
 
 @Module({
   imports: [

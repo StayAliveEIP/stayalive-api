@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { Rescuer } from '../../schemas/rescuer.schema';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Schema, Types } from "mongoose";
+import { Model, Types } from 'mongoose';
 import { AccountIndexResponse } from './account.dto';
 
 @Injectable()

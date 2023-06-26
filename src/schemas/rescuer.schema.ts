@@ -51,11 +51,15 @@ export class Rescuer {
     _id: false,
     type: {
       password: { type: String, required: true },
+      token: { type: String, required: false, default: null },
+      lastTokenSent: { type: Date, required: false, default: null },
       lastChange: { type: Date, required: false, default: null },
     },
   })
   password: {
     password: string;
+    token: string | null;
+    lastTokenSent: Date | null;
     lastChange: Date | null;
   };
 }

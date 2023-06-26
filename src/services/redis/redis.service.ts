@@ -9,7 +9,7 @@ export interface RescuerPosition {
 
 @Injectable()
 export class RedisService {
-  private readonly logger = new Logger(RedisService.name);
+  private readonly logger: Logger = new Logger(RedisService.name);
   private readonly client;
 
   constructor() {
@@ -19,7 +19,7 @@ export class RedisService {
     this.client
       .connect()
       .then(() => {
-        this.logger.log('Connected to Redis');
+        this.logger.log('Connected to Redis database');
       })
       .catch((err) => {
         this.logger.error(err);
