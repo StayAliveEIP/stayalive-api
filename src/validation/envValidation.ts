@@ -7,4 +7,6 @@ export const envValidation: Joi.ObjectSchema = Joi.object({
   JWT_SECRET: Joi.string().required(),
   MAILJET_API_KEY: Joi.string().required(),
   MAILJET_API_SECRET: Joi.string().required(),
+  MAILJET_SENDER_NAME: Joi.string().required(),
+  MAILJET_SENDER_EMAIL: Joi.string().required(),
 });

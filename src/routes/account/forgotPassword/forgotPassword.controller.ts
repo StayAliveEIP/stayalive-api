@@ -15,7 +15,6 @@ export class ForgotPasswordController {
   @Get('/account/forgot-password/link')
   @ApiOperation({
     summary: 'Request a new mail to reset your password',
-    deprecated: true,
   })
   @ApiResponse({
     status: 200,
@@ -32,7 +31,6 @@ export class ForgotPasswordController {
   @Post('/account/forgot-password/reset')
   @ApiOperation({
     summary: 'Reset your password',
-    deprecated: true,
   })
   @ApiResponse({
     status: 200,
