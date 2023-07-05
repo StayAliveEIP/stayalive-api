@@ -5,7 +5,6 @@ import {
   RegisterDTO,
   RegisterResponse,
 } from './auth.dto';
-import { Rescuer } from '../../schemas/rescuer.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import {
@@ -13,6 +12,7 @@ import {
   generateToken,
   verifyPassword,
 } from '../../utils/crypt';
+import { Rescuer } from '../../database/rescuer.schema';
 
 @Injectable()
 export class AuthService {

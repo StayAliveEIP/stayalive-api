@@ -55,4 +55,4 @@ export class Center {
   };
 }
 
-export const RescuerSchema = SchemaFactory.createForClass(Center);
+export const CenterSchema = SchemaFactory.createForClass(Center);

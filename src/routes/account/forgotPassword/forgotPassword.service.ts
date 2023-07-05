@@ -5,7 +5,6 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Rescuer } from '../../../schemas/rescuer.schema';
 import {
   ForgotPasswordLinkDTO,
   ForgotPasswordLinkResponse,
@@ -17,6 +16,7 @@ import {
   MailJetService,
 } from '../../../services/mailjet/mailjet.service';
 import { cryptPassword } from '../../../utils/crypt';
+import { Rescuer } from '../../../database/rescuer.schema';
 
 @Injectable()
 export class ForgotPasswordService {
