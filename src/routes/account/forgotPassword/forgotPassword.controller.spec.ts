@@ -1,15 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
-import { LoginDTO, LoginResponse, RegisterDTO } from './auth.dto';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Rescuer, RescuerSchema } from '../../schemas/rescuer.schema';
 import { ConfigModule } from '@nestjs/config';
-import { envValidation } from '../../validation/envValidation';
 import mongoose from 'mongoose';
-import { MailJetModule } from '../../services/mailjet/mailjet.module';
+import { AuthController } from '../../auth/auth.controller';
+import { envValidation } from '../../../validation/envValidation';
+import { MailJetModule } from '../../../services/mailjet/mailjet.module';
+import { Rescuer } from '../../../schemas/rescuer.schema';
+import { RescuerSchema } from '../../../schemas/center.schema';
+import { AuthService } from '../../auth/auth.service';
+import { RegisterDTO } from '../../auth/auth.dto';
 
-describe('AuthController', () => {
+describe('ForgotPasswordController', () => {
   let appController: AuthController;
 
   const randomNumberEmail: number = Math.floor(Math.random() * 1000000);
@@ -57,19 +58,6 @@ describe('AuthController', () => {
         expect(registerResponse.message).toBe(
           'Votre compte à bien été enregistré, vous pouvez maintenant vous connecter !',
         );
-      });
-    });
-
-    describe('Login the rescuer', () => {
-      it('should pass the login and get the access token', async () => {
-        const body: LoginDTO = {
-          email: email,
-          password: 'password123!',
-        };
-        const loginResponsePromise: LoginResponse = await appController.login(
-          body,
-        );
-        expect(loginResponsePromise.accessToken).toBeDefined();
       });
     });
   });

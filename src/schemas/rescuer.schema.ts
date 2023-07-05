@@ -1,6 +1,51 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
 
+@Schema({ versionKey: false })
+export class Email {
+  @Prop({ required: true })
+  email: string;
+
+  @Prop({ required: false, default: null })
+  lastCodeSent: Date | null;
+
+  @Prop({ required: false, default: null })
+  code: string | null;
+
+  @Prop({ required: false, default: false })
+  verified: boolean;
+}
+
+@Schema({ versionKey: false })
+export class Phone {
+  @Prop({ required: true })
+  phone: string;
+
+  @Prop({ required: false, default: null })
+  lastCodeSent: Date | null;
+
+  @Prop({ required: false, default: null })
+  code: string | null;
+
+  @Prop({ required: false, default: false })
+  verified: boolean;
+}
+
+@Schema({ versionKey: false })
+export class Password {
+  @Prop({ required: true })
+  password: string;
+
+  @Prop({ required: false, default: null })
+  token: string | null;
+
+  @Prop({ required: false, default: null })
+  lastTokenSent: Date | null;
+
+  @Prop({ required: false, default: null })
+  lastChange: Date | null;
+}
+
 @Schema({ versionKey: false, collection: 'rescuers' })
 export class Rescuer {
   @Prop({ type: Types.ObjectId })
@@ -13,55 +58,25 @@ export class Rescuer {
   lastname: string;
 
   @Prop({
-    required: false,
     _id: false,
-    type: {
-      email: { type: String, required: true },
-      lastCodeSent: { type: Date, required: false, default: null },
-      code: { type: String, required: false, default: null },
-      verified: { type: Boolean, required: false, default: false },
-    },
+    required: false,
+    type: Email,
   })
-  email: {
-    email: string;
-    lastCodeSent: Date | null;
-    code: string | null;
-    verified: boolean;
-  };
+  email: Email;
 
   @Prop({
-    required: false,
     _id: false,
-    type: {
-      phone: { type: String, required: true },
-      lastCodeSent: { type: Date, required: false, default: null },
-      code: { type: String, required: false, default: null },
-      verified: { type: Boolean, required: false, default: false },
-    },
+    required: false,
+    type: Phone,
   })
-  phone: {
-    phone: string;
-    lastCodeSent: Date | null;
-    code: string | null;
-    verified: boolean;
-  };
+  phone: Phone;
 
   @Prop({
-    required: false,
     _id: false,
-    type: {
-      password: { type: String, required: true },
-      token: { type: String, required: false, default: null },
-      lastTokenSent: { type: Date, required: false, default: null },
-      lastChange: { type: Date, required: false, default: null },
-    },
+    required: false,
+    type: Password,
   })
-  password: {
-    password: string;
-    token: string | null;
-    lastTokenSent: Date | null;
-    lastChange: Date | null;
-  };
+  password: Password;
 }
 
 export const RescuerSchema = SchemaFactory.createForClass(Rescuer);
