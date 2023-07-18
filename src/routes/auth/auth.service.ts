@@ -5,7 +5,6 @@ import {
   RegisterDTO,
   RegisterResponse,
 } from './auth.dto';
-import { Rescuer } from '../../schemas/rescuer.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import {
@@ -13,6 +12,7 @@ import {
   generateToken,
   verifyPassword,
 } from '../../utils/crypt';
+import { Rescuer } from '../../database/rescuer.schema';
 
 @Injectable()
 export class AuthService {
@@ -21,7 +21,7 @@ export class AuthService {
   ) {}
 
   async register(body: RegisterDTO): Promise<RegisterResponse> {
-    const passwordEncrypted = cryptPassword(body.password);
+    const passwordEncrypted: string = cryptPassword(body.password);
 
     const user: Rescuer = await this.rescuerModel.findOne({
       'email.email': body.email,
@@ -48,10 +48,10 @@ export class AuthService {
       },
       password: {
         password: passwordEncrypted,
-        lastChange: new Date(),
+        token: null,
+        lastTokenSent: null,
+        lastChange: null,
       },
-
-      connected: false,
     };
     await this.rescuerModel.create(rescuer);
     return {

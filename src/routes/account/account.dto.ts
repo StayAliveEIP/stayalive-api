@@ -42,7 +42,7 @@ export class AccountIndexResponse {
 
   @ApiProperty({
     type: {
-      phone: { type: String, required: true, example: '0606060606' },
+      phone: { type: String, required: true, example: '0612345678' },
       verified: {
         type: Boolean,
         required: false,

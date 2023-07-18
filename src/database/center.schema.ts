@@ -1,16 +1,22 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
 
-@Schema({ versionKey: false, collection: 'rescuers' })
-export class Rescuer {
+@Schema({ versionKey: false, collection: 'centers' })
+export class Center {
   @Prop({ type: Types.ObjectId })
   _id: Types.ObjectId;
 
   @Prop({ required: true })
-  firstname: string;
+  name: string;
 
   @Prop({ required: true })
-  lastname: string;
+  street: string;
+
+  @Prop({ required: true })
+  number: string;
+
+  @Prop({ required: true })
+  city: string;
 
   @Prop({
     required: false,
@@ -25,26 +31,15 @@ export class Rescuer {
   email: {
     email: string;
     lastCodeSent: Date | null;
-    code: string | null;
-    verified: boolean;
+    code: string | null; //OPTIONAL
+    verified: boolean; //OPTIONAL
   };
 
   @Prop({
     required: false,
     _id: false,
-    type: {
-      phone: { type: String, required: true },
-      lastCodeSent: { type: Date, required: false, default: null },
-      code: { type: String, required: false, default: null },
-      verified: { type: Boolean, required: false, default: false },
-    },
   })
-  phone: {
-    phone: string;
-    lastCodeSent: Date | null;
-    code: string | null;
-    verified: boolean;
-  };
+  phone: string;
 
   @Prop({
     required: false,
@@ -58,9 +53,6 @@ export class Rescuer {
     password: string;
     lastChange: Date | null;
   };
-
-  @Prop({ required: true })
-  connected: boolean;
 }
 
-export const RescuerSchema = SchemaFactory.createForClass(Rescuer);
+export const CenterSchema = SchemaFactory.createForClass(Center);

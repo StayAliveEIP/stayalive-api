@@ -19,6 +19,23 @@ jobs:
           mongodb-port: 27017
       - name: Start Redis Database
         uses: supercharge/redis-github-action@1.5.0
+      - name: Install MongoSH Command
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget gnupg
+          wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
+          echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+          sudo apt-get update
+          sudo apt-get install -y mongodb-mongosh
+      - name: Pull the Set Up Database Repository
+        uses: actions/checkout@v3
+        with:
+          repository: StayAliveEIP/setup-database
+          path: ./setup_database
+      - name: Run script to configure database
+        run: |
+          cd ./setup_database && chmod +x setup_database.sh
+          ./setup_database.sh "mongodb://127.0.0.1:27017/stayalive"
       - name: Inject .env file
         run: |
           echo ${{ secrets.DOT_ENV_BASE64 }} | base64 --decode > .env
@@ -28,5 +45,14 @@ jobs:
         run: npm run build
       - name: Run tests
         run: npm run test
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()    # run this step even if previous step failed
+        with:
+            name: JEST Tests            # Name of the check run which will be created
+            path: junit.xml    # Path to test results
+            reporter: jest-junit
+      - name : Coverage
+        uses: ArtiomTr/jest-coverage-report-action@v2
       - name: Run linting
         run: npm run lint
