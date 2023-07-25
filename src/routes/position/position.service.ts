@@ -1,24 +1,23 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PositionDeletedDto, PositionDto } from './position.dto';
+import {
+  PositionDeletedDto,
+  PositionDto,
+  PositionWithIdDto,
+} from './position.dto';
 import {
   RedisService,
   RescuerPosition,
+  RescuerPositionWithId,
 } from '../../services/redis/redis.service';
 import { Types } from 'mongoose';
+import {
+  GeoCoordinates,
+  getDistanceInKilometers,
+} from '../../utils/position.utils';
 
 @Injectable()
 export class PositionService {
   constructor(private readonly redisService: RedisService) {}
-
-  positionOfId(id: string): Promise<PositionDto> {
-    const result: PositionDto = {
-      latitude: 0,
-      longitude: 0,
-    };
-    return new Promise((resolve) => {
-      resolve(result);
-    });
-  }
 
   async getPosition(req: Request): Promise<PositionDto> {
     const id: string = req['user'].userId;
@@ -50,5 +49,42 @@ export class PositionService {
     return {
       message: 'La position a été supprimée.',
     };
+  }
+
+  async getAllPositions(): Promise<PositionWithIdDto[]> {
+    const positionRedis: RescuerPositionWithId[] =
+      await this.redisService.getAllPositions();
+    return positionRedis.map((position: RescuerPositionWithId) => {
+      const convert: PositionWithIdDto = {
+        id: position.id.toString(),
+        latitude: position.position.lat,
+        longitude: position.position.lng,
+      };
+      return convert;
+    });
+  }
+
+  async getNearestPosition(position: PositionDto): Promise<PositionWithIdDto> {
+    const allPositions: PositionWithIdDto[] = await this.getAllPositions();
+    if (allPositions.length === 0)
+      throw new NotFoundException('Aucune position trouvée.');
+    const nearestPosition: PositionWithIdDto = allPositions.reduce(
+      (prev, curr) => {
+        getDistanceInKilometers(
+          new GeoCoordinates(position.latitude, position.longitude),
+          new GeoCoordinates(curr.latitude, curr.longitude),
+        );
+        const prevDistance: number = getDistanceInKilometers(
+          new GeoCoordinates(position.latitude, position.longitude),
+          new GeoCoordinates(prev.latitude, prev.longitude),
+        );
+        const currDistance: number = getDistanceInKilometers(
+          new GeoCoordinates(position.latitude, position.longitude),
+          new GeoCoordinates(curr.latitude, curr.longitude),
+        );
+        return prevDistance < currDistance ? prev : curr;
+      },
+    );
+    return nearestPosition;
   }
 }

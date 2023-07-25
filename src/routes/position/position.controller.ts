@@ -11,7 +11,11 @@ import {
 import { JwtAuthGuard } from '../../guards/auth.guard';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PositionService } from './position.service';
-import { PositionDeletedDto, PositionDto } from './position.dto';
+import {
+  PositionDeletedDto,
+  PositionDto,
+  PositionWithIdDto,
+} from './position.dto';
 
 @Controller()
 @ApiTags('Position')
@@ -52,5 +56,30 @@ export class PositionController {
   })
   async deletePosition(@Request() req: Request): Promise<PositionDeletedDto> {
     return this.service.deletePosition(req);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/position/all')
+  @ApiResponse({
+    status: 200,
+    description: 'Get all positions',
+    type: PositionWithIdDto,
+    isArray: true,
+  })
+  async getAllPositions(): Promise<PositionWithIdDto[]> {
+    return this.service.getAllPositions();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/position/nearest')
+  @ApiResponse({
+    status: 200,
+    description: 'Get nearest position',
+    type: PositionWithIdDto,
+  })
+  async getNearestPosition(
+    @Body() position: PositionDto,
+  ): Promise<PositionWithIdDto> {
+    return this.service.getNearestPosition(position);
   }
 }

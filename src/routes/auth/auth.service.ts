@@ -11,7 +11,7 @@ import {
   cryptPassword,
   generateToken,
   verifyPassword,
-} from '../../utils/crypt';
+} from '../../utils/crypt.utils';
 import { Rescuer } from '../../database/rescuer.schema';
 
 @Injectable()
