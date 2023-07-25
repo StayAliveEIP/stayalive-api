@@ -47,7 +47,7 @@ export class RedisService {
    */
   public async deletePositionOfRescuer(rescuerId: Types.ObjectId) {
     if (!rescuerId) throw Error('Invalid rescuer id');
-    await this.client.client.del(rescuerId.toString());
+    await this.client.del(rescuerId.toString());
   }
 
   /**

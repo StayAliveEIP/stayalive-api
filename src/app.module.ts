@@ -9,6 +9,7 @@ import { AccountModule } from './routes/account/account.module';
 import { ForgotPasswordModule } from './routes/account/forgotPassword/forgotPassword.module';
 import { RedisModule } from './services/redis/redis.module';
 import { RedisService } from './services/redis/redis.service';
+import { PositionModule } from './routes/position/position.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { RedisService } from './services/redis/redis.service';
     AuthModule,
     AccountModule,
     ForgotPasswordModule,
+    PositionModule,
   ],
   controllers: [AppController],
   providers: [AppService, RedisService],
