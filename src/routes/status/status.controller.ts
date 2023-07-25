@@ -17,7 +17,7 @@ export class StatusController {
 
   @UseGuards(JwtAuthGuard)
   @Post('/status')
-  async setStatus(@Req() req , @Body() body : StatusDto) {
+  async setStatus(@Req() req, @Body() body: StatusDto) {
     return this.status.setStatus(req.userId, body.status);
   }
 }

@@ -1,8 +1,8 @@
-import {HttpException, Injectable} from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Rescuer } from '../../database/rescuer.schema';
-import {Model, Types} from 'mongoose';
-import {Request} from "express";
+import { Model, Types } from 'mongoose';
+import { Request } from 'express';
 
 @Injectable()
 export class StatusService {
@@ -18,7 +18,15 @@ export class StatusService {
       throw new HttpException('Utilisateur introuvable', 404);
     }
     if (status == 'AVAILABLE') {
+      this.rescuerModel.updateOne(
+        { _id: new Types.ObjectId(userId) },
+        { available: true },
+      );
     } else if (status == 'NOT_AVAILABLE') {
+      this.rescuerModel.updateOne(
+        { _id: new Types.ObjectId(userId) },
+        { available: false },
+      );
     } else {
       throw new HttpException("Le type de status n'existe pas", 400);
     }
