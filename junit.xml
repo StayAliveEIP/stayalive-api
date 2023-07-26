@@ -1,249 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="12" failures="12" errors="0" time="2.612">
-  <testsuite name="StatusController" errors="0" failures="2" skipped="0" timestamp="2023-07-26T09:38:59" time="2.235" tests="2">
-    <testcase classname="StatusController setStatus should return void" name="StatusController setStatus should return void" time="0.009">
-      <failure>Error: Config validation error: &quot;MONGODB_URI&quot; is required. &quot;MONGODB_DATABASE&quot; is required. &quot;REDIS_URL&quot; is required. &quot;JWT_SECRET&quot; is required. &quot;MAILJET_API_KEY&quot; is required. &quot;MAILJET_API_SECRET&quot; is required. &quot;MAILJET_SENDER_NAME&quot; is required. &quot;MAILJET_SENDER_EMAIL&quot; is required
-    at Function.forRoot (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/@nestjs/config/dist/config.module.js:75:23)
-    at Object.&lt;anonymous&gt; (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/src/routes/status/status.controller.spec.ts:19:22)
-    at Promise.then.completed (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/utils.js:301:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/utils.js:234:10)
-    at _callCircusHook (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:279:40)
-    at _runTest (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:244:5)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:125:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at run (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:70:3)
-    at runAndTransformResultsToJestFormat (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:127:21)
-    at jestAdapter (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:80:19)
-    at runTestInternal (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/runTest.js:444:34)
-    at Object.worker (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
+<testsuites name="jest tests" tests="12" failures="0" errors="0" time="2.655">
+  <testsuite name="StatusController" errors="0" failures="0" skipped="0" timestamp="2023-07-26T10:06:07" time="1.993" tests="2">
+    <testcase classname="StatusController setStatus should return void" name="StatusController setStatus should return void" time="0.092">
     </testcase>
-    <testcase classname="StatusController getStatus should return status" name="StatusController getStatus should return status" time="0.002">
-      <failure>Error: Config validation error: &quot;MONGODB_URI&quot; is required. &quot;MONGODB_DATABASE&quot; is required. &quot;REDIS_URL&quot; is required. &quot;JWT_SECRET&quot; is required. &quot;MAILJET_API_KEY&quot; is required. &quot;MAILJET_API_SECRET&quot; is required. &quot;MAILJET_SENDER_NAME&quot; is required. &quot;MAILJET_SENDER_EMAIL&quot; is required
-    at Function.forRoot (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/@nestjs/config/dist/config.module.js:75:23)
-    at Object.&lt;anonymous&gt; (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/src/routes/status/status.controller.spec.ts:19:22)
-    at Promise.then.completed (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/utils.js:301:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/utils.js:234:10)
-    at _callCircusHook (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:279:40)
-    at _runTest (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:244:5)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:125:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at run (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:70:3)
-    at runAndTransformResultsToJestFormat (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:127:21)
-    at jestAdapter (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:80:19)
-    at runTestInternal (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/runTest.js:444:34)
-    at Object.worker (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
+    <testcase classname="StatusController getStatus should return status" name="StatusController getStatus should return status" time="0.016">
     </testcase>
   </testsuite>
-  <testsuite name="AuthController" errors="0" failures="3" skipped="0" timestamp="2023-07-26T09:38:59" time="2.387" tests="3">
-    <testcase classname="AuthController Test to get account information Register the rescuer should pass the register and get the message" name="AuthController Test to get account information Register the rescuer should pass the register and get the message" time="0.006">
-      <failure>Error: Config validation error: &quot;MONGODB_URI&quot; is required. &quot;MONGODB_DATABASE&quot; is required. &quot;REDIS_URL&quot; is required. &quot;JWT_SECRET&quot; is required. &quot;MAILJET_API_KEY&quot; is required. &quot;MAILJET_API_SECRET&quot; is required. &quot;MAILJET_SENDER_NAME&quot; is required. &quot;MAILJET_SENDER_EMAIL&quot; is required
-    at Function.forRoot (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/@nestjs/config/dist/config.module.js:75:23)
-    at Object.&lt;anonymous&gt; (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/src/routes/account/account.controller.spec.ts:28:22)
-    at Promise.then.completed (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/utils.js:301:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/utils.js:234:10)
-    at _callCircusHook (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:279:40)
-    at _runTest (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:244:5)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:125:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at run (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:70:3)
-    at runAndTransformResultsToJestFormat (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:127:21)
-    at jestAdapter (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:80:19)
-    at runTestInternal (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/runTest.js:444:34)
-    at Object.worker (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
+  <testsuite name="AuthController" errors="0" failures="0" skipped="0" timestamp="2023-07-26T10:06:07" time="2.106" tests="2">
+    <testcase classname="AuthController Register and login the rescuer Register the rescuer should pass the register and get the message" name="AuthController Register and login the rescuer Register the rescuer should pass the register and get the message" time="0.169">
     </testcase>
-    <testcase classname="AuthController Test to get account information Login the rescuer should pass the login and get the access token" name="AuthController Test to get account information Login the rescuer should pass the login and get the access token" time="0.003">
-      <failure>Error: Config validation error: &quot;MONGODB_URI&quot; is required. &quot;MONGODB_DATABASE&quot; is required. &quot;REDIS_URL&quot; is required. &quot;JWT_SECRET&quot; is required. &quot;MAILJET_API_KEY&quot; is required. &quot;MAILJET_API_SECRET&quot; is required. &quot;MAILJET_SENDER_NAME&quot; is required. &quot;MAILJET_SENDER_EMAIL&quot; is required
-    at Function.forRoot (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/@nestjs/config/dist/config.module.js:75:23)
-    at Object.&lt;anonymous&gt; (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/src/routes/account/account.controller.spec.ts:28:22)
-    at Promise.then.completed (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/utils.js:301:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/utils.js:234:10)
-    at _callCircusHook (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:279:40)
-    at _runTest (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:244:5)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:125:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at run (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:70:3)
-    at runAndTransformResultsToJestFormat (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:127:21)
-    at jestAdapter (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:80:19)
-    at runTestInternal (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/runTest.js:444:34)
-    at Object.worker (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
-    </testcase>
-    <testcase classname="AuthController Test to get account information Get the account information should pass the get account information and get the account information" name="AuthController Test to get account information Get the account information should pass the get account information and get the account information" time="0.003">
-      <failure>Error: Config validation error: &quot;MONGODB_URI&quot; is required. &quot;MONGODB_DATABASE&quot; is required. &quot;REDIS_URL&quot; is required. &quot;JWT_SECRET&quot; is required. &quot;MAILJET_API_KEY&quot; is required. &quot;MAILJET_API_SECRET&quot; is required. &quot;MAILJET_SENDER_NAME&quot; is required. &quot;MAILJET_SENDER_EMAIL&quot; is required
-    at Function.forRoot (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/@nestjs/config/dist/config.module.js:75:23)
-    at Object.&lt;anonymous&gt; (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/src/routes/account/account.controller.spec.ts:28:22)
-    at Promise.then.completed (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/utils.js:301:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/utils.js:234:10)
-    at _callCircusHook (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:279:40)
-    at _runTest (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:244:5)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:125:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at run (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:70:3)
-    at runAndTransformResultsToJestFormat (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:127:21)
-    at jestAdapter (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:80:19)
-    at runTestInternal (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/runTest.js:444:34)
-    at Object.worker (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
+    <testcase classname="AuthController Register and login the rescuer Login the rescuer should pass the login and get the access token" name="AuthController Register and login the rescuer Login the rescuer should pass the login and get the access token" time="0.07">
     </testcase>
   </testsuite>
-  <testsuite name="AuthController" errors="0" failures="2" skipped="0" timestamp="2023-07-26T09:38:59" time="2.439" tests="2">
-    <testcase classname="AuthController Register and login the rescuer Register the rescuer should pass the register and get the message" name="AuthController Register and login the rescuer Register the rescuer should pass the register and get the message" time="0.006">
-      <failure>Error: Config validation error: &quot;MONGODB_URI&quot; is required. &quot;MONGODB_DATABASE&quot; is required. &quot;REDIS_URL&quot; is required. &quot;JWT_SECRET&quot; is required. &quot;MAILJET_API_KEY&quot; is required. &quot;MAILJET_API_SECRET&quot; is required. &quot;MAILJET_SENDER_NAME&quot; is required. &quot;MAILJET_SENDER_EMAIL&quot; is required
-    at Function.forRoot (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/@nestjs/config/dist/config.module.js:75:23)
-    at Object.&lt;anonymous&gt; (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/src/routes/auth/auth.controller.spec.ts:22:22)
-    at Promise.then.completed (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/utils.js:301:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/utils.js:234:10)
-    at _callCircusHook (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:279:40)
-    at _runTest (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:244:5)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:125:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at run (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:70:3)
-    at runAndTransformResultsToJestFormat (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:127:21)
-    at jestAdapter (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:80:19)
-    at runTestInternal (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/runTest.js:444:34)
-    at Object.worker (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
+  <testsuite name="ForgotPasswordController" errors="0" failures="0" skipped="0" timestamp="2023-07-26T10:06:07" time="2.141" tests="5">
+    <testcase classname="ForgotPasswordController Register the rescuer and send a login link Send a forgot password should not pass the forgot password form" name="ForgotPasswordController Register the rescuer and send a login link Send a forgot password should not pass the forgot password form" time="0.144">
     </testcase>
-    <testcase classname="AuthController Register and login the rescuer Login the rescuer should pass the login and get the access token" name="AuthController Register and login the rescuer Login the rescuer should pass the login and get the access token" time="0.003">
-      <failure>Error: Config validation error: &quot;MONGODB_URI&quot; is required. &quot;MONGODB_DATABASE&quot; is required. &quot;REDIS_URL&quot; is required. &quot;JWT_SECRET&quot; is required. &quot;MAILJET_API_KEY&quot; is required. &quot;MAILJET_API_SECRET&quot; is required. &quot;MAILJET_SENDER_NAME&quot; is required. &quot;MAILJET_SENDER_EMAIL&quot; is required
-    at Function.forRoot (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/@nestjs/config/dist/config.module.js:75:23)
-    at Object.&lt;anonymous&gt; (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/src/routes/auth/auth.controller.spec.ts:22:22)
-    at Promise.then.completed (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/utils.js:301:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/utils.js:234:10)
-    at _callCircusHook (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:279:40)
-    at _runTest (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:244:5)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:125:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at run (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:70:3)
-    at runAndTransformResultsToJestFormat (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:127:21)
-    at jestAdapter (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:80:19)
-    at runTestInternal (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/runTest.js:444:34)
-    at Object.worker (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
+    <testcase classname="ForgotPasswordController Register the rescuer and send a login link Register the rescuer should pass the register and get the message" name="ForgotPasswordController Register the rescuer and send a login link Register the rescuer should pass the register and get the message" time="0.084">
+    </testcase>
+    <testcase classname="ForgotPasswordController Register the rescuer and send a login link Send a forgot password should pass the forgot password form" name="ForgotPasswordController Register the rescuer and send a login link Send a forgot password should pass the forgot password form" time="0.06">
+    </testcase>
+    <testcase classname="ForgotPasswordController Register the rescuer and send a login link Should modify the password should not pass the forgot password form" name="ForgotPasswordController Register the rescuer and send a login link Should modify the password should not pass the forgot password form" time="0.012">
+    </testcase>
+    <testcase classname="ForgotPasswordController Register the rescuer and send a login link Should modify the password should pass the forgot password form" name="ForgotPasswordController Register the rescuer and send a login link Should modify the password should pass the forgot password form" time="0.011">
     </testcase>
   </testsuite>
-  <testsuite name="ForgotPasswordController" errors="0" failures="5" skipped="0" timestamp="2023-07-26T09:38:59" time="2.453" tests="5">
-    <testcase classname="ForgotPasswordController Register the rescuer and send a login link Send a forgot password should not pass the forgot password form" name="ForgotPasswordController Register the rescuer and send a login link Send a forgot password should not pass the forgot password form" time="0.006">
-      <failure>Error: Config validation error: &quot;MONGODB_URI&quot; is required. &quot;MONGODB_DATABASE&quot; is required. &quot;REDIS_URL&quot; is required. &quot;JWT_SECRET&quot; is required. &quot;MAILJET_API_KEY&quot; is required. &quot;MAILJET_API_SECRET&quot; is required. &quot;MAILJET_SENDER_NAME&quot; is required. &quot;MAILJET_SENDER_EMAIL&quot; is required
-    at Function.forRoot (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/@nestjs/config/dist/config.module.js:75:23)
-    at Object.&lt;anonymous&gt; (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/src/routes/account/forgotPassword/forgotPassword.controller.spec.ts:30:22)
-    at Promise.then.completed (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/utils.js:301:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/utils.js:234:10)
-    at _callCircusHook (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:279:40)
-    at _runTest (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:244:5)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:125:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at run (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:70:3)
-    at runAndTransformResultsToJestFormat (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:127:21)
-    at jestAdapter (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:80:19)
-    at runTestInternal (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/runTest.js:444:34)
-    at Object.worker (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
+  <testsuite name="AuthController" errors="0" failures="0" skipped="0" timestamp="2023-07-26T10:06:07" time="2.178" tests="3">
+    <testcase classname="AuthController Test to get account information Register the rescuer should pass the register and get the message" name="AuthController Test to get account information Register the rescuer should pass the register and get the message" time="0.127">
     </testcase>
-    <testcase classname="ForgotPasswordController Register the rescuer and send a login link Register the rescuer should pass the register and get the message" name="ForgotPasswordController Register the rescuer and send a login link Register the rescuer should pass the register and get the message" time="0.003">
-      <failure>Error: Config validation error: &quot;MONGODB_URI&quot; is required. &quot;MONGODB_DATABASE&quot; is required. &quot;REDIS_URL&quot; is required. &quot;JWT_SECRET&quot; is required. &quot;MAILJET_API_KEY&quot; is required. &quot;MAILJET_API_SECRET&quot; is required. &quot;MAILJET_SENDER_NAME&quot; is required. &quot;MAILJET_SENDER_EMAIL&quot; is required
-    at Function.forRoot (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/@nestjs/config/dist/config.module.js:75:23)
-    at Object.&lt;anonymous&gt; (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/src/routes/account/forgotPassword/forgotPassword.controller.spec.ts:30:22)
-    at Promise.then.completed (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/utils.js:301:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/utils.js:234:10)
-    at _callCircusHook (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:279:40)
-    at _runTest (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:244:5)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:125:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at run (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:70:3)
-    at runAndTransformResultsToJestFormat (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:127:21)
-    at jestAdapter (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:80:19)
-    at runTestInternal (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/runTest.js:444:34)
-    at Object.worker (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
+    <testcase classname="AuthController Test to get account information Login the rescuer should pass the login and get the access token" name="AuthController Test to get account information Login the rescuer should pass the login and get the access token" time="0.093">
     </testcase>
-    <testcase classname="ForgotPasswordController Register the rescuer and send a login link Send a forgot password should pass the forgot password form" name="ForgotPasswordController Register the rescuer and send a login link Send a forgot password should pass the forgot password form" time="0.003">
-      <failure>Error: Config validation error: &quot;MONGODB_URI&quot; is required. &quot;MONGODB_DATABASE&quot; is required. &quot;REDIS_URL&quot; is required. &quot;JWT_SECRET&quot; is required. &quot;MAILJET_API_KEY&quot; is required. &quot;MAILJET_API_SECRET&quot; is required. &quot;MAILJET_SENDER_NAME&quot; is required. &quot;MAILJET_SENDER_EMAIL&quot; is required
-    at Function.forRoot (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/@nestjs/config/dist/config.module.js:75:23)
-    at Object.&lt;anonymous&gt; (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/src/routes/account/forgotPassword/forgotPassword.controller.spec.ts:30:22)
-    at Promise.then.completed (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/utils.js:301:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/utils.js:234:10)
-    at _callCircusHook (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:279:40)
-    at _runTest (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:244:5)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:125:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at run (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:70:3)
-    at runAndTransformResultsToJestFormat (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:127:21)
-    at jestAdapter (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:80:19)
-    at runTestInternal (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/runTest.js:444:34)
-    at Object.worker (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
-    </testcase>
-    <testcase classname="ForgotPasswordController Register the rescuer and send a login link Should modify the password should not pass the forgot password form" name="ForgotPasswordController Register the rescuer and send a login link Should modify the password should not pass the forgot password form" time="0.003">
-      <failure>Error: Config validation error: &quot;MONGODB_URI&quot; is required. &quot;MONGODB_DATABASE&quot; is required. &quot;REDIS_URL&quot; is required. &quot;JWT_SECRET&quot; is required. &quot;MAILJET_API_KEY&quot; is required. &quot;MAILJET_API_SECRET&quot; is required. &quot;MAILJET_SENDER_NAME&quot; is required. &quot;MAILJET_SENDER_EMAIL&quot; is required
-    at Function.forRoot (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/@nestjs/config/dist/config.module.js:75:23)
-    at Object.&lt;anonymous&gt; (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/src/routes/account/forgotPassword/forgotPassword.controller.spec.ts:30:22)
-    at Promise.then.completed (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/utils.js:301:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/utils.js:234:10)
-    at _callCircusHook (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:279:40)
-    at _runTest (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:244:5)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:125:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at run (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:70:3)
-    at runAndTransformResultsToJestFormat (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:127:21)
-    at jestAdapter (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:80:19)
-    at runTestInternal (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/runTest.js:444:34)
-    at Object.worker (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
-    </testcase>
-    <testcase classname="ForgotPasswordController Register the rescuer and send a login link Should modify the password should pass the forgot password form" name="ForgotPasswordController Register the rescuer and send a login link Should modify the password should pass the forgot password form" time="0.003">
-      <failure>Error: Config validation error: &quot;MONGODB_URI&quot; is required. &quot;MONGODB_DATABASE&quot; is required. &quot;REDIS_URL&quot; is required. &quot;JWT_SECRET&quot; is required. &quot;MAILJET_API_KEY&quot; is required. &quot;MAILJET_API_SECRET&quot; is required. &quot;MAILJET_SENDER_NAME&quot; is required. &quot;MAILJET_SENDER_EMAIL&quot; is required
-    at Function.forRoot (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/@nestjs/config/dist/config.module.js:75:23)
-    at Object.&lt;anonymous&gt; (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/src/routes/account/forgotPassword/forgotPassword.controller.spec.ts:30:22)
-    at Promise.then.completed (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/utils.js:301:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/utils.js:234:10)
-    at _callCircusHook (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:279:40)
-    at _runTest (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:244:5)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:125:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at _runTestsForDescribeBlock (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:120:9)
-    at run (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/run.js:70:3)
-    at runAndTransformResultsToJestFormat (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:127:21)
-    at jestAdapter (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:80:19)
-    at runTestInternal (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/runTest.js:444:34)
-    at Object.worker (/Users/bastiencantet/Documents/dev/epitech/EIP/stayalive-api/node_modules/jest-runner/build/testWorker.js:106:12)</failure>
+    <testcase classname="AuthController Test to get account information Get the account information should pass the get account information and get the account information" name="AuthController Test to get account information Get the account information should pass the get account information and get the account information" time="0.023">
     </testcase>
   </testsuite>
 </testsuites>

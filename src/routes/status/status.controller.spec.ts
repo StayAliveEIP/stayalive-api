@@ -1,16 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigModule } from '@nestjs/config';
 import { envValidation } from '../../validation/envValidation';
-import { MongooseModule } from '@nestjs/mongoose';
+import { getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { Rescuer, RescuerSchema } from '../../database/rescuer.schema';
 import { AuthController } from '../auth/auth.controller';
 import { AuthService } from '../auth/auth.service';
 import { StatusController } from './status.controller';
 import { StatusService } from './status.service';
-import mongoose from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 
 describe('StatusController', () => {
   let statutController: StatusController;
+
+  let rescuerModel;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
@@ -32,6 +34,8 @@ describe('StatusController', () => {
       providers: [StatusService],
     }).compile();
     statutController = app.get<StatusController>(StatusController);
+
+    rescuerModel = app.get<Model<Rescuer>>(getModelToken(Rescuer.name));
   });
 
   afterAll(async () => {
@@ -40,9 +44,15 @@ describe('StatusController', () => {
 
   describe('setStatus', () => {
     it('should return void', async () => {
+      const rescuer = await rescuerModel.findOne({ firstname: 'test' });
+      const rescuerId = rescuer._id;
       const result = await statutController.setStatus(
-        '60a0d9b3a5d2f9b4e4a9e1b7',
-        { status: 'AVAILABLE' },
+        {
+          userId: rescuerId,
+        },
+        {
+          status: 'AVAILABLE',
+        },
       );
       expect(result).toBe(undefined);
     });
@@ -50,9 +60,11 @@ describe('StatusController', () => {
 
   describe('getStatus', () => {
     it('should return status', async () => {
-      const result = await statutController.getStatus(
-        '60a0d9b3a5d2f9b4e4a9e1b7',
-      );
+      const rescuer = await rescuerModel.findOne({ firstname: 'test' });
+      const rescuerId = rescuer._id;
+      const result = await statutController.getStatus({
+        userId: rescuerId,
+      });
       expect(result).toHaveProperty('status');
     });
   });
