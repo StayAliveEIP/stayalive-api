@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  Param,
   Post,
   Request,
   UseGuards,
@@ -71,7 +70,7 @@ export class PositionController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('/position/nearest')
+  @Post('/position/nearest')
   @ApiResponse({
     status: 200,
     description: 'Get nearest position',
