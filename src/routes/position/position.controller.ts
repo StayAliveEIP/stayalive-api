@@ -5,6 +5,7 @@ import {
   Get,
   Post,
   Request,
+  Sse,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../../guards/auth.guard';
@@ -15,6 +16,7 @@ import {
   PositionDto,
   PositionWithIdDto,
 } from './position.dto';
+import { interval, map, Observable } from 'rxjs';
 
 @Controller()
 @ApiTags('Position')
@@ -80,5 +82,13 @@ export class PositionController {
     @Body() position: PositionDto,
   ): Promise<PositionWithIdDto> {
     return this.service.getNearestPosition(position);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Sse('/position/sse')
+  sse(): Observable<any> {
+    return interval(1000).pipe(
+      map((i: number) => ({ data: { hello: 'world ' + i } })),
+    );
   }
 }

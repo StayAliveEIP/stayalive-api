@@ -9,8 +9,8 @@ import { AuthService } from '../auth/auth.service';
 import { LoginDTO, LoginResponse, RegisterDTO } from '../auth/auth.dto';
 import { AuthController } from '../auth/auth.controller';
 import { AccountController } from './account.controller';
-import { verifyToken } from '../../utils/crypt';
 import { AccountService } from './account.service';
+import { verifyToken } from '../../utils/crypt.utils';
 
 describe('AuthController', () => {
   let appController: AuthController;
