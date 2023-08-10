@@ -98,7 +98,7 @@ export class PositionController {
     status: 404,
     description: 'If the id given not correspond to any rescuer',
   })
-  sse(@Param('id') id: string): Observable<any> {
+  sse(@Param('id') id: string): Observable<{ data: PositionDto }> {
     return this.service.getPositionSse(id);
   }
 }

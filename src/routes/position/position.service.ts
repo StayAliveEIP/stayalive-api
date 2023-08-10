@@ -94,7 +94,7 @@ export class PositionService {
     return nearestPosition;
   }
 
-  getPositionSse(id: string): Observable<any> {
+  getPositionSse(id: string): Observable<{ data: PositionDto }> {
     const objectId: Types.ObjectId = new Types.ObjectId(id);
 
     // Convert the Promise to an Observable and then chain the logic using RxJS operators
@@ -113,7 +113,11 @@ export class PositionService {
             return from(this.redisService.getPositionOfRescuer(userId)).pipe(
               map((positionData: RescuerPosition) => {
                 if (!positionData) return { data: undefined };
-                return { data: positionData };
+                const positionDto: PositionDto = {
+                  longitude: positionData.lng,
+                  latitude: positionData.lat,
+                };
+                return { data: positionDto };
               }),
             );
           }),
