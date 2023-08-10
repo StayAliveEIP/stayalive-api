@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
+  Param,
   Post,
   Request,
   Sse,
@@ -17,6 +19,7 @@ import {
   PositionWithIdDto,
 } from './position.dto';
 import { interval, map, Observable } from 'rxjs';
+import { Types } from 'mongoose';
 
 @Controller()
 @ApiTags('Position')
@@ -85,10 +88,17 @@ export class PositionController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Sse('/position/sse')
-  sse(): Observable<any> {
-    return interval(1000).pipe(
-      map((i: number) => ({ data: { hello: 'world ' + i } })),
-    );
+  @Sse('/position/:id')
+  @ApiResponse({
+    status: 200,
+    description: 'Get the real time position of rescuer',
+    type: PositionDto,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'If the id given not correspond to any rescuer',
+  })
+  sse(@Param('id') id: string): Observable<any> {
+    return this.service.getPositionSse(id);
   }
 }

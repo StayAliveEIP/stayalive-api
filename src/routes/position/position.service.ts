@@ -9,15 +9,21 @@ import {
   RescuerPosition,
   RescuerPositionWithId,
 } from '../../services/redis/redis.service';
-import { Types } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import {
   GeoCoordinates,
   getDistanceInKilometers,
 } from '../../utils/position.utils';
+import { from, interval, map, Observable, switchMap, throwError } from 'rxjs';
+import { InjectModel } from '@nestjs/mongoose';
+import { Rescuer } from '../../database/rescuer.schema';
 
 @Injectable()
 export class PositionService {
-  constructor(private readonly redisService: RedisService) {}
+  constructor(
+    private readonly redisService: RedisService,
+    @InjectModel(Rescuer.name) private rescuerModel: Model<Rescuer>,
+  ) {}
 
   async getPosition(req: Request): Promise<PositionDto> {
     const id: string = req['user'].userId;
@@ -86,5 +92,33 @@ export class PositionService {
       },
     );
     return nearestPosition;
+  }
+
+  getPositionSse(id: string): Observable<any> {
+    const objectId: Types.ObjectId = new Types.ObjectId(id);
+
+    // Convert the Promise to an Observable and then chain the logic using RxJS operators
+    return from(this.rescuerModel.findById(objectId).exec()).pipe(
+      switchMap((user) => {
+        if (!user) {
+          return throwError(
+            () => new NotFoundException('No user found with this id'),
+          );
+        }
+
+        return interval(1000).pipe(
+          switchMap(() => {
+            // Utilisez le redisService pour récupérer la position réelle ici
+            const userId = new Types.ObjectId(user.id);
+            return from(this.redisService.getPositionOfRescuer(userId)).pipe(
+              map((positionData: RescuerPosition) => {
+                if (!positionData) return { data: undefined };
+                return { data: positionData };
+              }),
+            );
+          }),
+        );
+      }),
+    );
   }
 }
