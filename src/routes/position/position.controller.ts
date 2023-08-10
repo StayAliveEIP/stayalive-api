@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
   Post,
   Request,
@@ -11,18 +10,18 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../../guards/auth.guard';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PositionService } from './position.service';
 import {
   PositionDeletedDto,
   PositionDto,
   PositionWithIdDto,
 } from './position.dto';
-import { interval, map, Observable } from 'rxjs';
-import { Types } from 'mongoose';
+import { Observable } from 'rxjs';
 
 @Controller()
 @ApiTags('Position')
+@ApiBearerAuth()
 export class PositionController {
   constructor(private readonly service: PositionService) {}
 
