@@ -18,6 +18,11 @@ async function main() {
     .setTitle('StayAlive Api')
     .setDescription('StayAlive Api description')
     .setVersion('1.0')
+    .setContact(
+      'Team StayAlive',
+      'https://www.stayalive.fr',
+      'stayalive.eip@gmail.com',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
