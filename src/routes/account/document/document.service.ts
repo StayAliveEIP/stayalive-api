@@ -1,26 +1,18 @@
-import {
-  Injectable,
-  InternalServerErrorException,
-  Request,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import { Rescuer } from '../../../database/rescuer.schema';
-import { AccountIndexResponse } from '../account.dto';
-
-enum DocumentType {
-  ID_CARD = 'ID_CARD',
-  AID_CERTIFICATE = 'AID_CERTIFICATE',
-}
+import { Document } from '../../../database/document.schema';
 
 @Injectable()
 export class DocumentService {
   constructor(
     @InjectModel(Rescuer.name) private rescuerModel: Model<Rescuer>,
+    @InjectModel(Document.name) private documentModel: Model<Document>,
   ) {}
 
   async upload(file: Array<Express.Multer.File>): Promise<any> {
-    console.log(file);
-    return { message: 'OK' };
+    const firstFile: Express.Multer.File = file[0];
+    return { message: firstFile.size };
   }
 }

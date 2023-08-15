@@ -1,5 +1,7 @@
 import {
   Controller,
+  HttpStatus,
+  ParseFilePipeBuilder,
   Post,
   UploadedFiles,
   UseGuards,
@@ -19,9 +21,21 @@ export class DocumentController {
 
   @UseGuards(JwtAuthGuard)
   @Post('/account/document')
-  @UseInterceptors(FilesInterceptor('files', 1))
+  @UseInterceptors(FilesInterceptor('file', 1))
   async upload(
-    @UploadedFiles() file: Array<Express.Multer.File>,
+    @UploadedFiles(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType: '(pdf|jpg|jpeg|png)$', // Regex to valid only pdf, jpeg, jpg or png
+        })
+        .addMaxSizeValidator({
+          maxSize: 1010000000, // 1OMo
+        })
+        .build({
+          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+        }),
+    )
+    file: Array<Express.Multer.File>,
   ): Promise<AccountIndexResponse> {
     return this.service.upload(file);
   }
