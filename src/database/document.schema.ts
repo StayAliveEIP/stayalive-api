@@ -18,6 +18,9 @@ export class Document {
   _id: Types.ObjectId;
 
   @Prop({ required: true })
+  user: Types.ObjectId;
+
+  @Prop({ required: true })
   type: DocumentType;
 
   @Prop({ required: false, default: DocumentStatus.PENDING })
@@ -30,7 +33,10 @@ export class Document {
   lastUpdate: Date;
 
   @Prop({ required: true })
-  binaryFile: Blob;
+  binaryFile: Buffer;
+
+  @Prop({ required: true })
+  mimeType: string;
 }
 
 export const DocumentSchema = SchemaFactory.createForClass(Document);
