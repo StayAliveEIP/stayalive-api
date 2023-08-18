@@ -13,7 +13,9 @@ import {
   DocumentType,
 } from '../../../database/document.schema';
 import { DocumentInformation } from './document.dto';
-import type { Response, Request } from 'express';
+import type { Request, Response } from 'express';
+import { SuccessMessage } from '../../../dto.dto';
+import { doc } from 'prettier';
 
 @Injectable()
 export class DocumentService {
@@ -25,27 +27,33 @@ export class DocumentService {
   async documentInformation(
     req: Request,
     type: string | undefined,
-  ): Promise<any> {
+  ): Promise<DocumentInformation> {
     // Verify if the type is in the array of enum DocumentType
     const documentType: DocumentType = this.verifyDocumentType(type);
-    const userId: string = req['user'].userId;
+    const userId: Types.ObjectId = new Types.ObjectId(req['user'].userId);
 
-    const result: DocumentInformation = {
-      _id: userId,
+    const docInDB: Document | undefined = await this.documentModel.findOne({
+      user: userId,
+      type: documentType,
+    });
+    if (!docInDB)
+      throw new NotFoundException(
+        `The document with type \"${documentType}\" was not uploaded.`,
+      );
+    return {
+      _id: userId.toString(),
       documentType: documentType,
       message: null,
       lastUpdate: new Date(),
       status: DocumentStatus.PENDING,
     };
-
-    return result;
   }
 
   async upload(
     req: Request,
     type: string,
     file: Array<Express.Multer.File>,
-  ): Promise<any> {
+  ): Promise<SuccessMessage> {
     // Verify if the type is in the array of enum DocumentType
     const documentType: DocumentType = this.verifyDocumentType(type);
     const userId: Types.ObjectId = new Types.ObjectId(req['user'].userId);
@@ -68,7 +76,7 @@ export class DocumentService {
       mimeType: firstFile.mimetype,
     };
     await this.documentModel.create(docToInsert);
-    return { message: 'You document was successfully uploaded !' };
+    return { message: 'Your document was successfully uploaded !' };
   }
 
   async download(
@@ -80,7 +88,7 @@ export class DocumentService {
     const documentType: DocumentType = this.verifyDocumentType(type);
     const userId: Types.ObjectId = new Types.ObjectId(req['user'].userId);
 
-    const resultDoc: Document = await this.documentModel.findOne({
+    const resultDoc: Document | undefined = await this.documentModel.findOne({
       user: userId,
       type: documentType,
     });
@@ -90,6 +98,26 @@ export class DocumentService {
       );
     res.setHeader('Content-Type', resultDoc.mimeType);
     return new StreamableFile(resultDoc.binaryFile);
+  }
+
+  async delete(req: Request, type: string): Promise<SuccessMessage> {
+    // Verify if the type is in the array of enum DocumentType
+    const documentType: DocumentType = this.verifyDocumentType(type);
+    const userId: Types.ObjectId = new Types.ObjectId(req['user'].userId);
+
+    const resultDelete = await this.documentModel.deleteMany({
+      user: userId,
+      type: documentType,
+    });
+    if (resultDelete.deletedCount === 0)
+      throw new NotFoundException(
+        'No document was deleted because not document was uploaded for type: ' +
+          documentType,
+      );
+    return {
+      message:
+        'Your document of type' + documentType + ' was successfully deleted.',
+    };
   }
 
   /**

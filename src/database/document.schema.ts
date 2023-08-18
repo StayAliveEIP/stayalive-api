@@ -3,7 +3,7 @@ import { Types } from 'mongoose';
 
 export enum DocumentType {
   ID_CARD = 'ID_CARD',
-  AID_CERTIFICATE = 'AID_CERTIFICATE',
+  RESCUER_CERTIFICATE = 'RESCUER_CERTIFICATE',
 }
 
 export enum DocumentStatus {
