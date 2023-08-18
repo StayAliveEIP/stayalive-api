@@ -26,6 +26,8 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { DocumentInformation } from './document.dto';
 import type { Response, Request } from 'express';
 import { SuccessMessage } from '../../../dto.dto';
+import { UserId } from '../../../decorator/userid.decorator';
+import { Types } from 'mongoose';
 
 @Controller()
 @ApiTags('Document')
@@ -57,10 +59,10 @@ export class DocumentController {
     required: true,
   })
   async documentInformation(
-    @Req() req: Request,
+    @UserId() userId: Types.ObjectId,
     @Query('type') type: string,
   ): Promise<DocumentInformation> {
-    return this.service.documentInformation(req, type);
+    return this.service.documentInformation(userId, type);
   }
 
   @ApiOperation({
@@ -88,10 +90,10 @@ export class DocumentController {
   @UseGuards(JwtAuthGuard)
   @Delete('/account/document')
   async delete(
-    @Req() req: Request,
+    @UserId() userId: Types.ObjectId,
     @Query('type') type: string,
   ): Promise<SuccessMessage> {
-    return this.service.delete(req, type);
+    return this.service.delete(userId, type);
   }
 
   @ApiOperation({
@@ -134,10 +136,10 @@ export class DocumentController {
         }),
     )
     file: Array<Express.Multer.File>,
-    @Req() req: Request,
+    @UserId() userId: Types.ObjectId,
     @Query('type') type: string,
   ): Promise<SuccessMessage> {
-    return this.service.upload(req, type, file);
+    return this.service.upload(userId, type, file);
   }
 
   @ApiOperation({
@@ -165,10 +167,10 @@ export class DocumentController {
   @UseGuards(JwtAuthGuard)
   @Get('/account/document/download')
   async download(
-    @Req() req: Request,
+    @UserId() userId: Types.ObjectId,
     @Res({ passthrough: true }) res: Response,
     @Query('type') type: string,
   ): Promise<StreamableFile> {
-    return this.service.download(req, res, type);
+    return this.service.download(userId, res, type);
   }
 }

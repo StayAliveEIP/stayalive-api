@@ -26,10 +26,14 @@ export class RedisService {
       .then(() => {
         this.logger.log('Connected to Redis database');
       })
-      .catch((err) => {
+      .catch((err: any) => {
         this.logger.error(err);
         process.exit(1);
       });
+  }
+
+  public async disconnect() {
+    await this.client.disconnect();
   }
 
   /**

@@ -15,7 +15,6 @@ import {
 import { DocumentInformation } from './document.dto';
 import type { Request, Response } from 'express';
 import { SuccessMessage } from '../../../dto.dto';
-import { doc } from 'prettier';
 
 @Injectable()
 export class DocumentService {
@@ -25,12 +24,11 @@ export class DocumentService {
   ) {}
 
   async documentInformation(
-    req: Request,
+    userId: Types.ObjectId,
     type: string | undefined,
   ): Promise<DocumentInformation> {
     // Verify if the type is in the array of enum DocumentType
     const documentType: DocumentType = this.verifyDocumentType(type);
-    const userId: Types.ObjectId = new Types.ObjectId(req['user'].userId);
 
     const docInDB: Document | undefined = await this.documentModel.findOne({
       user: userId,
@@ -50,13 +48,12 @@ export class DocumentService {
   }
 
   async upload(
-    req: Request,
+    userId: Types.ObjectId,
     type: string,
     file: Array<Express.Multer.File>,
   ): Promise<SuccessMessage> {
     // Verify if the type is in the array of enum DocumentType
     const documentType: DocumentType = this.verifyDocumentType(type);
-    const userId: Types.ObjectId = new Types.ObjectId(req['user'].userId);
     const firstFile: Express.Multer.File = file[0];
 
     // Delete the other document stored in the database.
@@ -80,13 +77,12 @@ export class DocumentService {
   }
 
   async download(
-    req: Request,
+    userId: Types.ObjectId,
     res: Response,
     type: string,
   ): Promise<StreamableFile> {
     // Verify if the type is in the array of enum DocumentType
     const documentType: DocumentType = this.verifyDocumentType(type);
-    const userId: Types.ObjectId = new Types.ObjectId(req['user'].userId);
 
     const resultDoc: Document | undefined = await this.documentModel.findOne({
       user: userId,
@@ -100,10 +96,9 @@ export class DocumentService {
     return new StreamableFile(resultDoc.binaryFile);
   }
 
-  async delete(req: Request, type: string): Promise<SuccessMessage> {
+  async delete(userId: Types.ObjectId, type: string): Promise<SuccessMessage> {
     // Verify if the type is in the array of enum DocumentType
     const documentType: DocumentType = this.verifyDocumentType(type);
-    const userId: Types.ObjectId = new Types.ObjectId(req['user'].userId);
 
     const resultDelete = await this.documentModel.deleteMany({
       user: userId,

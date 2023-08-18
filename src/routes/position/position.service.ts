@@ -22,11 +22,9 @@ export class PositionService {
     @InjectModel(Rescuer.name) private rescuerModel: Model<Rescuer>,
   ) {}
 
-  async getPosition(req: Request): Promise<PositionDto> {
-    const id: string = req['user'].userId;
-    const objectId: Types.ObjectId = new Types.ObjectId(id);
+  async getPosition(id: Types.ObjectId): Promise<PositionDto> {
     const position: RescuerPosition =
-      await this.redisService.getPositionOfRescuer(objectId);
+      await this.redisService.getPositionOfRescuer(id);
     if (!position) throw new NotFoundException('Position introuvable.');
     return {
       latitude: position.lat,
@@ -34,21 +32,20 @@ export class PositionService {
     };
   }
 
-  async setPosition(req: Request, body: PositionDto): Promise<PositionDto> {
-    const id: string = req['user'].userId;
-    const objectId: Types.ObjectId = new Types.ObjectId(id);
+  async setPosition(
+    id: Types.ObjectId,
+    body: PositionDto,
+  ): Promise<PositionDto> {
     const rescuerPosition: RescuerPosition = {
       lat: body.latitude,
       lng: body.longitude,
     };
-    await this.redisService.setPositionOfRescuer(objectId, rescuerPosition);
+    await this.redisService.setPositionOfRescuer(id, rescuerPosition);
     return body;
   }
 
-  async deletePosition(req: Request): Promise<SuccessMessage> {
-    const id: string = req['user'].userId;
-    const objectId: Types.ObjectId = new Types.ObjectId(id);
-    await this.redisService.deletePositionOfRescuer(objectId);
+  async deletePosition(id: Types.ObjectId): Promise<SuccessMessage> {
+    await this.redisService.deletePositionOfRescuer(id);
     return {
       message: 'La position a été supprimée.',
     };
@@ -90,6 +87,8 @@ export class PositionService {
     );
     return nearestPosition;
   }
+
+  // TODO: Create unit test for SSE position
 
   getPositionSse(id: string): Observable<{ data: PositionDto }> {
     const objectId: Types.ObjectId = new Types.ObjectId(id);

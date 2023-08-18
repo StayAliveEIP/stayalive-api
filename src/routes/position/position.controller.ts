@@ -5,7 +5,6 @@ import {
   Get,
   Param,
   Post,
-  Request,
   Sse,
   UseGuards,
 } from '@nestjs/common';
@@ -15,6 +14,8 @@ import { PositionService } from './position.service';
 import { PositionDto, PositionWithIdDto } from './position.dto';
 import { Observable } from 'rxjs';
 import { SuccessMessage } from '../../dto.dto';
+import { UserId } from '../../decorator/userid.decorator';
+import { Types } from 'mongoose';
 
 @Controller()
 @ApiTags('Position')
@@ -29,8 +30,8 @@ export class PositionController {
     description: 'Your position as a rescuer',
     type: PositionDto,
   })
-  async getPosition(@Request() req: Request): Promise<PositionDto> {
-    return this.service.getPosition(req);
+  async getPosition(@UserId() userId: Types.ObjectId): Promise<PositionDto> {
+    return this.service.getPosition(userId);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -41,10 +42,10 @@ export class PositionController {
     type: PositionDto,
   })
   async setPosition(
-    @Request() req: Request,
+    @UserId() userId: Types.ObjectId,
     @Body() body: PositionDto,
   ): Promise<PositionDto> {
-    return this.service.setPosition(req, body);
+    return this.service.setPosition(userId, body);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -54,8 +55,10 @@ export class PositionController {
     description: 'Delete your position as a rescuer',
     type: PositionDto,
   })
-  async deletePosition(@Request() req: Request): Promise<SuccessMessage> {
-    return this.service.deletePosition(req);
+  async deletePosition(
+    @UserId() userId: Types.ObjectId,
+  ): Promise<SuccessMessage> {
+    return this.service.deletePosition(userId);
   }
 
   @UseGuards(JwtAuthGuard)
