@@ -12,12 +12,9 @@ import {
 import { JwtAuthGuard } from '../../guards/auth.guard';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PositionService } from './position.service';
-import {
-  PositionDeletedDto,
-  PositionDto,
-  PositionWithIdDto,
-} from './position.dto';
+import { PositionDto, PositionWithIdDto } from './position.dto';
 import { Observable } from 'rxjs';
+import { SuccessMessage } from '../../dto.dto';
 
 @Controller()
 @ApiTags('Position')
@@ -57,7 +54,7 @@ export class PositionController {
     description: 'Delete your position as a rescuer',
     type: PositionDto,
   })
-  async deletePosition(@Request() req: Request): Promise<PositionDeletedDto> {
+  async deletePosition(@Request() req: Request): Promise<SuccessMessage> {
     return this.service.deletePosition(req);
   }
 

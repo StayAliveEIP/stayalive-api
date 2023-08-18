@@ -38,12 +38,3 @@ export class PositionWithIdDto {
   })
   longitude: number;
 }
-
-export class PositionDeletedDto {
-  @ApiProperty({
-    type: String,
-    description: 'The message of confirmation.',
-    example: 'Votre position a été supprimée.',
-  })
-  message: string;
-}

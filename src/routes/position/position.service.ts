@@ -1,9 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import {
-  PositionDeletedDto,
-  PositionDto,
-  PositionWithIdDto,
-} from './position.dto';
+import { PositionDto, PositionWithIdDto } from './position.dto';
 import {
   RedisService,
   RescuerPosition,
@@ -17,6 +13,7 @@ import {
 import { from, interval, map, Observable, switchMap, throwError } from 'rxjs';
 import { InjectModel } from '@nestjs/mongoose';
 import { Rescuer } from '../../database/rescuer.schema';
+import { SuccessMessage } from '../../dto.dto';
 
 @Injectable()
 export class PositionService {
@@ -48,7 +45,7 @@ export class PositionService {
     return body;
   }
 
-  async deletePosition(req: Request): Promise<PositionDeletedDto> {
+  async deletePosition(req: Request): Promise<SuccessMessage> {
     const id: string = req['user'].userId;
     const objectId: Types.ObjectId = new Types.ObjectId(id);
     await this.redisService.deletePositionOfRescuer(objectId);

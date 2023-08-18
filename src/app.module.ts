@@ -11,6 +11,7 @@ import { RedisModule } from './services/redis/redis.module';
 import { RedisService } from './services/redis/redis.service';
 import { PositionModule } from './routes/position/position.module';
 import { DocumentModule } from './routes/account/document/document.module';
+import { MailJetModule } from './services/mailjet/mailjet.module';
 
 @Module({
   imports: [
@@ -20,8 +21,6 @@ import { DocumentModule } from './routes/account/document/document.module';
     MongooseModule.forRoot(process.env.MONGODB_URI, {
       dbName: process.env.MONGODB_DATABASE,
     }),
-    // Add the Redis module.
-    RedisModule,
     AuthModule,
     AccountModule,
     ForgotPasswordModule,
@@ -29,6 +28,6 @@ import { DocumentModule } from './routes/account/document/document.module';
     PositionModule,
   ],
   controllers: [AppController],
-  providers: [AppService, RedisService],
+  providers: [AppService],
 })
 export class AppModule {}
