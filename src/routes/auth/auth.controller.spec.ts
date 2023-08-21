@@ -5,7 +5,7 @@ import { AuthService } from './auth.service';
 import { LoginDTO, LoginResponse, RegisterDTO } from './auth.dto';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
-import { envValidation } from '../../validation/envValidation';
+import { envValidation } from '../../validation/env.validation';
 import { MailJetModule } from '../../services/mailjet/mailjet.module';
 import { Rescuer, RescuerSchema } from '../../database/rescuer.schema';
 

@@ -1,11 +1,12 @@
 import { Controller, Get, Request, UseGuards } from '@nestjs/common';
 import { AccountService } from './account.service';
 import { JwtAuthGuard } from '../../guards/auth.guard';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AccountIndexResponse } from './account.dto';
 
 @Controller()
 @ApiTags('Account')
+@ApiBearerAuth()
 export class AccountController {
   constructor(private readonly service: AccountService) {}
 
