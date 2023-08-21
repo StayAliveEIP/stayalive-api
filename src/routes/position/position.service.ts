@@ -121,4 +121,8 @@ export class PositionService {
       }),
     );
   }
+
+  disconnectRedis() {
+    this.redisService.disconnect();
+  }
 }

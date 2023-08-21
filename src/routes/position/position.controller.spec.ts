@@ -10,13 +10,14 @@ import { RedisModule } from '../../services/redis/redis.module';
 import { PositionDto, PositionWithIdDto } from './position.dto';
 import { NotFoundException } from '@nestjs/common';
 import { SuccessMessage } from '../../dto.dto';
+import { RedisService } from '../../services/redis/redis.service';
 
 describe('PositionController', () => {
   let positionController: PositionController;
 
   // TODO: Fix not disconnecting redis
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const app: TestingModule = await Test.createTestingModule({
       imports: [
         // Set up the environment variables.
@@ -42,6 +43,7 @@ describe('PositionController', () => {
 
   afterAll(async () => {
     await mongoose.disconnect();
+    positionController.disconnectRedis();
   });
 
   describe('Test to set the position of rescuer and get it', () => {

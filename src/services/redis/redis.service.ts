@@ -1,6 +1,10 @@
 import { createClient } from 'redis';
 import { Injectable, Logger } from '@nestjs/common';
 import { Types } from 'mongoose';
+import { async } from 'rxjs';
+import Redis from 'ioredis';
+import type RedisClientType from 'ioredis';
+import * as process from 'process';
 
 export interface RescuerPosition {
   lat: number;
@@ -15,25 +19,14 @@ export interface RescuerPositionWithId {
 @Injectable()
 export class RedisService {
   private readonly logger: Logger = new Logger(RedisService.name);
-  private readonly client;
+  private readonly client: RedisClientType;
 
   constructor() {
-    this.client = createClient({
-      url: process.env.REDIS_URL,
-    });
-    this.client
-      .connect()
-      .then(() => {
-        this.logger.log('Connected to Redis database');
-      })
-      .catch((err: any) => {
-        this.logger.error(err);
-        process.exit(1);
-      });
+    this.client = new Redis(process.env.REDIS_URL);
   }
 
-  public async disconnect() {
-    await this.client.disconnect();
+  public disconnect() {
+    this.client.disconnect();
   }
 
   /**
