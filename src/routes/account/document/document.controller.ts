@@ -9,7 +9,6 @@ import {
   UseGuards,
   UseInterceptors,
   Res,
-  Req,
   StreamableFile,
   Delete,
 } from '@nestjs/common';
@@ -24,7 +23,7 @@ import { DocumentService } from './document.service';
 import { JwtAuthGuard } from '../../../guards/auth.guard';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { DocumentInformation } from './document.dto';
-import type { Response, Request } from 'express';
+import type { Response } from 'express';
 import { SuccessMessage } from '../../../dto.dto';
 import { UserId } from '../../../decorator/userid.decorator';
 import { Types } from 'mongoose';
