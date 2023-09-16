@@ -10,7 +10,10 @@ export class StatusService {
     @InjectModel(Rescuer.name) private rescuerModel: Model<Rescuer>,
   ) {}
 
-  async setStatus(userId: string, status: string): Promise<void> {
+  async setStatus(
+    userId: string,
+    status: string,
+  ): Promise<{ message: string }> {
     const user: Rescuer = await this.rescuerModel.findById(
       new Types.ObjectId(userId),
     );
@@ -22,11 +25,13 @@ export class StatusService {
         { _id: new Types.ObjectId(userId) },
         { available: true },
       );
+      return { message: 'Vous êtes disponible' };
     } else if (status == 'NOT_AVAILABLE') {
       this.rescuerModel.updateOne(
         { _id: new Types.ObjectId(userId) },
         { available: false },
       );
+      return { message: "Vous n'êtes pas disponible" };
     } else {
       throw new HttpException("Le type de status n'existe pas", 400);
     }
