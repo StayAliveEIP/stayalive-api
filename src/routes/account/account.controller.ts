@@ -1,8 +1,15 @@
-import { Controller, Get, Request, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { AccountService } from './account.service';
 import { JwtAuthGuard } from '../../guards/auth.guard';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { AccountIndexResponse } from './account.dto';
+import { AccountIndexResponse, ChangeInfosRequest } from './account.dto';
 
 @Controller()
 @ApiTags('Account')
@@ -18,5 +25,15 @@ export class AccountController {
   })
   async index(@Request() req: Request): Promise<AccountIndexResponse> {
     return this.service.index(req);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/account/infos')
+  @ApiResponse({
+    status: 200,
+    description: 'Change your account infos ( firstname, lastname )',
+  })
+  async changeInfos(@Request() req: Request, @Body() body: ChangeInfosRequest) {
+    return this.service.changeInfos(body.firstname, body.lastname, req);
   }
 }

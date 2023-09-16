@@ -36,4 +36,15 @@ export class AccountService {
       },
     };
   }
+
+  async changeInfos(firstName: string, lastName: string, req: Request) {
+    const userId: string = req['user'].userId;
+    const user = await this.rescuerModel.findById(new Types.ObjectId(userId));
+    if (!user) {
+      throw new InternalServerErrorException('Utilisateur introuvable.');
+    }
+    user.firstname = firstName;
+    user.lastname = lastName;
+    await user.save();
+  }
 }
