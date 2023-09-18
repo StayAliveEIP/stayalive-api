@@ -9,7 +9,8 @@ import { AccountModule } from './routes/account/account.module';
 import { ForgotPasswordModule } from './routes/account/forgotPassword/forgotPassword.module';
 import { RedisModule } from './services/redis/redis.module';
 import { RedisService } from './services/redis/redis.service';
-
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 @Module({
   imports: [
     // Set up the environment variables.
@@ -20,6 +21,9 @@ import { RedisService } from './services/redis/redis.service';
     }),
     // Add the Redis module.
     RedisModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'client'),
+    }),
     AuthModule,
     AccountModule,
     ForgotPasswordModule,

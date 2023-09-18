@@ -1,16 +1,12 @@
 import {
   Body,
   Button,
-  Column,
   Container,
   Head,
   Heading,
-  Hr,
   Html,
   Img,
-  Link,
   Preview,
-  Row,
   Section,
   Tailwind,
   Text,
@@ -23,10 +19,6 @@ interface VercelInviteUserEmailProps {
   userImage?: string;
   inviteLink?: string;
 }
-
-const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : '';
 
 export const VerifyAccountEmail = ({
   username = 'Bastos',
