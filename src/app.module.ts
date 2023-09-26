@@ -11,6 +11,7 @@ import { RedisModule } from './services/redis/redis.module';
 import { RedisService } from './services/redis/redis.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import {EmergencyModule} from "./routes/emergency/emergency.module";
 @Module({
   imports: [
     // Set up the environment variables.
@@ -27,6 +28,7 @@ import { join } from 'path';
     AuthModule,
     AccountModule,
     ForgotPasswordModule,
+    EmergencyModule,
   ],
   controllers: [AppController],
   providers: [AppService, RedisService],

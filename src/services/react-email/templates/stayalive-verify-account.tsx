@@ -35,7 +35,7 @@ export const VerifyAccountEmail = ({
           <Container className="border border-solid border-[#eaeaea] rounded my-[40px] mx-auto p-[20px] w-[465px]">
             <Section className="mt-[32px]">
               <Img
-                src={`${baseUrl}/static/stayalive-logo.png`}
+                src={`api.stayalive.fr:3000/static/stayalive-logo.png`}
                 width="80"
                 height="80"
                 alt="StayAlive"

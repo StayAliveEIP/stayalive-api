@@ -44,8 +44,8 @@ export class AccountController {
   @Get('/hello')
   async hello() {
     this.mail.sendVerifyAccountEmail(
-      'florian.damiot@gmail.com',
-      'Florian',
+      'bastiencantet@outlook.fr',
+      'Bastos',
       'https://stayalive.fr',
     );
     return 'ok';

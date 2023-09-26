@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Post,
   Put,
   Query,
@@ -9,7 +10,9 @@ import {
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { EmergencyService } from './emergency.service';
 import {
+  assignEmergencyDto,
   deleteEmergencyDto,
+  getEmergencyOfRescuerDto,
   modifyEmergencyDto,
   newEmergencyDto,
 } from './emergency.dto';
@@ -27,7 +30,7 @@ export class EmergencyController {
     type: newEmergencyDto,
   })
   async createEmergency(@Body() body: newEmergencyDto) {
-    await this.service.createEmergency(body);
+    return await this.service.createEmergency(body);
   }
 
   @Put('/emergency')
@@ -40,7 +43,7 @@ export class EmergencyController {
   async modifyEmergency(@Body() body: modifyEmergencyDto) {
     const id = body.id;
     delete body.id;
-    await this.service.modifyEmergency(body, id);
+    return await this.service.modifyEmergency(body, id);
   }
 
   @Delete('/emergency')
@@ -51,6 +54,26 @@ export class EmergencyController {
     type: deleteEmergencyDto,
   })
   async deleteEmergency(@Query() query: deleteEmergencyDto) {
-    await this.service.deleteEmergency(query.id);
+    return await this.service.deleteEmergency(query.id);
+  }
+
+  @Get('/emergency/rescuer')
+  async getAllEmergencyOfRescuer(@Query() query: getEmergencyOfRescuerDto) {
+    return await this.service.getAllEmergencyOfRescuer(query.id);
+  }
+
+  @Get('/emergency/rescuer/actual')
+  async getActualEmergencyOfRescuer(@Query() query: getEmergencyOfRescuerDto) {
+    return await this.service.getActualEmergencyOfRescuer(query.id);
+  }
+
+  @Post('/emergency/rescuer/cancel')
+  async cancelEmergencyOfRescuer(@Body() query: assignEmergencyDto) {
+    return await this.service.cancelEmergencyofRescuer(query.id, query.rescuer);
+  }
+
+  @Post('/emergency/rescuer/assign')
+  async assignEmergencyOfRescuer(@Body() query: assignEmergencyDto) {
+    return await this.service.assignEmergency(query.id, query.rescuer);
   }
 }
