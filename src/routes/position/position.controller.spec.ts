@@ -10,7 +10,6 @@ import { RedisModule } from '../../services/redis/redis.module';
 import { PositionDto, PositionWithIdDto } from './position.dto';
 import { NotFoundException } from '@nestjs/common';
 import { SuccessMessage } from '../../dto.dto';
-import { RedisService } from '../../services/redis/redis.service';
 
 describe('PositionController', () => {
   let positionController: PositionController;

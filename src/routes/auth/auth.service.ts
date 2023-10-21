@@ -81,7 +81,7 @@ export class AuthService {
     }
     const token = generateToken(user._id);
     return {
-      accessToken: 'Baerer ' + token,
+      accessToken: 'Bearer ' + token,
     };
   }
 }
