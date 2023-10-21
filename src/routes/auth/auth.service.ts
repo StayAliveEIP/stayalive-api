@@ -52,6 +52,7 @@ export class AuthService {
         lastTokenSent: null,
         lastChange: null,
       },
+      available: false,
     };
     await this.rescuerModel.create(rescuer);
     return {

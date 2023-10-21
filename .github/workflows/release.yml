@@ -23,11 +23,11 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
       - name: Build and push Docker images
-        uses: docker/build-push-action@v3.2.0
+        uses: docker/build-push-action@v4.0.0
         with:
           context: .
-          dockerfile: Dockerfile.prod
-          tags: stayalive/stayalive-api:${{ env.PACKAGE_VERSION }}, stayalive/stayalive-api:latest
+          file: ./Dockerfile.prod
+          tags: bastiencantet/stayalive-api:${{ env.PACKAGE_VERSION }}, bastiencantet/stayalive-api:latest
           push: true
       - name: Create Release
         id: create_release

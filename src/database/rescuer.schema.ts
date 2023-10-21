@@ -77,6 +77,9 @@ export class Rescuer {
     type: Password,
   })
   password: Password;
+
+  @Prop({ required: false, default: false })
+  available: boolean;
 }
 
 export const RescuerSchema = SchemaFactory.createForClass(Rescuer);
