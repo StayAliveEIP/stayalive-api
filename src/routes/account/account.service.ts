@@ -46,5 +46,9 @@ export class AccountService {
     user.firstname = firstName;
     user.lastname = lastName;
     await user.save();
+    return {
+      message: 'Les informations ont bien été modifiées.',
+      user: user,
+    };
   }
 }

@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Types } from 'mongoose';
+import {IsNotEmpty, IsString} from 'class-validator';
 
 export class AccountIndexResponse {
   @ApiProperty({
@@ -64,8 +65,12 @@ export class ChangeInfosRequest {
     description: 'The firstname of the rescuer.',
     example: 'John',
   })
+  @IsString()
+  @IsNotEmpty()
   firstname: string;
 
+  @IsString()
+  @IsNotEmpty()
   @ApiProperty({
     type: String,
     description: 'The lastname of the rescuer.',
