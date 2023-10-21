@@ -43,7 +43,7 @@ export class LoginDTO {
 
 export class LoginResponse {
   @ApiProperty({
-    example: 'Baerer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+    example: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
     description: 'The token of the rescuer',
   })
   accessToken: string;

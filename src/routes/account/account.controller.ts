@@ -14,6 +14,7 @@ import { ReactEmailService } from "../../services/react-email/react-email.servic
 
 @Controller()
 @ApiTags('Account')
+@ApiBearerAuth()
 export class AccountController {
   constructor(
     private readonly service: AccountService,
