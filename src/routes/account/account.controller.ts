@@ -8,9 +8,9 @@ import {
 } from '@nestjs/common';
 import { AccountService } from './account.service';
 import { JwtAuthGuard } from '../../guards/auth.guard';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AccountIndexResponse, ChangeInfosRequest } from './account.dto';
-import { ReactEmailService } from "../../services/react-email/react-email.service";
+import { ReactEmailService } from '../../services/react-email/react-email.service';
 
 @Controller()
 @ApiTags('Account')
