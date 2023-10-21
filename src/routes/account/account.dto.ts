@@ -57,3 +57,19 @@ export class AccountIndexResponse {
     verified: boolean;
   };
 }
+
+export class ChangeInfosRequest {
+  @ApiProperty({
+    type: String,
+    description: 'The firstname of the rescuer.',
+    example: 'John',
+  })
+  firstname: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'The lastname of the rescuer.',
+    example: 'Doe',
+  })
+  lastname: string;
+}

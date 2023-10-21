@@ -16,17 +16,16 @@ export class Call {
     x: string;
     y: string;
   };
-  @Prop({ type: Types.ObjectId, required: true })
+  @Prop({ type: Types.ObjectId, required: false })
   for: string;
-  @Prop({ required: true })
+  @Prop({ required: true, default: Date.now })
   date: Date;
   @Prop({ required: true })
   description: string;
-  @Prop({
-    type: { enum: ['cancelled', 'rejected', 'pending', 'finished'] },
-    required: true,
-  })
+  @Prop({ required: false, default: 'PENDING' })
   status: string;
+  @Prop({ required: false })
+  assignedTo?: string;
 }
 
 export const CallSchema = SchemaFactory.createForClass(Call);

@@ -56,7 +56,7 @@ export class ForgotPasswordService {
     );
     const sendEmailParam: ISendEmailParam = {
       from: {
-        email: 'noreply@stayalive.tech',
+        email: 'noreply@stayalive.fr',
         name: 'StayAlive',
       },
       to: {
