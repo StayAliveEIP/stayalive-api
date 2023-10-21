@@ -11,7 +11,7 @@ import {
   cryptPassword,
   generateToken,
   verifyPassword,
-} from '../../utils/crypt';
+} from '../../utils/crypt.utils';
 import { Rescuer } from '../../database/rescuer.schema';
 
 @Injectable()
@@ -82,7 +82,7 @@ export class AuthService {
     }
     const token = generateToken(user._id);
     return {
-      accessToken: 'Baerer ' + token,
+      accessToken: 'Bearer ' + token,
     };
   }
 }

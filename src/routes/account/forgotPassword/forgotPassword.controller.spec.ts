@@ -1,7 +1,7 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { MockFactory, Test, TestingModule } from '@nestjs/testing';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
-import { envValidation } from '../../../validation/envValidation';
+import { envValidation } from '../../../validation/env.validation';
 import mongoose from 'mongoose';
 import { MailJetModule } from '../../../services/mailjet/mailjet.module';
 import { AuthController } from '../../auth/auth.controller';
@@ -15,6 +15,7 @@ import {
 } from './forgotPassword.dto';
 import { NotFoundException } from '@nestjs/common';
 import { Rescuer, RescuerSchema } from '../../../database/rescuer.schema';
+import { JwtAuthGuard } from '../../../guards/auth.guard';
 
 describe('ForgotPasswordController', () => {
   let authController: AuthController;

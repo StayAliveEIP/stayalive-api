@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { envValidation } from './validation/envValidation';
+import { envValidation } from './validation/env.validation';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './routes/auth/auth.module';
@@ -12,6 +12,11 @@ import { RedisService } from './services/redis/redis.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import {EmergencyModule} from "./routes/emergency/emergency.module";
+import { PositionModule } from './routes/position/position.module';
+import { DocumentModule } from './routes/account/document/document.module';
+import { MailJetModule } from './services/mailjet/mailjet.module';
+
+
 @Module({
   imports: [
     // Set up the environment variables.
@@ -28,9 +33,10 @@ import {EmergencyModule} from "./routes/emergency/emergency.module";
     AuthModule,
     AccountModule,
     ForgotPasswordModule,
-    EmergencyModule,
+    DocumentModule,
+    PositionModule,
   ],
   controllers: [AppController],
-  providers: [AppService, RedisService],
+  providers: [AppService],
 })
 export class AppModule {}

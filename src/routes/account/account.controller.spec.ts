@@ -2,15 +2,15 @@ import mongoose, { Types } from 'mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
-import { envValidation } from '../../validation/envValidation';
+import { envValidation } from '../../validation/env.validation';
 import { MailJetModule } from '../../services/mailjet/mailjet.module';
 import { Rescuer, RescuerSchema } from '../../database/rescuer.schema';
 import { AuthService } from '../auth/auth.service';
 import { LoginDTO, LoginResponse, RegisterDTO } from '../auth/auth.dto';
 import { AuthController } from '../auth/auth.controller';
 import { AccountController } from './account.controller';
-import { verifyToken } from '../../utils/crypt';
 import { AccountService } from './account.service';
+import { verifyToken } from '../../utils/crypt.utils';
 
 describe('AuthController', () => {
   let appController: AuthController;

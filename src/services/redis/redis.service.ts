@@ -1,30 +1,32 @@
 import { createClient } from 'redis';
 import { Injectable, Logger } from '@nestjs/common';
 import { Types } from 'mongoose';
+import { async } from 'rxjs';
+import Redis from 'ioredis';
+import type RedisClientType from 'ioredis';
+import * as process from 'process';
 
 export interface RescuerPosition {
   lat: number;
   lng: number;
 }
 
+export interface RescuerPositionWithId {
+  id: Types.ObjectId;
+  position: RescuerPosition;
+}
+
 @Injectable()
 export class RedisService {
   private readonly logger: Logger = new Logger(RedisService.name);
-  private readonly client;
+  private readonly client: RedisClientType;
 
   constructor() {
-    this.client = createClient({
-      url: process.env.REDIS_URL,
-    });
-    this.client
-      .connect()
-      .then(() => {
-        this.logger.log('Connected to Redis database');
-      })
-      .catch((err) => {
-        this.logger.error(err);
-        process.exit(1);
-      });
+    this.client = new Redis(process.env.REDIS_URL);
+  }
+
+  public disconnect() {
+    this.client.disconnect();
   }
 
   /**
@@ -38,7 +40,8 @@ export class RedisService {
   ) {
     if (!rescuerId) throw Error('Invalid rescuer id');
     if (!position) throw Error('Invalid position');
-    await this.client.set(rescuerId.toString(), JSON.stringify(position));
+    const positionKey: string = this.getPositionKey(rescuerId);
+    await this.client.set(positionKey, JSON.stringify(position));
   }
 
   /**
@@ -47,7 +50,8 @@ export class RedisService {
    */
   public async deletePositionOfRescuer(rescuerId: Types.ObjectId) {
     if (!rescuerId) throw Error('Invalid rescuer id');
-    await this.client.client.del(rescuerId.toString());
+    const positionKey: string = this.getPositionKey(rescuerId);
+    await this.client.del(positionKey);
   }
 
   /**
@@ -58,8 +62,29 @@ export class RedisService {
     rescuerId: Types.ObjectId,
   ): Promise<RescuerPosition | null> {
     if (!rescuerId) throw Error('Invalid rescuer id');
-    const position = await this.client.get(rescuerId.toString());
+    const positionKey: string = this.getPositionKey(rescuerId);
+    const position = await this.client.get(positionKey);
     if (!position) return null;
     return JSON.parse(position);
+  }
+
+  public async getAllPositions(): Promise<RescuerPositionWithId[]> {
+    const keys: string[] = await this.client.keys('stayAlive:position:*');
+    const positions: RescuerPositionWithId[] = [];
+    for (const key of keys) {
+      const id: string = key.split(':')[2];
+      const position: RescuerPosition = await this.getPositionOfRescuer(
+        new Types.ObjectId(id),
+      );
+      positions.push({
+        id: new Types.ObjectId(id),
+        position,
+      });
+    }
+    return positions;
+  }
+
+  private getPositionKey(rescuerId: Types.ObjectId): string {
+    return 'stayAlive:position:' + rescuerId.toString();
   }
 }
