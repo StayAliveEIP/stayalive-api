@@ -39,7 +39,11 @@ export class AccountController {
     description: 'Change your account infos ( firstname, lastname )',
   })
   async changeInfos(@Request() req: Request, @Body() body: ChangeInfosRequest) {
-    const info  = await this.service.changeInfos(body.firstname, body.lastname, req);
+    const info = await this.service.changeInfos(
+      body.firstname,
+      body.lastname,
+      req,
+    );
     if (info.message) {
       this.mail.sendVerifyAccountEmail(
         info.user.email.email,
@@ -47,15 +51,5 @@ export class AccountController {
         'https://stayalive.fr',
       );
     }
-  }
-
-  @Get('/hello')
-  async hello() {
-    this.mail.sendVerifyAccountEmail(
-      'bastiencantet@outlook.fr',
-      'Bastos',
-      'https://stayalive.fr',
-    );
-    return 'ok';
   }
 }
