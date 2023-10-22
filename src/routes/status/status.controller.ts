@@ -3,6 +3,9 @@ import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { StatusService } from './status.service';
 import { JwtAuthGuard } from '../../guards/auth.guard';
 import { StatusDto } from './status.dto';
+import {UserId} from "../../decorator/userid.decorator";
+import {Types} from "mongoose";
+import ObjectId = module
 
 @Controller()
 @ApiTags('Status')
@@ -11,8 +14,8 @@ export class StatusController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/status')
-  async getStatus(@Req() req) {
-    return this.status.getStatus(req.userId);
+  async getStatus(@UserId() userId) {
+    return this.status.getStatus(userId);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -22,7 +25,7 @@ export class StatusController {
     description: 'The status was changed.',
   })
   @Post('/status')
-  async setStatus(@Req() req, @Body() body: StatusDto) {
-    return this.status.setStatus(req.userId, body.status);
+  async setStatus(@UserId() userId, @Body() body: StatusDto) {
+    return this.status.setStatus(userId, body.status);
   }
 }
