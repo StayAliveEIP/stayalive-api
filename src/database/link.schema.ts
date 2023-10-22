@@ -1,5 +1,6 @@
-import { Prop, Schema } from '@nestjs/mongoose';
+import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
 import { Types } from 'mongoose';
+import {Rescuer} from "./rescuer.schema";
 
 @Schema({ versionKey: false, collection: 'links' })
 export class Link {
@@ -15,3 +16,5 @@ export class Link {
   @Prop({ required: false, default: null })
   expiresAt: Date | null;
 }
+
+export const LinkSchema = SchemaFactory.createForClass(Link);
