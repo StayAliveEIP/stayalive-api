@@ -1,7 +1,7 @@
 import { PassportStrategy } from '@nestjs/passport';
 import Strategy from 'passport-magic-login';
 import { Injectable } from '@nestjs/common';
-import {MagicLoginService} from "./magiclogin.service";
+import { MagicLoginService } from './magiclogin.service';
 
 @Injectable()
 export class MagicLoginStrategy extends PassportStrategy(Strategy) {

@@ -47,6 +47,7 @@
     "nodemailer-mailjet-transport": "^1.0.4",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
+    "passport-magic-login": "^1.2.2",
     "react": "^18.2.0",
     "react-email": "^1.9.4",
     "redis": "^4.6.6",
