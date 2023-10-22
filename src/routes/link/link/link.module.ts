@@ -3,8 +3,7 @@ import { LinkController } from './link.controller';
 import { LinkService } from './link.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Rescuer, RescuerSchema } from '../../../database/rescuer.schema';
-import { LinkSchema } from '../../../database/link.schema';
-import { Link } from '@react-email/components';
+import {Link, LinkSchema} from '../../../database/link.schema';
 
 @Module({
   imports: [

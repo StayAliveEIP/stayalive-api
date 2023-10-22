@@ -1,6 +1,5 @@
 import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
 import { Types } from 'mongoose';
-import {Rescuer} from "./rescuer.schema";
 
 @Schema({ versionKey: false, collection: 'links' })
 export class Link {

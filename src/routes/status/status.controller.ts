@@ -4,8 +4,6 @@ import { StatusService } from './status.service';
 import { JwtAuthGuard } from '../../guards/auth.guard';
 import { StatusDto } from './status.dto';
 import {UserId} from "../../decorator/userid.decorator";
-import {Types} from "mongoose";
-import ObjectId = module
 
 @Controller()
 @ApiTags('Status')
