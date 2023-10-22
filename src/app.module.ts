@@ -15,6 +15,7 @@ import {EmergencyModule} from "./routes/emergency/emergency.module";
 import { PositionModule } from './routes/position/position.module';
 import { DocumentModule } from './routes/account/document/document.module';
 import { MailJetModule } from './services/mailjet/mailjet.module';
+import {StatusModule} from "./routes/status/status.module";
 
 
 @Module({
@@ -32,6 +33,8 @@ import { MailJetModule } from './services/mailjet/mailjet.module';
     }),
     AuthModule,
     AccountModule,
+    StatusModule,
+    EmergencyModule,
     ForgotPasswordModule,
     DocumentModule,
     PositionModule,
