@@ -32,10 +32,19 @@ export class LinkService {
   }
 
   async getLink(id: string) {
-    const link: Link = await this.linkModel.findById(id);
+    const link: Link = await this.linkModel.findById(new Types.ObjectId(id));
+    console.log(link);
     if (!link) {
       throw new HttpException('Link not found', 404);
     }
     return link;
+  }
+
+  async redirectLink(id: string, res) {
+    const link = await this.getLink(id);
+    if (link.expiresAt && link.expiresAt < new Date()) {
+      throw new HttpException('Link expired', 410);
+    }
+    res.redirect(link.url);
   }
 }
