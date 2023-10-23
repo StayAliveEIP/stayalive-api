@@ -6,10 +6,7 @@ import { Link } from '../../../database/link.schema';
 
 @Injectable()
 export class LinkService {
-  constructor(
-    @InjectModel(Link.name) private linkModel: Model<Link>,
-    @InjectModel(Rescuer.name) private rescuerModel: Model<Rescuer>,
-  ) {}
+  constructor(@InjectModel(Link.name) private linkModel: Model<Link>) {}
 
   async createLink(link: string, expiration: Date | null) {
     const newLink: Link = {
@@ -25,10 +22,13 @@ export class LinkService {
   }
 
   async deleteLink(id: string) {
-    await this.linkModel.findByIdAndDelete(id);
     if (!this.linkModel.findById(id)) {
       throw new HttpException('Link not found', 404);
     }
+    await this.linkModel.findByIdAndDelete(id);
+    return {
+      message: 'Le lien a bien été supprimé.',
+    };
   }
 
   async getLink(id: string) {

@@ -1,13 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigModule } from '@nestjs/config';
-import { envValidation } from '../../validation/envValidation';
+import { envValidation } from '../../validation/env.validation';
 import { getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { Rescuer, RescuerSchema } from '../../database/rescuer.schema';
-import { AuthController } from '../auth/auth.controller';
-import { AuthService } from '../auth/auth.service';
 import { StatusController } from './status.controller';
 import { StatusService } from './status.service';
-import mongoose, { Model } from 'mongoose';
+import mongoose, { Model, Types } from 'mongoose';
 
 describe('StatusController', () => {
   let statutController: StatusController;
@@ -42,29 +40,20 @@ describe('StatusController', () => {
     await mongoose.disconnect();
   });
 
-  describe('setStatus', () => {
+  describe('setStatus and getStatus', async () => {
+    const randomObjectId = new Types.ObjectId();
+    const rescuer = await rescuerModel.findOne({ firstname: 'test' });
+    const rescuerId = rescuer._id;
     it('should return void', async () => {
-      const rescuer = await rescuerModel.findOne({ firstname: 'test' });
-      const rescuerId = rescuer._id;
-      const result = await statutController.setStatus(
-        {
-          userId: rescuerId,
-        },
-        {
-          status: 'AVAILABLE',
-        },
-      );
+
+      const result = await statutController.setStatus(rescuerId, {
+        status: 'AVAILABLE',
+      });
       expect(result).toBe(undefined);
     });
-  });
 
-  describe('getStatus', () => {
     it('should return status', async () => {
-      const rescuer = await rescuerModel.findOne({ firstname: 'test' });
-      const rescuerId = rescuer._id;
-      const result = await statutController.getStatus({
-        userId: rescuerId,
-      });
+      const result = await statutController.getStatus(rescuerId);
       expect(result).toHaveProperty('status');
     });
   });

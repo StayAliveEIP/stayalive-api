@@ -3,7 +3,7 @@ import { LinkController } from './link.controller';
 import { LinkService } from './link.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Rescuer, RescuerSchema } from '../../../database/rescuer.schema';
-import {Link, LinkSchema} from '../../../database/link.schema';
+import { Link, LinkSchema } from '../../../database/link.schema';
 
 @Module({
   imports: [

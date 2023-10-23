@@ -4,6 +4,7 @@ import { StatusService } from './status.service';
 import { JwtAuthGuard } from '../../guards/auth.guard';
 import { StatusDto } from './status.dto';
 import {UserId} from "../../decorator/userid.decorator";
+import {Types} from "mongoose";
 
 @Controller()
 @ApiTags('Status')
@@ -12,7 +13,7 @@ export class StatusController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/status')
-  async getStatus(@UserId() userId) {
+  async getStatus(@UserId() userId: Types.ObjectId) {
     return this.status.getStatus(userId);
   }
 
@@ -23,7 +24,7 @@ export class StatusController {
     description: 'The status was changed.',
   })
   @Post('/status')
-  async setStatus(@UserId() userId, @Body() body: StatusDto) {
+  async setStatus(@UserId() userId: Types.ObjectId, @Body() body: StatusDto) {
     return this.status.setStatus(userId, body.status);
   }
 }

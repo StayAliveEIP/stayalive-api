@@ -11,7 +11,7 @@ export class StatusService {
   ) {}
 
   async setStatus(
-    userId: string,
+    userId: Types.ObjectId,
     status: string,
   ): Promise<{ message: string }> {
     const user: Rescuer = await this.rescuerModel.findById(
@@ -37,7 +37,7 @@ export class StatusService {
     }
   }
 
-  async getStatus(userId: string): Promise<{ status: string }> {
+  async getStatus(userId: Types.ObjectId): Promise<{ status: string }> {
     const user: Rescuer = await this.rescuerModel.findById(
       new Types.ObjectId(userId),
     );
