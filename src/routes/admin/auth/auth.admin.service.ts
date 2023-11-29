@@ -28,6 +28,11 @@ export class AuthAdminService {
     if (!validPassword) {
       throw new UnauthorizedException('Le mot de passe est incorrect.');
     }
+    // Validate the email if the admin was not logged in before
+    if (!admin.email.verified) {
+      admin.email.verified = true;
+      await admin.save();
+    }
     // Generate a new token
     const token = generateToken(admin.id);
     return {

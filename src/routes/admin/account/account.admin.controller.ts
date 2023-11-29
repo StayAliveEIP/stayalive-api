@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -11,6 +11,8 @@ import { SuccessMessage } from '../../../dto.dto';
 import { InfoResponse, NewRequest } from './account.admin.dto';
 import { UserId } from '../../../decorator/userid.decorator';
 import { Types } from 'mongoose';
+import { async } from 'rxjs';
+import { AdminAuthGuard } from '../../../guards/auth.guard';
 
 @Controller('/admin')
 @ApiTags('Account')
@@ -28,6 +30,7 @@ export class AccountAdminController {
       'Return all the information about the account, the email is verified only if the admin was logged in before.',
     deprecated: true,
   })
+  @UseGuards(AdminAuthGuard)
   async index(@UserId() userId: Types.ObjectId): Promise<InfoResponse> {
     return this.service.info(userId);
   }

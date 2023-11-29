@@ -8,7 +8,6 @@ import {
 import { ReactEmailService } from '../../../services/react-email/react-email.service';
 import { LoginAdminRequest, LoginAdminResponse } from './auth.admin.dto';
 import { AuthAdminService } from './auth.admin.service';
-import { async } from 'rxjs';
 
 @Controller('/admin')
 @ApiTags('Auth')
