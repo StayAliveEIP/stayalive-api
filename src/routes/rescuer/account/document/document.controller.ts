@@ -20,7 +20,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { DocumentService } from './document.service';
-import { JwtAuthGuard } from '../../../../guards/auth.guard';
+import { RescuerAuthGuard } from '../../../../guards/auth.guard';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { DocumentInformation } from './document.dto';
 import type { Response } from 'express';
@@ -28,13 +28,13 @@ import { SuccessMessage } from '../../../../dto.dto';
 import { UserId } from '../../../../decorator/userid.decorator';
 import { Types } from 'mongoose';
 
-@Controller()
+@Controller('/rescuer')
 @ApiTags('Document')
 @ApiBearerAuth()
 export class DocumentController {
   constructor(private readonly service: DocumentService) {}
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(RescuerAuthGuard)
   @Get('/account/document')
   @ApiOperation({
     summary:
@@ -86,7 +86,7 @@ export class DocumentController {
     type: String,
     required: true,
   })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(RescuerAuthGuard)
   @Delete('/account/document')
   async delete(
     @UserId() userId: Types.ObjectId,
@@ -118,7 +118,7 @@ export class DocumentController {
     type: String,
     required: true,
   })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(RescuerAuthGuard)
   @Post('/account/document/upload')
   @UseInterceptors(FilesInterceptor('file', 1))
   async upload(
@@ -163,7 +163,7 @@ export class DocumentController {
     type: String,
     required: true,
   })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(RescuerAuthGuard)
   @Get('/account/document/download')
   async download(
     @UserId() userId: Types.ObjectId,

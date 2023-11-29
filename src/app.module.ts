@@ -15,6 +15,8 @@ import { PositionModule } from './routes/rescuer/position/position.module';
 import { DocumentModule } from './routes/rescuer/account/document/document.module';
 import { StatusModule } from './routes/rescuer/status/status.module';
 import { LinkModule } from './routes/rescuer/link/link/link.module';
+import { AccountAdminModule } from './routes/admin/account/account.admin.module';
+import { AuthAdminModule } from './routes/admin/auth/auth.admin.module';
 
 @Module({
   imports: [
@@ -29,6 +31,7 @@ import { LinkModule } from './routes/rescuer/link/link/link.module';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'client'),
     }),
+    // Rescuer modules.
     AuthModule,
     AccountModule,
     StatusModule,
@@ -37,6 +40,9 @@ import { LinkModule } from './routes/rescuer/link/link/link.module';
     DocumentModule,
     PositionModule,
     LinkModule,
+    // Admin modules.
+    AuthAdminModule,
+    AccountAdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -7,7 +7,7 @@ import {
   ForgotPasswordResetDTO,
 } from './forgotPassword.dto';
 
-@Controller()
+@Controller('/rescuer')
 @ApiTags('Forgot Password')
 export class ForgotPasswordController {
   constructor(private readonly service: ForgotPasswordService) {}

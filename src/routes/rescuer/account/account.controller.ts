@@ -7,12 +7,12 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AccountService } from './account.service';
-import { JwtAuthGuard } from '../../../guards/auth.guard';
+import { RescuerAuthGuard } from '../../../guards/auth.guard';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AccountIndexResponse, ChangeInfosRequest } from './account.dto';
 import { ReactEmailService } from '../../../services/react-email/react-email.service';
 
-@Controller()
+@Controller('/rescuer')
 @ApiTags('Account')
 @ApiBearerAuth()
 export class AccountController {
@@ -21,7 +21,7 @@ export class AccountController {
     private mail: ReactEmailService,
   ) {}
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(RescuerAuthGuard)
   @Get('/account')
   @ApiResponse({
     status: 200,
@@ -32,7 +32,7 @@ export class AccountController {
     return this.service.index(req);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(RescuerAuthGuard)
   @Post('/account/infos')
   @ApiResponse({
     status: 200,

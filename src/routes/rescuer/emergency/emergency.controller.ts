@@ -17,7 +17,7 @@ import {
   newEmergencyDto,
 } from './emergency.dto';
 
-@Controller()
+@Controller('/rescuer')
 @ApiTags('Emergency')
 export class EmergencyController {
   constructor(private readonly service: EmergencyService) {}

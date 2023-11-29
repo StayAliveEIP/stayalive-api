@@ -1,23 +1,23 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { StatusService } from './status.service';
-import { JwtAuthGuard } from '../../../guards/auth.guard';
+import { RescuerAuthGuard } from '../../../guards/auth.guard';
 import { StatusDto } from './status.dto';
 import { UserId } from '../../../decorator/userid.decorator';
 import { Types } from 'mongoose';
 
-@Controller()
+@Controller('/rescuer')
 @ApiTags('Status')
 export class StatusController {
   constructor(private readonly status: StatusService) {}
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(RescuerAuthGuard)
   @Get('/status')
   async getStatus(@UserId() userId: Types.ObjectId) {
     return this.status.getStatus(userId);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(RescuerAuthGuard)
   @ApiBody({ type: StatusDto })
   @ApiResponse({
     status: 200,

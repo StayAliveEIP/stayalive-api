@@ -8,7 +8,7 @@ import {
   Sse,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from '../../../guards/auth.guard';
+import { RescuerAuthGuard } from '../../../guards/auth.guard';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -23,13 +23,13 @@ import { SuccessMessage } from '../../../dto.dto';
 import { UserId } from '../../../decorator/userid.decorator';
 import { Types } from 'mongoose';
 
-@Controller()
+@Controller('/rescuer')
 @ApiTags('Position')
 @ApiBearerAuth()
 export class PositionController {
   constructor(private readonly service: PositionService) {}
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(RescuerAuthGuard)
   @Get('/position')
   @ApiOperation({
     summary: 'Get your actual position save as a rescuer',
@@ -43,7 +43,7 @@ export class PositionController {
     return this.service.getPosition(userId);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(RescuerAuthGuard)
   @Post('/position')
   @ApiOperation({
     summary: 'Set your position as a rescuer',
@@ -60,7 +60,7 @@ export class PositionController {
     return this.service.setPosition(userId, body);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(RescuerAuthGuard)
   @Delete('/position')
   @ApiOperation({
     summary: 'Delete your position as a rescuer.',
@@ -76,7 +76,7 @@ export class PositionController {
     return this.service.deletePosition(userId);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(RescuerAuthGuard)
   @Get('/position/all')
   @ApiOperation({
     summary: 'Get all rescuer position of connected rescuer',
@@ -91,7 +91,7 @@ export class PositionController {
     return this.service.getAllPositions();
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(RescuerAuthGuard)
   @Post('/position/nearest')
   @ApiOperation({
     summary:
@@ -108,7 +108,7 @@ export class PositionController {
     return this.service.getNearestPosition(position);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(RescuerAuthGuard)
   @Sse('/position/:id')
   @ApiOperation({
     summary: 'Follow to position of a rescuer in real time via SSE',

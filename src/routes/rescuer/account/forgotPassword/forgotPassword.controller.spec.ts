@@ -15,7 +15,7 @@ import {
 } from './forgotPassword.dto';
 import { NotFoundException } from '@nestjs/common';
 import { Rescuer, RescuerSchema } from '../../../../database/rescuer.schema';
-import { JwtAuthGuard } from '../../../../guards/auth.guard';
+import { RescuerAuthGuard } from '../../../../guards/auth.guard';
 
 describe('ForgotPasswordController', () => {
   let authController: AuthController;

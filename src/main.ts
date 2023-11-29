@@ -7,8 +7,17 @@ import {
   SwaggerCustomOptions,
   SwaggerModule,
 } from '@nestjs/swagger';
-import { AccountModule } from './routes/rescuer/account/account.module';
-import * as url from 'url';
+// Module of rescuer
+import { AccountModule as AccountModuleRescuer } from './routes/rescuer/account/account.module';
+import { AuthModule as AuthModuleRescuer } from './routes/rescuer/auth/auth.module';
+import { StatusModule as StatusModuleRescuer } from './routes/rescuer/status/status.module';
+import { EmergencyModule as EmergencyModuleRescuer } from './routes/rescuer/emergency/emergency.module';
+import { ForgotPasswordModule as ForgotPasswordModuleRescuer } from './routes/rescuer/account/forgotPassword/forgotPassword.module';
+import { DocumentModule as DocumentModuleRescuer } from './routes/rescuer/account/document/document.module';
+import { PositionModule as PositionModuleRescuer } from './routes/rescuer/position/position.module';
+import { LinkModule as LinkModuleRescuer } from './routes/rescuer/link/link/link.module';
+import { AccountAdminModule } from './routes/admin/account/account.admin.module';
+import { AuthAdminModule } from './routes/admin/auth/auth.admin.module';
 
 /*
 async function main() {
@@ -72,7 +81,16 @@ async function main() {
     'StayAlive API (Rescuer)',
     'StayAlive API description for rescuer',
     '1.0',
-    [AccountModule],
+    [
+      AuthModuleRescuer,
+      AccountModuleRescuer,
+      StatusModuleRescuer,
+      EmergencyModuleRescuer,
+      ForgotPasswordModuleRescuer,
+      DocumentModuleRescuer,
+      PositionModuleRescuer,
+      LinkModuleRescuer,
+    ],
   );
 
   createSwaggerForApi(
@@ -81,7 +99,7 @@ async function main() {
     'StayAlive API (Admin)',
     'StayAlive API description for admin',
     '1.0',
-    [AccountModule],
+    [AuthAdminModule, AccountAdminModule],
   );
 
   createSwaggerForApi(
@@ -90,7 +108,7 @@ async function main() {
     'StayAlive API (Call Center)',
     'StayAlive API description for call center',
     '1.0',
-    [AccountModule],
+    [],
   );
 
   await app.listen(3000, '0.0.0.0');

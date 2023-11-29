@@ -2,7 +2,7 @@
 
 ## Documentation
 
-To access to the Swagger UI for route defintion please use the following paths:
+To access to the Swagger UI for route definition please use the following paths:
 - Rescuer: http://localhost:3000/swagger/rescuer
 - Call center: http://localhost:3000/swagger/call-center
 - Admin: http://localhost:3000/swagger/admin
