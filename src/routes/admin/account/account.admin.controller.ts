@@ -9,6 +9,8 @@ import { ReactEmailService } from '../../../services/react-email/react-email.ser
 import { AccountAdminService } from './account.admin.service';
 import { SuccessMessage } from '../../../dto.dto';
 import { InfoResponse, NewRequest } from './account.admin.dto';
+import { UserId } from '../../../decorator/userid.decorator';
+import { Types } from 'mongoose';
 
 @Controller('/admin')
 @ApiTags('Account')
@@ -26,8 +28,8 @@ export class AccountAdminController {
       'Return all the information about the account, the email is verified only if the admin was logged in before.',
     deprecated: true,
   })
-  async index(): Promise<InfoResponse> {
-    return this.service.info();
+  async index(@UserId() userId: Types.ObjectId): Promise<InfoResponse> {
+    return this.service.info(userId);
   }
 
   @Post('/account/new')

@@ -22,6 +22,20 @@ export const verifyPassword = (
   return compareSync(passwordClear, passwordEncrypted);
 };
 
+/**
+ * This method will generate a random password of 10 characters.
+ */
+export const randomPassword = (): string => {
+  const length = 10;
+  const charset =
+    'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?!@#$%^&*()_+';
+  let retVal = '';
+  for (let i = 0; i < length; ++i) {
+    retVal += charset.charAt(Math.floor(Math.random() * charset.length));
+  }
+  return retVal;
+};
+
 // Token
 
 /**
