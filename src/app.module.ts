@@ -4,20 +4,17 @@ import { AppService } from './app.service';
 import { envValidation } from './validation/env.validation';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AuthModule } from './routes/auth/auth.module';
-import { AccountModule } from './routes/account/account.module';
-import { ForgotPasswordModule } from './routes/account/forgotPassword/forgotPassword.module';
+import { AuthModule } from './routes/rescuer/auth/auth.module';
+import { AccountModule } from './routes/rescuer/account/account.module';
+import { ForgotPasswordModule } from './routes/rescuer/account/forgotPassword/forgotPassword.module';
 import { RedisModule } from './services/redis/redis.module';
-import { RedisService } from './services/redis/redis.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import {EmergencyModule} from "./routes/emergency/emergency.module";
-import { PositionModule } from './routes/position/position.module';
-import { DocumentModule } from './routes/account/document/document.module';
-import { MailJetModule } from './services/mailjet/mailjet.module';
-import {StatusModule} from "./routes/status/status.module";
-import {LinkModule} from "./routes/link/link/link.module";
-
+import { EmergencyModule } from './routes/rescuer/emergency/emergency.module';
+import { PositionModule } from './routes/rescuer/position/position.module';
+import { DocumentModule } from './routes/rescuer/account/document/document.module';
+import { StatusModule } from './routes/rescuer/status/status.module';
+import { LinkModule } from './routes/rescuer/link/link/link.module';
 
 @Module({
   imports: [
