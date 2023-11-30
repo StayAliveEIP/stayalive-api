@@ -78,3 +78,14 @@ export class ChangeInfosRequest {
   })
   lastname: string;
 }
+
+export class DeleteRescuerAccountRequest {
+  @ApiProperty({
+    type: String,
+    description: 'The password of the rescuer.',
+    example: 'myPassword',
+  })
+  @IsString()
+  @IsNotEmpty()
+  password: string;
+}

@@ -9,9 +9,22 @@ import {
 } from '@nestjs/common';
 import { AccountService } from './account.service';
 import { RescuerAuthGuard } from '../../../guards/auth.guard';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { AccountIndexResponse, ChangeInfosRequest } from './account.dto';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import {
+  AccountIndexResponse,
+  ChangeInfosRequest,
+  DeleteRescuerAccountRequest,
+} from './account.dto';
 import { ReactEmailService } from '../../../services/react-email/react-email.service';
+import { async } from 'rxjs';
+import { SuccessMessage } from '../../../dto.dto';
+import { UserId } from '../../../decorator/userid.decorator';
+import { Types } from 'mongoose';
 
 @Controller('/rescuer')
 @ApiTags('Account')
@@ -60,7 +73,14 @@ export class AccountController {
     status: 200,
     description: 'Delete your account',
   })
-  async deleteAccount(@Request() req: Request): Promise<any> {
-    return this.service.deleteAccount(req);
+  @ApiOperation({
+    summary: 'Delete your account',
+    description: 'Delete your account.',
+  })
+  async deleteAccount(
+    @UserId() userId: Types.ObjectId,
+    @Body() body: DeleteRescuerAccountRequest,
+  ): Promise<SuccessMessage> {
+    return this.service.deleteAccount(userId, body);
   }
 }

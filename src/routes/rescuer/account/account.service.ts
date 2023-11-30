@@ -1,12 +1,19 @@
 import {
+  ForbiddenException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
   Request,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { AccountIndexResponse } from './account.dto';
+import {
+  AccountIndexResponse,
+  DeleteRescuerAccountRequest,
+} from './account.dto';
 import { Rescuer } from '../../../database/rescuer.schema';
+import { SuccessMessage } from '../../../dto.dto';
+import { verifyPassword } from '../../../utils/crypt.utils';
 
 @Injectable()
 export class AccountService {
@@ -52,17 +59,30 @@ export class AccountService {
     };
   }
 
-  async deleteAccount(req: Request): Promise<any> {
-    const userId: string = req['user'].userId;
-    const user = await this.rescuerModel.findByIdAndDelete(
-      new Types.ObjectId(userId),
-    );
-
+  async deleteAccount(
+    userId: Types.ObjectId,
+    body: DeleteRescuerAccountRequest,
+  ): Promise<SuccessMessage> {
+    const user = await this.rescuerModel.findById(new Types.ObjectId(userId));
     if (!user) {
-      throw new InternalServerErrorException(
-        'Utilisateur introuvable ou déjà supprimé.',
+      throw new NotFoundException('Utilisateur introuvable.');
+    }
+    const validPassword = verifyPassword(user.password.password, body.password);
+    if (!validPassword) {
+      throw new ForbiddenException(
+        'Mot de passe incorrect, impossible de supprimer le compte.',
       );
     }
-    return { message: 'Le compte a été supprimé avec succès.' };
+    const deleteResult = await this.rescuerModel.deleteOne({
+      _id: new Types.ObjectId(userId),
+    });
+    if (deleteResult.deletedCount !== 1) {
+      throw new InternalServerErrorException(
+        'Une erreur est survenue lors de la suppression du compte.',
+      );
+    }
+    return {
+      message: 'Votre compte a bien été supprimé.',
+    };
   }
 }
