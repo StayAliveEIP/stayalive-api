@@ -2,6 +2,7 @@ import {
   ForbiddenException,
   Injectable,
   InternalServerErrorException,
+  Logger,
   NotFoundException,
   Request,
 } from '@nestjs/common';
@@ -17,8 +18,11 @@ import { verifyPassword } from '../../../utils/crypt.utils';
 
 @Injectable()
 export class AccountService {
+  private readonly logger: Logger = new Logger(AccountService.name);
+
   constructor(
     @InjectModel(Rescuer.name) private rescuerModel: Model<Rescuer>,
+    @InjectModel(Document.name) private documentModel: Model<Document>,
   ) {}
 
   async index(req: Request): Promise<AccountIndexResponse> {
@@ -81,6 +85,11 @@ export class AccountService {
         'Une erreur est survenue lors de la suppression du compte.',
       );
     }
+    // delete all document of the user
+    const result = await this.documentModel.deleteMany({
+      user: new Types.ObjectId(userId),
+    });
+    this.logger.log('Delete all document of the user: ' + result.deletedCount);
     return {
       message: 'Votre compte a bien été supprimé.',
     };
