@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Post,
   Request,
@@ -51,5 +52,15 @@ export class AccountController {
         'https://stayalive.fr',
       );
     }
+  }
+
+  @UseGuards(RescuerAuthGuard)
+  @Delete('/account')
+  @ApiResponse({
+    status: 200,
+    description: 'Delete your account',
+  })
+  async deleteAccount(@Request() req: Request): Promise<any> {
+    return this.service.deleteAccount(req);
   }
 }
