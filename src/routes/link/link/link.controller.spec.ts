@@ -3,11 +3,11 @@ import { LinkController } from './link.controller';
 import { ConfigModule } from '@nestjs/config';
 import { envValidation } from '../../../validation/env.validation';
 import { RedisModule } from '../../../services/redis/redis.module';
-import {getModelToken, MongooseModule} from '@nestjs/mongoose';
+import { getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { Rescuer, RescuerSchema } from '../../../database/rescuer.schema';
 import { LinkService } from './link.service';
 import { Link, LinkSchema } from '../../../database/link.schema';
-import {Model} from "mongoose";
+import { Model } from 'mongoose';
 
 describe('LinkController', () => {
   let controller: LinkController;
