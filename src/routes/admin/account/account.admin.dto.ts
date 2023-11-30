@@ -26,6 +26,13 @@ export class NewRequest {
 export class InfoResponse {
   @ApiProperty({
     type: String,
+    description: 'The id of the admin in the database.',
+    example: '60e6f7b3f5b6f0b3f4f9f6e0',
+  })
+  id: string;
+
+  @ApiProperty({
+    type: String,
     description: 'The firstname of the admin.',
     example: 'John',
   })
@@ -51,4 +58,22 @@ export class InfoResponse {
     example: true,
   })
   emailVerified: boolean;
+}
+
+export class DeleteAdminRequest {
+  @ApiProperty({
+    type: String,
+    description: 'The id of the admin to delete.',
+    example: '60e6f7b3f5b6f0b3f4f9f6e0',
+  })
+  id: string;
+}
+
+export class DeleteMyAccountRequest {
+  @ApiProperty({
+    type: String,
+    description: 'The password of the admin.',
+    example: 'password',
+  })
+  password: string;
 }

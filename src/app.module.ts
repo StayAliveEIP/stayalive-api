@@ -17,6 +17,8 @@ import { StatusModule } from './routes/rescuer/status/status.module';
 import { LinkModule } from './routes/rescuer/link/link/link.module';
 import { AccountAdminModule } from './routes/admin/account/account.admin.module';
 import { AuthAdminModule } from './routes/admin/auth/auth.admin.module';
+import { CallCenterAdminModule } from './routes/admin/callCenter/callCenter.admin.module';
+import { DocumentAdminModule } from './routes/admin/document/document.admin.module';
 
 @Module({
   imports: [
@@ -43,6 +45,8 @@ import { AuthAdminModule } from './routes/admin/auth/auth.admin.module';
     // Admin modules.
     AuthAdminModule,
     AccountAdminModule,
+    CallCenterAdminModule,
+    DocumentAdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],

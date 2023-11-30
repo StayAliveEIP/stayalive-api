@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   createParamDecorator,
   ExecutionContext,
   InternalServerErrorException,

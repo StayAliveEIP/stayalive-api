@@ -1,16 +1,27 @@
 import {
   ConflictException,
+  ForbiddenException,
   Injectable,
   InternalServerErrorException,
   Logger,
   NotFoundException,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Admin } from '../../../database/admin.schema';
 import { SuccessMessage } from '../../../dto.dto';
-import { InfoResponse, NewRequest } from './account.admin.dto';
-import { cryptPassword, randomPassword } from '../../../utils/crypt.utils';
+import {
+  DeleteAdminRequest,
+  DeleteMyAccountRequest,
+  InfoResponse,
+  NewRequest,
+} from './account.admin.dto';
+import {
+  cryptPassword,
+  randomPassword,
+  verifyPassword,
+} from '../../../utils/crypt.utils';
 
 @Injectable()
 export class AccountAdminService {
@@ -27,11 +38,27 @@ export class AccountAdminService {
       throw new NotFoundException("L'administrateur n'a pas pu être trouvé.");
     }
     return {
+      id: admin.id,
       email: admin.email.email,
       emailVerified: admin.email.verified,
       firstname: admin.firstname,
       lastname: admin.lastname,
     };
+  }
+
+  async all(): Promise<Array<InfoResponse>> {
+    // Find all the admins
+    const admins = await this.adminModel.find();
+    if (!admins) {
+      throw new NotFoundException("L'administrateur n'a pas pu être trouvé.");
+    }
+    return admins.map((admin) => ({
+      id: admin.id,
+      email: admin.email.email,
+      emailVerified: admin.email.verified,
+      firstname: admin.firstname,
+      lastname: admin.lastname,
+    }));
   }
 
   async new(body: NewRequest): Promise<SuccessMessage> {
@@ -46,15 +73,26 @@ export class AccountAdminService {
     }
     const password = randomPassword();
     const passwordHashed = cryptPassword(password);
-    const newAdmin = new this.adminModel({
+
+    const newAdminObj: Admin = {
+      _id: new Types.ObjectId(),
       email: {
         email: body.email,
         verified: false,
+        lastCodeSent: null,
+        code: null,
       },
       firstname: body.firstname,
       lastname: body.lastname,
-      password: passwordHashed,
-    });
+      password: {
+        password: passwordHashed,
+        lastChange: null,
+        lastTokenSent: null,
+        token: null,
+      },
+    };
+
+    const newAdmin = new this.adminModel(newAdminObj);
     const result = await newAdmin.save();
     if (!result) {
       throw new InternalServerErrorException(
@@ -64,6 +102,59 @@ export class AccountAdminService {
     // TODO: Send an email with the password
     return {
       message: 'Account created for ' + body.email + '.',
+    };
+  }
+
+  async delete(body: DeleteAdminRequest): Promise<SuccessMessage> {
+    const idToDelete = body.id;
+    const objectId = Types.ObjectId.isValid(idToDelete);
+    if (!objectId) {
+      throw new UnprocessableEntityException(
+        "Le format de l'id n'est pas valide.",
+      );
+    }
+    // Find the admin
+    const admin = await this.adminModel.findById(idToDelete);
+    if (!admin) {
+      throw new NotFoundException("L'administrateur n'a pas pu être trouvé.");
+    }
+    // Delete the admin
+    const result = await this.adminModel.deleteOne({ _id: admin.id });
+    if (!result || result.deletedCount === 0) {
+      throw new InternalServerErrorException(
+        "L'administrateur n'a pas pu être supprimé.",
+      );
+    }
+    return {
+      message: 'Le compte administrateur a été supprimé.',
+    };
+  }
+
+  async deleteMyAccount(
+    userId: Types.ObjectId,
+    body: DeleteMyAccountRequest,
+  ): Promise<SuccessMessage> {
+    // Find the admin
+    const admin = await this.adminModel.findById(userId);
+    if (!admin) {
+      throw new NotFoundException("L'administrateur n'a pas pu être trouvé.");
+    }
+    // Compare the password in the body
+    const plainPassword = body.password;
+    const passwordAdmin = admin.password.password;
+    const validPassword = verifyPassword(passwordAdmin, plainPassword);
+    if (!validPassword) {
+      throw new ForbiddenException('Le mot de passe est incorrect.');
+    }
+    // Delete the admin
+    const result = await this.adminModel.deleteOne({ _id: userId });
+    if (!result || result.deletedCount === 0) {
+      throw new InternalServerErrorException(
+        "L'administrateur n'a pas pu être supprimé.",
+      );
+    }
+    return {
+      message: 'Votre compte a été supprimé.',
     };
   }
 

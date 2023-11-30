@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -8,7 +8,12 @@ import {
 import { ReactEmailService } from '../../../services/react-email/react-email.service';
 import { AccountAdminService } from './account.admin.service';
 import { SuccessMessage } from '../../../dto.dto';
-import { InfoResponse, NewRequest } from './account.admin.dto';
+import {
+  DeleteAdminRequest,
+  DeleteMyAccountRequest,
+  InfoResponse,
+  NewRequest,
+} from './account.admin.dto';
 import { UserId } from '../../../decorator/userid.decorator';
 import { Types } from 'mongoose';
 import { async } from 'rxjs';
@@ -35,6 +40,20 @@ export class AccountAdminController {
     return this.service.info(userId);
   }
 
+  @Get('/account/all')
+  @ApiOperation({
+    summary: 'Get all the admin accounts',
+    description: 'Return all the admin accounts.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'All the admin accounts',
+    type: [InfoResponse],
+  })
+  async all(): Promise<InfoResponse[]> {
+    return this.service.all();
+  }
+
   @Post('/account/new')
   @ApiOperation({
     summary: 'Create a new account for an admin',
@@ -49,5 +68,37 @@ export class AccountAdminController {
   })
   async new(@Body() body: NewRequest): Promise<SuccessMessage> {
     return this.service.new(body);
+  }
+
+  @Post('/account/delete')
+  @ApiOperation({
+    summary: 'Delete an admin account with the id of the account',
+    description: 'Delete the account of an admin with the id.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'The account was deleted with the success message',
+    type: SuccessMessage,
+  })
+  async delete(@Body() body: DeleteAdminRequest): Promise<SuccessMessage> {
+    return this.service.delete(body);
+  }
+
+  @Delete('/account/delete')
+  @ApiOperation({
+    summary: 'Delete the admin account logged in',
+    description:
+      'Delete the account of the admin logged in, the admin will be logged out after that.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'The account was deleted with the success message',
+    type: SuccessMessage,
+  })
+  async deleteMyAccount(
+    @UserId() userId: Types.ObjectId,
+    @Body() body: DeleteMyAccountRequest,
+  ): Promise<SuccessMessage> {
+    return this.service.deleteMyAccount(userId, body);
   }
 }
