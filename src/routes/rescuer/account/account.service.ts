@@ -51,4 +51,18 @@ export class AccountService {
       user: user,
     };
   }
+
+  async deleteAccount(req: Request): Promise<any> {
+    const userId: string = req['user'].userId;
+    const user = await this.rescuerModel.findByIdAndDelete(
+      new Types.ObjectId(userId),
+    );
+
+    if (!user) {
+      throw new InternalServerErrorException(
+        'Utilisateur introuvable ou déjà supprimé.',
+      );
+    }
+    return { message: 'Le compte a été supprimé avec succès.' };
+  }
 }
