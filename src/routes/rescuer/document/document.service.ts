@@ -1,16 +1,16 @@
 import { Injectable, NotFoundException, StreamableFile } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { Rescuer } from '../../../../database/rescuer.schema';
+import { Rescuer } from '../../../database/rescuer.schema';
 import {
   Document,
   DocumentStatus,
   DocumentType,
-} from '../../../../database/document.schema';
+} from '../../../database/document.schema';
 import { DocumentInformation } from './document.dto';
 import type { Response } from 'express';
-import { SuccessMessage } from '../../../../dto.dto';
-import { verifyDocumentType } from '../../../../utils/document.utils';
+import { SuccessMessage } from '../../../dto.dto';
+import { verifyDocumentType } from '../../../utils/document.utils';
 
 @Injectable()
 export class DocumentService {

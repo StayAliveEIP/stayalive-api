@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigModule } from '@nestjs/config';
-import { envValidation } from '../../../../validation/env.validation';
+import { envValidation } from '../../../validation/env.validation';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Rescuer, RescuerSchema } from '../../../../database/rescuer.schema';
+import { Rescuer, RescuerSchema } from '../../../database/rescuer.schema';
 import mongoose, { Types } from 'mongoose';
 import { DocumentController } from './document.controller';
 import { DocumentService } from './document.service';
@@ -11,8 +11,8 @@ import {
   DocumentSchema,
   DocumentStatus,
   DocumentType,
-} from '../../../../database/document.schema';
-import { SuccessMessage } from '../../../../dto.dto';
+} from '../../../database/document.schema';
+import { SuccessMessage } from '../../../dto.dto';
 import { DocumentInformation } from './document.dto';
 import { StreamableFile } from '@nestjs/common';
 import * as Stream from 'stream';

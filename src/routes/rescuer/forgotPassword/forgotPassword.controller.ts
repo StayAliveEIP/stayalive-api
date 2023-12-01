@@ -12,7 +12,7 @@ import {
 export class ForgotPasswordController {
   constructor(private readonly service: ForgotPasswordService) {}
 
-  @Get('/account/forgot-password/link')
+  @Get('/forgot-password/link')
   @ApiOperation({
     summary: 'Request a new mail to reset your password',
   })
@@ -28,7 +28,7 @@ export class ForgotPasswordController {
     return this.service.index(body);
   }
 
-  @Post('/account/forgot-password/reset')
+  @Post('/forgot-password/reset')
   @ApiOperation({
     summary: 'Reset your password',
   })

@@ -1,7 +1,7 @@
 import {
   DocumentStatus,
   DocumentType,
-} from '../../../../database/document.schema';
+} from '../../../database/document.schema';
 import { ApiProperty } from '@nestjs/swagger';
 import { Types } from 'mongoose';
 

@@ -1,12 +1,12 @@
 import { MockFactory, Test, TestingModule } from '@nestjs/testing';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
-import { envValidation } from '../../../../validation/env.validation';
+import { envValidation } from '../../../validation/env.validation';
 import mongoose from 'mongoose';
-import { MailJetModule } from '../../../../services/mailjet/mailjet.module';
-import { AuthController } from '../../auth/auth.controller';
-import { AuthService } from '../../auth/auth.service';
-import { RegisterDTO } from '../../auth/auth.dto';
+import { MailJetModule } from '../../../services/mailjet/mailjet.module';
+import { AuthController } from '../auth/auth.controller';
+import { AuthService } from '../auth/auth.service';
+import { RegisterDTO } from '../auth/auth.dto';
 import { ForgotPasswordController } from './forgotPassword.controller';
 import { ForgotPasswordService } from './forgotPassword.service';
 import {
@@ -14,8 +14,7 @@ import {
   ForgotPasswordResetDTO,
 } from './forgotPassword.dto';
 import { NotFoundException } from '@nestjs/common';
-import { Rescuer, RescuerSchema } from '../../../../database/rescuer.schema';
-import { RescuerAuthGuard } from '../../../../guards/auth.guard';
+import { Rescuer, RescuerSchema } from '../../../database/rescuer.schema';
 
 describe('ForgotPasswordController', () => {
   let authController: AuthController;

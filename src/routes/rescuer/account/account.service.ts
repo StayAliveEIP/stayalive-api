@@ -4,7 +4,6 @@ import {
   InternalServerErrorException,
   Logger,
   NotFoundException,
-  Request,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
@@ -15,6 +14,7 @@ import {
 import { Rescuer } from '../../../database/rescuer.schema';
 import { SuccessMessage } from '../../../dto.dto';
 import { verifyPassword } from '../../../utils/crypt.utils';
+import { Document } from '../../../database/document.schema';
 
 @Injectable()
 export class AccountService {

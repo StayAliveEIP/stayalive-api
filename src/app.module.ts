@@ -6,19 +6,23 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './routes/rescuer/auth/auth.module';
 import { AccountModule } from './routes/rescuer/account/account.module';
-import { ForgotPasswordModule } from './routes/rescuer/account/forgotPassword/forgotPassword.module';
+import { ForgotPasswordModule } from './routes/rescuer/forgotPassword/forgotPassword.module';
 import { RedisModule } from './services/redis/redis.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { EmergencyModule } from './routes/rescuer/emergency/emergency.module';
 import { PositionModule } from './routes/rescuer/position/position.module';
-import { DocumentModule } from './routes/rescuer/account/document/document.module';
+import { DocumentModule } from './routes/rescuer/document/document.module';
 import { StatusModule } from './routes/rescuer/status/status.module';
 import { LinkModule } from './routes/rescuer/link/link/link.module';
 import { AccountAdminModule } from './routes/admin/account/account.admin.module';
 import { AuthAdminModule } from './routes/admin/auth/auth.admin.module';
 import { CallCenterAdminModule } from './routes/admin/callCenter/callCenter.admin.module';
 import { DocumentAdminModule } from './routes/admin/document/document.admin.module';
+import { AuthCallCenterModule } from './routes/callCenter/auth/auth.callCenter.module';
+import { CallCenterWebsocket } from './websocket/callCenter/callCenter.websocket';
+import { RescuerWebsocket } from './websocket/rescuer/rescuer.websocket';
+import { WebsocketModule } from './websocket/websocket.module';
 
 @Module({
   imports: [
@@ -35,18 +39,22 @@ import { DocumentAdminModule } from './routes/admin/document/document.admin.modu
     }),
     // Rescuer modules.
     AuthModule,
+    LinkModule,
     AccountModule,
     StatusModule,
     EmergencyModule,
     ForgotPasswordModule,
     DocumentModule,
     PositionModule,
-    LinkModule,
     // Admin modules.
     AuthAdminModule,
     AccountAdminModule,
     CallCenterAdminModule,
     DocumentAdminModule,
+    // Call center module
+    AuthCallCenterModule,
+    // Websocket module
+    WebsocketModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -20,12 +20,12 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { DocumentService } from './document.service';
-import { RescuerAuthGuard } from '../../../../guards/auth.guard';
+import { RescuerAuthGuard } from '../../../guards/auth.guard';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { DocumentInformation } from './document.dto';
 import type { Response } from 'express';
-import { SuccessMessage } from '../../../../dto.dto';
-import { UserId } from '../../../../decorator/userid.decorator';
+import { SuccessMessage } from '../../../dto.dto';
+import { UserId } from '../../../decorator/userid.decorator';
 import { Types } from 'mongoose';
 
 @Controller('/rescuer')
@@ -35,7 +35,7 @@ export class DocumentController {
   constructor(private readonly service: DocumentService) {}
 
   @UseGuards(RescuerAuthGuard)
-  @Get('/account/document')
+  @Get('/document')
   @ApiOperation({
     summary:
       'Get information about the document uploaded for the type given in the query.',
@@ -87,7 +87,7 @@ export class DocumentController {
     required: true,
   })
   @UseGuards(RescuerAuthGuard)
-  @Delete('/account/document')
+  @Delete('/document')
   async delete(
     @UserId() userId: Types.ObjectId,
     @Query('type') type: string,
@@ -119,7 +119,7 @@ export class DocumentController {
     required: true,
   })
   @UseGuards(RescuerAuthGuard)
-  @Post('/account/document/upload')
+  @Post('/document/upload')
   @UseInterceptors(FilesInterceptor('file', 1))
   async upload(
     @UploadedFiles(
@@ -164,7 +164,7 @@ export class DocumentController {
     required: true,
   })
   @UseGuards(RescuerAuthGuard)
-  @Get('/account/document/download')
+  @Get('/document/download')
   async download(
     @UserId() userId: Types.ObjectId,
     @Res({ passthrough: true }) res: Response,

@@ -14,9 +14,9 @@ import {
 import {
   ISendEmailParam,
   MailJetService,
-} from '../../../../services/mailjet/mailjet.service';
-import { cryptPassword } from '../../../../utils/crypt.utils';
-import { Rescuer } from '../../../../database/rescuer.schema';
+} from '../../../services/mailjet/mailjet.service';
+import { cryptPassword } from '../../../utils/crypt.utils';
+import { Rescuer } from '../../../database/rescuer.schema';
 
 @Injectable()
 export class ForgotPasswordService {
