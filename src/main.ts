@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 // Module of rescuer
 import { AccountModule as AccountModuleRescuer } from './routes/rescuer/account/account.module';
@@ -18,9 +17,6 @@ import { CallCenterAdminModule } from './routes/admin/callCenter/callCenter.admi
 import { DocumentAdminModule } from './routes/admin/document/document.admin.module';
 import { AuthCallCenterModule } from './routes/callCenter/auth/auth.callCenter.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { WsAdapter } from '@nestjs/platform-ws';
-import { IoAdapter } from '@nestjs/platform-socket.io';
-import { AbstractWsAdapter } from '@nestjs/websockets';
 
 const createSwaggerForApi = (
   app: INestApplication,
@@ -48,7 +44,6 @@ const createSwaggerForApi = (
 };
 async function main() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  app.useWebSocketAdapter(new WsAdapter(app));
   app.useGlobalPipes(new ValidationPipe());
 
   createSwaggerForApi(

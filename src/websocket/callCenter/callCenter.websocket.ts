@@ -5,7 +5,8 @@ import {
 } from '@nestjs/websockets';
 import { Server } from 'ws';
 
-@WebSocketGateway({ path: '/call-center/ws' })
+// @WebSocketGateway({ path: '/call-center/ws' })
+@WebSocketGateway({ namespace: '/call-center/ws' })
 export class CallCenterWebsocket {
   @WebSocketServer()
   server: Server;

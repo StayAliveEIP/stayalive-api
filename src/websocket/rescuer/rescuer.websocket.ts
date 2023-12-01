@@ -8,8 +8,9 @@ import {
 } from '@nestjs/websockets';
 import { Server } from 'ws';
 import { Logger } from '@nestjs/common';
+import { InterventionRequest } from './rescuer.dto';
 
-@WebSocketGateway({ path: '/rescuer/ws' })
+@WebSocketGateway({ namespace: '/rescuer/ws' })
 export class RescuerWebsocket
   implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit
 {
@@ -18,19 +19,18 @@ export class RescuerWebsocket
   @WebSocketServer()
   server: Server;
 
-  @SubscribeMessage('message')
-  handleMessage(client: any, payload: any): void {
-    // Traiter le message reçu et éventuellement répondre
-    this.server.clients.forEach((client) => {
-      if (client.readyState === WebSocket.OPEN) {
-        this.logger.log('Message reçu: ' + payload);
-        client.send(`Message reçu: ${payload}`);
-      }
+  // @UseGuards(RescuerAuthGuard)
+  @SubscribeMessage(InterventionRequest.event)
+  handleMessage(client: any, payload: any): InterventionRequest {
+    this.logger.log('New message from client: ' + client.id + ' - ' + payload);
+    return new InterventionRequest({
+      message: 'coucou',
     });
   }
 
   handleConnection(client: any, ...args: any[]): any {
     this.logger.log('New connection from client: ' + client.id + ' - ' + args);
+    client.send('Hello from server');
   }
 
   handleDisconnect(client: any): any {
