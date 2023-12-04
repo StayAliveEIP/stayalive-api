@@ -8,6 +8,7 @@ import { Model } from 'mongoose';
 import { Admin } from '../../../database/admin.schema';
 import { LoginAdminRequest, LoginAdminResponse } from './auth.admin.dto';
 import { generateToken, verifyPassword } from '../../../utils/crypt.utils';
+import { AccountType } from '../../../guards/auth.guard';
 
 @Injectable()
 export class AuthAdminService {
@@ -34,7 +35,7 @@ export class AuthAdminService {
       await admin.save();
     }
     // Generate a new token
-    const token = generateToken(admin.id);
+    const token = generateToken(admin.id, AccountType.ADMIN);
     return {
       token: token,
     };

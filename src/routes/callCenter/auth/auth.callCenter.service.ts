@@ -16,6 +16,7 @@ import {
   LoginCallCenterRequest,
   LoginCallCenterResponse,
 } from './auth.callCenter.dto';
+import { AccountType } from '../../../guards/auth.guard';
 
 @Injectable()
 export class AuthCallCenterService {
@@ -44,7 +45,7 @@ export class AuthCallCenterService {
       await admin.save();
     }
     // Generate a new token
-    const token = generateToken(admin.id);
+    const token = generateToken(admin.id, AccountType.CALL_CENTER);
     return {
       token: token,
     };

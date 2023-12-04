@@ -1,6 +1,7 @@
 import { Types } from 'mongoose';
 import { hashSync, compareSync } from 'bcrypt';
 import { sign, verify } from 'jsonwebtoken';
+import { AccountType } from '../guards/auth.guard';
 
 /**
  * This method will hash the password given in parameter.
@@ -42,9 +43,13 @@ export const randomPassword = (): string => {
  * This method will generate a token for the user given in parameter.
  * @param id The id of the user.
  */
-export const generateToken = (id: Types.ObjectId): string => {
+export const generateToken = (
+  id: Types.ObjectId,
+  account: AccountType,
+): string => {
   const jwtSecret: string = process.env.JWT_SECRET;
-  return sign({ id }, jwtSecret, { expiresIn: '7d', algorithm: 'HS256' });
+  const payload: any = { id, account };
+  return sign(payload, jwtSecret, { expiresIn: '7d', algorithm: 'HS256' });
 };
 
 /**

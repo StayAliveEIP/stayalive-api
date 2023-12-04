@@ -1,4 +1,4 @@
-import { Body, Injectable, NotFoundException, Post } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import {
   LoginDTO,
   LoginResponse,
@@ -13,6 +13,7 @@ import {
   verifyPassword,
 } from '../../../utils/crypt.utils';
 import { Rescuer } from '../../../database/rescuer.schema';
+import { AccountType } from '../../../guards/auth.guard';
 
 @Injectable()
 export class AuthService {
@@ -80,7 +81,7 @@ export class AuthService {
         'Le mot de passe est incorrect pour ce compte.',
       );
     }
-    const token = generateToken(user._id);
+    const token = generateToken(user._id, AccountType.RESCUER);
     return {
       accessToken: 'Bearer ' + token,
     };
