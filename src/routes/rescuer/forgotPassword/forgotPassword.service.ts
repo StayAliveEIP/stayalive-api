@@ -15,7 +15,7 @@ import {
   ISendEmailParam,
   MailJetService,
 } from '../../../services/mailjet/mailjet.service';
-import { cryptPassword } from '../../../utils/crypt.utils';
+import { hashPassword } from '../../../utils/crypt.utils';
 import { Rescuer } from '../../../database/rescuer.schema';
 
 @Injectable()
@@ -97,7 +97,7 @@ export class ForgotPasswordService {
       );
     }
     const password: string = body.password;
-    const encryptedPassword: string = cryptPassword(password);
+    const encryptedPassword: string = hashPassword(password);
     await this.rescuerModel.updateOne(
       { 'password.token': token },
       {

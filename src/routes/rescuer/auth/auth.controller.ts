@@ -5,8 +5,10 @@ import {
   LoginResponse,
   RegisterDTO,
   RegisterResponse,
+  SendMagicLinkRequest,
 } from './auth.dto';
-import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { SuccessMessage } from '../../../dto.dto';
 
 @Controller('/rescuer')
 @ApiTags('Authentification')
@@ -33,5 +35,21 @@ export class AuthController {
   })
   async login(@Body() body: LoginDTO): Promise<LoginResponse> {
     return this.service.login(body);
+  }
+
+  @Post('/auth/magic-link')
+  @ApiOperation({
+    summary: 'Send a magic link to the rescuer.',
+    description: 'An email will be sent to the rescuer with a magic link.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'The magic link was sent.',
+    type: SuccessMessage,
+  })
+  async sendMagicLink(
+    @Body() body: SendMagicLinkRequest,
+  ): Promise<SuccessMessage> {
+    return this.service.sendMagicLink(body);
   }
 }

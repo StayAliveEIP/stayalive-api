@@ -1,10 +1,9 @@
-import { createClient } from 'redis';
 import { Injectable, Logger } from '@nestjs/common';
 import { Types } from 'mongoose';
-import { async } from 'rxjs';
 import Redis from 'ioredis';
 import type RedisClientType from 'ioredis';
 import * as process from 'process';
+import { Status } from '../../routes/rescuer/status/status.dto';
 
 export interface RescuerPosition {
   lat: number;
@@ -28,6 +27,42 @@ export class RedisService {
   public disconnect() {
     this.client.disconnect();
   }
+
+  // Status
+
+  /**
+   * Sets the status of the rescuer.
+   * @param rescuerId The id of the rescuer.
+   * @param status The status of the rescuer.
+   */
+  public async setStatusOfRescuer(rescuerId: Types.ObjectId, status: Status) {
+    const statusKey: string = this.getStatusKey(rescuerId);
+    await this.client.set(statusKey, status);
+  }
+
+  /**
+   * Get the status of the rescuer.
+   * @param rescuerId The id of the rescuer.
+   */
+  public async getStatusOfRescuer(
+    rescuerId: Types.ObjectId,
+  ): Promise<Status | null> {
+    const statusKey: string = this.getStatusKey(rescuerId);
+    const status: string = await this.client.get(statusKey);
+    if (!status) return null;
+    return status as Status;
+  }
+
+  public async deleteStatusOfRescuer(rescuerId: Types.ObjectId) {
+    const statusKey: string = this.getStatusKey(rescuerId);
+    await this.client.del(statusKey);
+  }
+
+  public getStatusKey(rescuerId: Types.ObjectId): string {
+    return 'stayAlive:status:' + rescuerId.toString();
+  }
+
+  // Position
 
   /**
    * Sets the position of the rescuer.

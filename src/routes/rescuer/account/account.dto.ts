@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Types } from 'mongoose';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export class AccountIndexResponse {
   @ApiProperty({
@@ -59,24 +59,67 @@ export class AccountIndexResponse {
   };
 }
 
-export class ChangeInfosRequest {
+export class ChangePhoneRequest {
   @ApiProperty({
     type: String,
-    description: 'The firstname of the rescuer.',
-    example: 'John',
+    description: 'The new phone of the rescuer.',
+    example: '0612345678',
   })
   @IsString()
   @IsNotEmpty()
-  firstname: string;
+  phone: string;
+}
 
-  @IsString()
-  @IsNotEmpty()
+export class ChangeEmailRequest {
   @ApiProperty({
     type: String,
-    description: 'The lastname of the rescuer.',
-    example: 'Doe',
+    description: 'The new email of the rescuer.',
+    example: 'newemail@email.net',
   })
-  lastname: string;
+  @IsEmail()
+  email: string;
+}
+
+export class VerifyEmailRequest {
+  @ApiProperty({
+    type: String,
+    description: 'The token to verify the email of the rescuer.',
+    example: 'a1b2c3d4e5f6g7h8i9j0',
+  })
+  @IsString()
+  @IsNotEmpty()
+  code: string;
+}
+
+export class VerifyPhoneRequest {
+  @ApiProperty({
+    type: String,
+    description: 'The token to verify the phone of the rescuer.',
+    example: '134785',
+  })
+  @IsString()
+  @IsNotEmpty()
+  code: string;
+}
+
+export class ChangePasswordRequest {
+  @ApiProperty({
+    type: String,
+    description: 'The old password of the rescuer.',
+    example: 'myOldPassword',
+  })
+  @IsString()
+  @IsNotEmpty()
+  oldPassword: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'The new password of the rescuer.',
+    example: 'myNewPassword',
+  })
+  @IsString()
+  @IsNotEmpty()
+  newPassword: string;
 }
 
 export class DeleteRescuerAccountRequest {

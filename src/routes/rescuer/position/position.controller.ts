@@ -76,6 +76,7 @@ export class PositionController {
     return this.service.deletePosition(userId);
   }
 
+  /*
   @UseGuards(RescuerAuthGuard)
   @Get('/position/all')
   @ApiOperation({
@@ -131,6 +132,7 @@ export class PositionController {
   sse(@Param('id') id: string): Observable<{ data: PositionDto }> {
     return this.service.getPositionSse(id);
   }
+   */
 
   disconnectRedis() {
     return this.service.disconnectRedis();

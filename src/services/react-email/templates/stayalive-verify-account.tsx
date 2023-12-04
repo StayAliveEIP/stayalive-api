@@ -45,40 +45,24 @@ export const VerifyAccountEmail = ({
             <Heading className="text-black text-[24px] font-normal text-center p-0 my-[30px] mx-0">
               Verifiez votre compte
             </Heading>
-            <Text className="text-black text-[14px] leading-[24px]">
-
-            </Text>
+            <Text className="text-black text-[14px] leading-[24px]"></Text>
             <Text className="text-black text-[14px] text-center leading-[24px]">
-              Bonjour {username}, verifiez votre compte en cliquant sur le bouton ci-dessous.
+              Bonjour {username}, verifiez votre compte en cliquant sur le
+              bouton ci-dessous.
             </Text>
             <Section style={codeContainer}>
               <Button
                 className="text-white text-[14px] text-center leading-[24px] w-full my-[16px] mx-0"
                 href={inviteLink}
-                >
+              >
                 Verifier mon compte
-                </Button>
+              </Button>
             </Section>
           </Container>
         </Body>
       </Tailwind>
     </Html>
   );
-};
-
-
-const ButtonStyle = {
-    background: '#000',
-    borderRadius: '4px',
-    color: '#fff',
-    display: 'inline-block',
-    fontSize: '14px',
-    fontWeight: 'bold',
-    lineHeight: '24px',
-    padding: '8px 16px',
-    textDecoration: 'none',
-    verticalAlign: 'middle',
-    width: '100%',
 };
 
 const codeContainer = {

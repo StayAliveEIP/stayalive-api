@@ -18,7 +18,7 @@ import {
   NewRequest,
 } from './account.admin.dto';
 import {
-  cryptPassword,
+  hashPassword,
   randomPassword,
   verifyPassword,
 } from '../../../utils/crypt.utils';
@@ -72,7 +72,7 @@ export class AccountAdminService {
       );
     }
     const password = randomPassword();
-    const passwordHashed = cryptPassword(password);
+    const passwordHashed = hashPassword(password);
 
     const newAdminObj: Admin = {
       _id: new Types.ObjectId(),
@@ -177,7 +177,7 @@ export class AccountAdminService {
     }
     // Create the default admin account
     const defaultPassword = process.env.ADMIN_DEFAULT_PASSWORD;
-    const passwordHashed = cryptPassword(defaultPassword);
+    const passwordHashed = hashPassword(defaultPassword);
     const adminObj: Admin = {
       _id: new Types.ObjectId(),
       email: {

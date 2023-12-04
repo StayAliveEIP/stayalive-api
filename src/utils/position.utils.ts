@@ -1,9 +1,8 @@
-type DistanceKm = number;
-
-const earthRadiusInKilometers = 6371;
-
 export class GeoCoordinates {
-  constructor(public latitude: number, public longitude: number) {}
+  constructor(
+    public latitude: number,
+    public longitude: number,
+  ) {}
 }
 
 // Function to calculate distance between two points in kilometers

@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
 
+// TODO: Remove this schema because it's not used anymore
+
 @Schema({ versionKey: false, collection: 'calls' })
 export class Call {
   @Prop({ type: Types.ObjectId, required: true })

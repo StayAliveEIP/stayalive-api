@@ -10,13 +10,13 @@ import { EmergencyModule as EmergencyModuleRescuer } from './routes/rescuer/emer
 import { ForgotPasswordModule as ForgotPasswordModuleRescuer } from './routes/rescuer/forgotPassword/forgotPassword.module';
 import { DocumentModule as DocumentModuleRescuer } from './routes/rescuer/document/document.module';
 import { PositionModule as PositionModuleRescuer } from './routes/rescuer/position/position.module';
-import { LinkModule as LinkModuleRescuer } from './routes/rescuer/link/link/link.module';
 import { AccountAdminModule } from './routes/admin/account/account.admin.module';
 import { AuthAdminModule } from './routes/admin/auth/auth.admin.module';
 import { CallCenterAdminModule } from './routes/admin/callCenter/callCenter.admin.module';
 import { DocumentAdminModule } from './routes/admin/document/document.admin.module';
 import { AuthCallCenterModule } from './routes/callCenter/auth/auth.callCenter.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { EmergencyCallCenterModule } from './routes/callCenter/emergency/emergency.callCenter.module';
 
 const createSwaggerForApi = (
   app: INestApplication,
@@ -54,7 +54,6 @@ async function main() {
     '1.0',
     [
       AuthModuleRescuer,
-      LinkModuleRescuer,
       ForgotPasswordModuleRescuer,
       AccountModuleRescuer,
       StatusModuleRescuer,
@@ -84,7 +83,7 @@ async function main() {
     'StayAlive API (Call Center)',
     'StayAlive API description for call center',
     '1.0',
-    [AuthCallCenterModule],
+    [AuthCallCenterModule, EmergencyCallCenterModule],
   );
 
   await app.listen(3000, '0.0.0.0');

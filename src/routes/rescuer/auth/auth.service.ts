@@ -4,16 +4,18 @@ import {
   LoginResponse,
   RegisterDTO,
   RegisterResponse,
+  SendMagicLinkRequest,
 } from './auth.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import {
-  cryptPassword,
+  hashPassword,
   generateToken,
   verifyPassword,
 } from '../../../utils/crypt.utils';
 import { Rescuer } from '../../../database/rescuer.schema';
 import { AccountType } from '../../../guards/auth.guard';
+import { SuccessMessage } from '../../../dto.dto';
 
 @Injectable()
 export class AuthService {
@@ -22,7 +24,7 @@ export class AuthService {
   ) {}
 
   async register(body: RegisterDTO): Promise<RegisterResponse> {
-    const passwordEncrypted: string = cryptPassword(body.password);
+    const passwordEncrypted: string = hashPassword(body.password);
 
     const user: Rescuer = await this.rescuerModel.findOne({
       'email.email': body.email,
@@ -84,6 +86,22 @@ export class AuthService {
     const token = generateToken(user._id, AccountType.RESCUER);
     return {
       accessToken: 'Bearer ' + token,
+    };
+  }
+
+  async sendMagicLink(body: SendMagicLinkRequest): Promise<SuccessMessage> {
+    const user: Rescuer = await this.rescuerModel.findOne({
+      'email.email': body.email,
+    });
+    if (!user) {
+      throw new NotFoundException(
+        "L'utilisateur est introuvable avec cet email",
+      );
+    }
+    const _token = generateToken(user._id, AccountType.RESCUER);
+    // TODO: Send email
+    return {
+      message: 'Un lien magique vous a été envoyé par email.',
     };
   }
 }

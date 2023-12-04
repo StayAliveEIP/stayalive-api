@@ -14,15 +14,13 @@ import { EmergencyModule } from './routes/rescuer/emergency/emergency.module';
 import { PositionModule } from './routes/rescuer/position/position.module';
 import { DocumentModule } from './routes/rescuer/document/document.module';
 import { StatusModule } from './routes/rescuer/status/status.module';
-import { LinkModule } from './routes/rescuer/link/link/link.module';
 import { AccountAdminModule } from './routes/admin/account/account.admin.module';
 import { AuthAdminModule } from './routes/admin/auth/auth.admin.module';
 import { CallCenterAdminModule } from './routes/admin/callCenter/callCenter.admin.module';
 import { DocumentAdminModule } from './routes/admin/document/document.admin.module';
 import { AuthCallCenterModule } from './routes/callCenter/auth/auth.callCenter.module';
-import { CallCenterWebsocket } from './websocket/callCenter/callCenter.websocket';
-import { RescuerWebsocket } from './websocket/rescuer/rescuer.websocket';
 import { WebsocketModule } from './websocket/websocket.module';
+import { EmergencyCallCenterModule } from './routes/callCenter/emergency/emergency.callCenter.module';
 
 @Module({
   imports: [
@@ -39,7 +37,6 @@ import { WebsocketModule } from './websocket/websocket.module';
     }),
     // Rescuer modules.
     AuthModule,
-    LinkModule,
     AccountModule,
     StatusModule,
     EmergencyModule,
@@ -53,6 +50,7 @@ import { WebsocketModule } from './websocket/websocket.module';
     DocumentAdminModule,
     // Call center module
     AuthCallCenterModule,
+    EmergencyCallCenterModule,
     // Websocket module
     WebsocketModule,
   ],

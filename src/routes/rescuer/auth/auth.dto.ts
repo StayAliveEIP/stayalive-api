@@ -8,6 +8,18 @@ import {
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
+export class SendMagicLinkRequest {
+  @ApiProperty({
+    type: String,
+    description: 'The email of the rescuer.',
+    example: 'john@doe.net',
+  })
+  @IsString()
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+}
+
 export class LoginDTO {
   @IsNotEmpty({ message: "L'email est obligatoire." })
   @IsString({ message: "L'email doit être une chaine de caractère." })

@@ -17,11 +17,14 @@ import {
 } from '@nestjs/swagger';
 import {
   AccountIndexResponse,
-  ChangeInfosRequest,
+  ChangeEmailRequest,
+  ChangePasswordRequest,
+  ChangePhoneRequest,
   DeleteRescuerAccountRequest,
+  VerifyEmailRequest,
+  VerifyPhoneRequest,
 } from './account.dto';
 import { ReactEmailService } from '../../../services/react-email/react-email.service';
-import { async } from 'rxjs';
 import { SuccessMessage } from '../../../dto.dto';
 import { UserId } from '../../../decorator/userid.decorator';
 import { Types } from 'mongoose';
@@ -47,24 +50,88 @@ export class AccountController {
   }
 
   @UseGuards(RescuerAuthGuard)
-  @Post('/account/infos')
+  @Post('/account/change-password')
   @ApiResponse({
     status: 200,
-    description: 'Change your account infos ( firstname, lastname )',
+    description: 'Change your password',
   })
-  async changeInfos(@Request() req: Request, @Body() body: ChangeInfosRequest) {
-    const info = await this.service.changeInfos(
-      body.firstname,
-      body.lastname,
-      req,
-    );
-    if (info.message) {
-      this.mail.sendVerifyAccountEmail(
-        info.user.email.email,
-        info.user.firstname,
-        'https://stayalive.fr',
-      );
-    }
+  @ApiOperation({
+    summary: 'Change your password',
+    description: 'Change your password.',
+  })
+  async changePassword(
+    @UserId() userId: Types.ObjectId,
+    @Body() body: ChangePasswordRequest,
+  ): Promise<SuccessMessage> {
+    return this.service.changePassword(userId, body);
+  }
+
+  @UseGuards(RescuerAuthGuard)
+  @Post('/account/change-email')
+  @ApiResponse({
+    status: 200,
+    description: 'Change your email',
+  })
+  @ApiOperation({
+    summary: 'Change your email',
+    description: 'Change your email.',
+  })
+  async changeEmail(
+    @UserId() userId: Types.ObjectId,
+    @Body() body: ChangeEmailRequest,
+  ): Promise<SuccessMessage> {
+    return this.service.changeEmail(userId, body);
+  }
+
+  @UseGuards(RescuerAuthGuard)
+  @Post('/account/change-phone')
+  @ApiResponse({
+    status: 200,
+    description: 'Change your phone',
+  })
+  @ApiOperation({
+    summary: 'Change your phone',
+    description: 'Change your phone.',
+  })
+  async changePhone(
+    @UserId() userId: Types.ObjectId,
+    @Body() body: ChangePhoneRequest,
+  ): Promise<SuccessMessage> {
+    return this.service.changePhone(userId, body);
+  }
+
+  @UseGuards(RescuerAuthGuard)
+  @Post('/account/verify-email')
+  @ApiResponse({
+    status: 200,
+    description: 'Verify your email',
+  })
+  @ApiOperation({
+    summary: 'Verify your email',
+    description: 'Verify your email.',
+  })
+  async verifyEmail(
+    @UserId() userId: Types.ObjectId,
+    @Body() body: VerifyEmailRequest,
+  ): Promise<SuccessMessage> {
+    return this.service.verifyEmail(userId, body);
+  }
+
+  @UseGuards(RescuerAuthGuard)
+  @Post('/account/verify-phone')
+  @ApiResponse({
+    status: 200,
+    description: 'Verify your phone',
+  })
+  @ApiOperation({
+    summary: 'Verify your phone',
+    description: 'Verify your phone.',
+  })
+  async verifyPhone(
+    @UserId() userId: Types.ObjectId,
+    @Body() body: VerifyPhoneRequest,
+  ): Promise<SuccessMessage> {
+    return this.service.verifyPhone(userId, body);
   }
 
   @UseGuards(RescuerAuthGuard)

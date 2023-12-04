@@ -7,7 +7,7 @@ import { AccountType } from '../guards/auth.guard';
  * This method will hash the password given in parameter.
  * @param password The password to hash.
  */
-export const cryptPassword = (password: string): string => {
+export const hashPassword = (password: string): string => {
   return hashSync(password, 10);
 };
 

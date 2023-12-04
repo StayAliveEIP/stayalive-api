@@ -16,7 +16,7 @@ import {
   NewCallCenterRequest,
 } from './callCenter.admin.dto';
 import { SuccessMessage } from '../../../dto.dto';
-import { cryptPassword, randomPassword } from '../../../utils/crypt.utils';
+import { hashPassword, randomPassword } from '../../../utils/crypt.utils';
 
 @Injectable()
 export class CallCenterAdminService {
@@ -56,7 +56,7 @@ export class CallCenterAdminService {
       throw new ConflictException('Cet email est déjà utilisé.');
     }
     const plainPassword = randomPassword();
-    const hashedPassword = cryptPassword(plainPassword);
+    const hashedPassword = hashPassword(plainPassword);
     // Create a new admin
     const callCenterObj: CallCenter = {
       _id: new Types.ObjectId(),
