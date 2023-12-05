@@ -78,6 +78,7 @@ export class ReactEmailService {
       html: html,
     };
     this.transporter.sendMail(mailOptions, (error, info) => {
+      console.log('sendMailCreatedAccountPassword');
       if (error) {
         console.log(error);
       }
