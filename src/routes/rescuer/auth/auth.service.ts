@@ -14,7 +14,7 @@ import {
   verifyPassword,
 } from '../../../utils/crypt.utils';
 import { Rescuer } from '../../../database/rescuer.schema';
-import { AccountType } from '../../../guards/auth.guard';
+import { AccountType } from '../../../guards/auth.route.guard';
 import { SuccessMessage } from '../../../dto.dto';
 
 @Injectable()

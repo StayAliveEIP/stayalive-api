@@ -8,12 +8,13 @@ import {
 import { ReactEmailService } from '../../../services/react-email/react-email.service';
 import { EmergencyCallCenterService } from './emergency.callCenter.service';
 import { UserId } from '../../../decorator/userid.decorator';
-import { CallCenterAuthGuard } from '../../../guards/auth.guard';
+import { CallCenterAuthGuard } from '../../../guards/auth.route.guard';
 import { Types } from 'mongoose';
 import {
   CreateNewEmergencyRequest,
   EmergencyInfoResponse,
 } from './emergency.callCenter.dto';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Controller('/call-center')
 @ApiTags('Emergency')

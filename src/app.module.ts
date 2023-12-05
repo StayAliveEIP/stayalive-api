@@ -21,9 +21,12 @@ import { DocumentAdminModule } from './routes/admin/document/document.admin.modu
 import { AuthCallCenterModule } from './routes/callCenter/auth/auth.callCenter.module';
 import { WebsocketModule } from './websocket/websocket.module';
 import { EmergencyCallCenterModule } from './routes/callCenter/emergency/emergency.callCenter.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
+    // Configure the event
+    EventEmitterModule.forRoot(),
     // Set up the environment variables.
     ConfigModule.forRoot({ isGlobal: true, validationSchema: envValidation }),
     // Connect to the MongoDB database.

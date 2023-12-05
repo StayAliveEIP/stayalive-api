@@ -14,12 +14,11 @@ import { InterventionRequest } from './rescuer.dto';
 export class RescuerWebsocket
   implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit
 {
-  private readonly logger = new Logger(RescuerWebsocket.name);
+  private readonly logger: Logger = new Logger(RescuerWebsocket.name);
 
   @WebSocketServer()
   server: Server;
 
-  // @UseGuards(RescuerAuthGuard)
   @SubscribeMessage(InterventionRequest.event)
   handleMessage(client: any, payload: any): InterventionRequest {
     this.logger.log('New message from client: ' + client.id + ' - ' + payload);
@@ -28,9 +27,8 @@ export class RescuerWebsocket
     });
   }
 
-  handleConnection(client: any, ...args: any[]): any {
-    this.logger.log('New connection from client: ' + client.id + ' - ' + args);
-    client.send('Hello from server');
+  handleConnection(data: any): any {
+    this.logger.log('Client connected to server: ' + data.id);
   }
 
   handleDisconnect(client: any): any {

@@ -20,7 +20,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { DocumentService } from './document.service';
-import { RescuerAuthGuard } from '../../../guards/auth.guard';
+import { RescuerAuthGuard } from '../../../guards/auth.route.guard';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { DocumentInformation, DocumentInformationAll } from './document.dto';
 import type { Response } from 'express';

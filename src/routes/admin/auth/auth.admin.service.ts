@@ -8,7 +8,7 @@ import { Model } from 'mongoose';
 import { Admin } from '../../../database/admin.schema';
 import { LoginAdminRequest, LoginAdminResponse } from './auth.admin.dto';
 import { generateToken, verifyPassword } from '../../../utils/crypt.utils';
-import { AccountType } from '../../../guards/auth.guard';
+import { AccountType } from '../../../guards/auth.route.guard';
 
 @Injectable()
 export class AuthAdminService {

@@ -17,7 +17,7 @@ import {
 import { UserId } from '../../../decorator/userid.decorator';
 import { Types } from 'mongoose';
 import { async } from 'rxjs';
-import { AdminAuthGuard } from '../../../guards/auth.guard';
+import { AdminAuthGuard } from '../../../guards/auth.route.guard';
 
 @Controller('/admin')
 @ApiTags('Account')

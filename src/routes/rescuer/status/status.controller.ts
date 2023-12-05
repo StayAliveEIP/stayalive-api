@@ -7,7 +7,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { StatusService } from './status.service';
-import { RescuerAuthGuard } from '../../../guards/auth.guard';
+import { RescuerAuthGuard } from '../../../guards/auth.route.guard';
 import { StatusDto } from './status.dto';
 import { UserId } from '../../../decorator/userid.decorator';
 import { Types } from 'mongoose';

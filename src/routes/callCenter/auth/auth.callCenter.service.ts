@@ -16,7 +16,7 @@ import {
   LoginCallCenterRequest,
   LoginCallCenterResponse,
 } from './auth.callCenter.dto';
-import { AccountType } from '../../../guards/auth.guard';
+import { AccountType } from '../../../guards/auth.route.guard';
 
 @Injectable()
 export class AuthCallCenterService {

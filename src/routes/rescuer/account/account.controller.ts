@@ -8,7 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AccountService } from './account.service';
-import { RescuerAuthGuard } from '../../../guards/auth.guard';
+import { RescuerAuthGuard } from '../../../guards/auth.route.guard';
 import {
   ApiBearerAuth,
   ApiOperation,

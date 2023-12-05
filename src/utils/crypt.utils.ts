@@ -1,7 +1,7 @@
 import { Types } from 'mongoose';
 import { hashSync, compareSync } from 'bcrypt';
 import { sign, verify } from 'jsonwebtoken';
-import { AccountType } from '../guards/auth.guard';
+import { AccountType } from '../guards/auth.route.guard';
 
 /**
  * This method will hash the password given in parameter.
