@@ -12,13 +12,14 @@ import { Logger, UseGuards } from '@nestjs/common';
 import { InterventionRequest } from './rescuer.dto';
 import { WsRescuerGuard } from '../../guards/auth.ws.guard';
 import * as jwt from 'jsonwebtoken';
+import {ObjectId} from "mongoose";
 
 @WebSocketGateway({ namespace: '/rescuer/ws' })
 export class RescuerWebsocket
   implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit
 {
   private readonly logger: Logger = new Logger(RescuerWebsocket.name);
-  private clients: Map<string, string> = new Map<string, string>();
+  private clients: Map<any, ObjectId> = new Map<any, ObjectId>();
 
   @WebSocketServer()
   server: Server;
