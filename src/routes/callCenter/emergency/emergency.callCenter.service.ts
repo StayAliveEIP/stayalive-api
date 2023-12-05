@@ -7,7 +7,10 @@ import {
   EmergencyInfoResponse,
 } from './emergency.callCenter.dto';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { EmergencyCreatedEvent, EventType } from '../../../event/event.dto';
+import {
+  EmergencyCreatedEvent,
+  EventType,
+} from '../../../services/emergency-manager/emergencyManager.dto';
 
 @Injectable()
 export class EmergencyCallCenterService {

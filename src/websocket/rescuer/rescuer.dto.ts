@@ -13,10 +13,10 @@ export class InterventionRequest
   event: string;
 
   // Create a static property to store the event name
-  static event = 'interventionRequest';
+  static channel = 'interventionRequest';
 
   constructor(data: InterventionRequestData) {
     this.data = data;
-    this.event = InterventionRequest.event;
+    this.event = InterventionRequest.channel;
   }
 }

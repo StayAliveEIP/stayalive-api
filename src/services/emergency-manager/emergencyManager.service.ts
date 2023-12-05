@@ -4,7 +4,7 @@ import {
   EmergencyAskAssignEvent,
   EmergencyCreatedEvent,
   EventType,
-} from '../../event/event.dto';
+} from './emergencyManager.dto';
 import { RedisService, RescuerPositionWithId } from '../redis/redis.service';
 import {
   GeoCoordinates,

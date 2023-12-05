@@ -1,16 +1,94 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Call } from '../../../database/call.schema';
-import { modifyEmergencyDto, newEmergencyDto } from './emergency.dto';
+import { Model, Types } from 'mongoose';
 import { Rescuer } from '../../../database/rescuer.schema';
+import { Emergency, EmergencyStatus } from '../../../database/emergency.schema';
+import { SuccessMessage } from '../../../dto.dto';
+import {
+  EmergencyAssignedEvent,
+  EmergencyTerminatedEvent,
+  EventType,
+} from '../../../services/emergency-manager/emergencyManager.dto';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class EmergencyService {
   constructor(
-    @InjectModel(Call.name) private callModel: Model<Call>,
+    private eventEmitter: EventEmitter2,
+    @InjectModel(Emergency.name) private emergencyModel: Model<Emergency>,
     @InjectModel(Rescuer.name) private rescuerModel: Model<Rescuer>,
   ) {}
+
+  async acceptEmergency(
+    userId: Types.ObjectId,
+    id: string,
+  ): Promise<SuccessMessage> {
+    // Get the emergency from the database
+    const emergency = await this.emergencyModel.findById(
+      new Types.ObjectId(id),
+    );
+    if (!emergency) {
+      throw new NotFoundException("L'urgence n'existe pas.");
+    }
+    // Verify the state of the emergency
+    if (emergency.status === EmergencyStatus.ASSIGNED) {
+      throw new BadRequestException("L'urgence a déjà été assignée.");
+    }
+    if (emergency.status === EmergencyStatus.RESOLVED) {
+      throw new BadRequestException("L'urgence a déjà été résolue.");
+    }
+    // Assign the emergency to the rescuer
+    emergency.rescuerAssigned = userId;
+    emergency.status = EmergencyStatus.ASSIGNED;
+    await emergency.save();
+    // Send the event
+    const emergencyAccepted: EmergencyAssignedEvent = {
+      emergencyId: emergency._id,
+      rescuerId: userId,
+    };
+    this.eventEmitter.emit(EventType.EMERGENCY_ASSIGNED, emergencyAccepted);
+    return {
+      message: "Vous avez bien accepté l'urgence.",
+    };
+  }
+
+  async terminateEmergency(userId: Types.ObjectId, id: string) {
+    // Get the emergency from the database
+    const emergency = await this.emergencyModel.findById(
+      new Types.ObjectId(id),
+    );
+    if (!emergency) {
+      throw new NotFoundException("L'urgence n'existe pas.");
+    }
+    // Verify the state of the emergency
+    if (emergency.status === EmergencyStatus.PENDING) {
+      throw new BadRequestException("L'urgence n'a pas encore été assignée.");
+    }
+    if (emergency.status === EmergencyStatus.RESOLVED) {
+      throw new BadRequestException("L'urgence a déjà été résolue.");
+    }
+    // Verify that the rescuer is the one assigned to the emergency
+    if (!emergency.rescuerAssigned.equals(userId)) {
+      throw new BadRequestException("Vous n'êtes pas assigné à cette urgence.");
+    }
+    // Send event
+    const event: EmergencyTerminatedEvent = {
+      emergencyId: emergency._id,
+    };
+    this.eventEmitter.emit(EventType.EMERGENCY_TERMINATED, event);
+    // Terminate the emergency
+    emergency.status = EmergencyStatus.RESOLVED;
+    await emergency.save();
+    return {
+      message: "L'urgence a bien été terminée.",
+    };
+  }
+
+  /*
   async createEmergency(emergency: newEmergencyDto) {
     const newEmergency: Call = {
       from: emergency.from,
@@ -96,4 +174,5 @@ export class EmergencyService {
       message: "L'urgence a bien été assignée.",
     };
   }
+   */
 }

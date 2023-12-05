@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
+/*
 export class newEmergencyDto {
   @IsString()
   @IsNotEmpty()
@@ -128,3 +129,4 @@ export class finishEmergencyDto {
   @IsNotEmpty()
   id: string;
 }
+*/

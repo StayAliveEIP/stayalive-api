@@ -1,27 +1,32 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Post,
-  Put,
-  Query,
-} from '@nestjs/common';
-import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Query } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { EmergencyService } from './emergency.service';
-import {
-  assignEmergencyDto,
-  deleteEmergencyDto,
-  getEmergencyOfRescuerDto,
-  modifyEmergencyDto,
-  newEmergencyDto,
-} from './emergency.dto';
+import { UserId } from '../../../decorator/userid.decorator';
+import { Types } from 'mongoose';
+import { SuccessMessage } from '../../../dto.dto';
 
 @Controller('/rescuer')
 @ApiTags('Emergency')
 export class EmergencyController {
   constructor(private readonly service: EmergencyService) {}
 
+  @Get('/emergency/accept')
+  async acceptEmergency(
+    @UserId() userId: Types.ObjectId,
+    @Query('id') id: string,
+  ): Promise<SuccessMessage> {
+    return await this.service.acceptEmergency(userId, id);
+  }
+
+  @Get('/emergency/terminate')
+  async terminateEmergency(
+    @UserId() userId: Types.ObjectId,
+    @Query('id') id: string,
+  ): Promise<SuccessMessage> {
+    return await this.service.terminateEmergency(userId, id);
+  }
+
+  /*
   @Post('/emergency')
   @ApiBody({ type: newEmergencyDto })
   @ApiResponse({
@@ -76,4 +81,5 @@ export class EmergencyController {
   async assignEmergencyOfRescuer(@Body() query: assignEmergencyDto) {
     return await this.service.assignEmergency(query.id, query.rescuer);
   }
+   */
 }

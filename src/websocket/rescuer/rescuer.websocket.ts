@@ -19,7 +19,7 @@ export class RescuerWebsocket
   @WebSocketServer()
   server: Server;
 
-  @SubscribeMessage(InterventionRequest.event)
+  @SubscribeMessage(InterventionRequest.channel)
   handleMessage(client: any, payload: any): InterventionRequest {
     this.logger.log('New message from client: ' + client.id + ' - ' + payload);
     return new InterventionRequest({

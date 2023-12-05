@@ -5,7 +5,7 @@ export enum EventType {
   EMERGENCY_ASK_ASSIGN = 'emergency.ask.assign',
   EMERGENCY_ASSIGNED = 'emergency.assigned',
   EMERGENCY_CANCELED = 'emergency.canceled',
-  EMERGENCY_COMPLETED = 'emergency.completed',
+  EMERGENCY_TERMINATED = 'emergency.terminate',
 }
 
 export class EmergencyAskAssignEvent {
@@ -28,6 +28,6 @@ export class EmergencyCanceledEvent {
   emergencyId: Types.ObjectId;
 }
 
-export class EmergencyCompletedEvent {
+export class EmergencyTerminatedEvent {
   emergencyId: Types.ObjectId;
 }
