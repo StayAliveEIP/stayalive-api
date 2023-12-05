@@ -11,15 +11,7 @@ export class DocumentInformation {
     required: true,
     example: new Types.ObjectId().toString(),
   })
-  _id: string;
-
-  @ApiProperty({
-    type: String,
-    required: true,
-    example: Object.keys(DocumentType).sort(() => Math.random() - 0.5)[0],
-    enum: Object.keys(DocumentType),
-  })
-  documentType: DocumentType;
+  id: string;
 
   @ApiProperty({
     type: String,
@@ -45,4 +37,27 @@ export class DocumentInformation {
     example: new Date().toISOString(),
   })
   lastUpdate: Date | null;
+}
+
+export class DocumentInformationAll {
+  @ApiProperty({
+    type: String,
+    required: true,
+    example: DocumentType.RESCUER_CERTIFICATE,
+  })
+  type: DocumentType;
+
+  @ApiProperty({
+    type: DocumentInformation,
+    required: true,
+    nullable: true,
+    example: {
+      _id: new Types.ObjectId().toString(),
+      status: DocumentStatus.NOT_VALID,
+      message:
+        'Your ID card was refused because your provide a photo in bad quality.',
+      lastUpdate: new Date(),
+    },
+  })
+  data: DocumentInformation;
 }

@@ -7,7 +7,7 @@ import {
   DocumentStatus,
   DocumentType,
 } from '../../../database/document.schema';
-import { DocumentInformation } from './document.dto';
+import { DocumentInformation, DocumentInformationAll } from './document.dto';
 import type { Response } from 'express';
 import { SuccessMessage } from '../../../dto.dto';
 import { verifyDocumentType } from '../../../utils/document.utils';
@@ -35,11 +35,10 @@ export class DocumentService {
         `The document with type \"${documentType}\" was not uploaded.`,
       );
     return {
-      _id: userId.toString(),
-      documentType: documentType,
-      message: null,
-      lastUpdate: new Date(),
-      status: DocumentStatus.PENDING,
+      id: docInDB._id.toString(),
+      status: docInDB.status,
+      message: docInDB.message,
+      lastUpdate: docInDB.lastUpdate,
     };
   }
 
@@ -109,5 +108,36 @@ export class DocumentService {
       message:
         'Your document of type' + documentType + ' was successfully deleted.',
     };
+  }
+
+  async documentInformationAll(
+    userId: Types.ObjectId,
+  ): Promise<Array<DocumentInformationAll>> {
+    const result = new Array<DocumentInformationAll>();
+    for (const type of Object.keys(DocumentType)) {
+      const documentType: DocumentType = verifyDocumentType(type);
+      const docInDB: Document = await this.documentModel.findOne({
+        user: userId,
+        type: documentType,
+      });
+      if (!docInDB) {
+        result.push({
+          type: documentType,
+          data: null,
+        });
+        continue;
+      }
+      const docInfo: DocumentInformation = {
+        id: docInDB._id.toString(),
+        status: docInDB.status,
+        message: docInDB.message,
+        lastUpdate: docInDB.lastUpdate,
+      };
+      result.push({
+        type: documentType,
+        data: docInfo,
+      });
+    }
+    return result;
   }
 }

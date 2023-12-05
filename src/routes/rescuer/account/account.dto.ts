@@ -57,6 +57,13 @@ export class AccountIndexResponse {
     phone: string;
     verified: boolean;
   };
+
+  @ApiProperty({
+    type: Boolean,
+    description: 'If the rescuer has all his documents validated.',
+    example: true,
+  })
+  documentsValidated: boolean;
 }
 
 export class ChangePhoneRequest {

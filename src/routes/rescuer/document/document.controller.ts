@@ -22,7 +22,7 @@ import {
 import { DocumentService } from './document.service';
 import { RescuerAuthGuard } from '../../../guards/auth.guard';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { DocumentInformation } from './document.dto';
+import { DocumentInformation, DocumentInformationAll } from './document.dto';
 import type { Response } from 'express';
 import { SuccessMessage } from '../../../dto.dto';
 import { UserId } from '../../../decorator/userid.decorator';
@@ -62,6 +62,22 @@ export class DocumentController {
     @Query('type') type: string,
   ): Promise<DocumentInformation> {
     return this.service.documentInformation(userId, type);
+  }
+
+  @UseGuards(RescuerAuthGuard)
+  @Get('/document/all')
+  @ApiOperation({
+    summary: 'Get information about all the documents uploaded.',
+  })
+  @ApiResponse({
+    status: 200,
+    type: DocumentInformationAll,
+    isArray: true,
+  })
+  async documentInformationAll(
+    @UserId() userId: Types.ObjectId,
+  ): Promise<Array<DocumentInformationAll>> {
+    return this.service.documentInformationAll(userId);
   }
 
   @ApiOperation({

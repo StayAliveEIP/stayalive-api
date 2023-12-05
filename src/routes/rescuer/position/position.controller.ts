@@ -17,7 +17,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { PositionService } from './position.service';
-import { PositionDto, PositionWithIdDto } from './position.dto';
+import { PositionDto } from './position.dto';
 import { Observable } from 'rxjs';
 import { SuccessMessage } from '../../../dto.dto';
 import { UserId } from '../../../decorator/userid.decorator';

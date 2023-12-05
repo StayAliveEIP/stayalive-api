@@ -55,7 +55,6 @@ export class AuthService {
         lastTokenSent: null,
         lastChange: null,
       },
-      available: false,
     };
     await this.rescuerModel.create(rescuer);
     return {
@@ -98,7 +97,9 @@ export class AuthService {
         "L'utilisateur est introuvable avec cet email",
       );
     }
-    const _token = generateToken(user._id, AccountType.RESCUER);
+    const token = generateToken(user._id, AccountType.RESCUER);
+    const frontUrl = process.env.FRONTEND_URL;
+    const _finalUrl = `${frontUrl}/auth/magiclogin?token=${token}`;
     // TODO: Send email
     return {
       message: 'Un lien magique vous a été envoyé par email.',

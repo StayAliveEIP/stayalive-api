@@ -18,7 +18,7 @@ import {
 import { Rescuer } from '../../../database/rescuer.schema';
 import { SuccessMessage } from '../../../dto.dto';
 import { hashPassword, verifyPassword } from '../../../utils/crypt.utils';
-import { Document } from '../../../database/document.schema';
+import { Document, DocumentStatus } from '../../../database/document.schema';
 import { RedisService } from '../../../services/redis/redis.service';
 
 @Injectable()
@@ -37,8 +37,23 @@ export class AccountService {
       new Types.ObjectId(userId),
     );
     if (!user) {
-      throw new InternalServerErrorException('Utilisateur introuvable.');
+      throw new NotFoundException('Utilisateur introuvable.');
     }
+    // Verify if all document is validated for rescuer
+    let documentsValidated = true;
+
+    for (const docType of Object.values(DocumentStatus)) {
+      const docInDB: Document | undefined = await this.documentModel.findOne({
+        user: userId,
+        type: docType,
+        status: DocumentStatus.VALID,
+      });
+      if (!docInDB) {
+        documentsValidated = false;
+        break;
+      }
+    }
+
     return {
       _id: user._id,
       firstname: user.firstname,
@@ -51,6 +66,7 @@ export class AccountService {
         phone: user.phone.phone,
         verified: user.phone.verified,
       },
+      documentsValidated: documentsValidated,
     };
   }
 
