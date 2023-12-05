@@ -8,9 +8,9 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server } from 'ws';
-import {Logger, UseGuards} from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import { InterventionRequest } from './rescuer.dto';
-import {WsRescuerGuard} from "../../guards/auth.ws.guard";
+import { WsRescuerGuard } from '../../guards/auth.ws.guard';
 import * as jwt from 'jsonwebtoken';
 
 @WebSocketGateway({ namespace: '/rescuer/ws' })
@@ -24,7 +24,7 @@ export class RescuerWebsocket
   server: Server;
 
   @UseGuards(WsRescuerGuard)
-  @SubscribeMessage(InterventionRequest.event)
+  @SubscribeMessage(InterventionRequest.channel)
   handleMessage(client: any, payload: any): InterventionRequest {
     this.logger.log('New message from client: ' + client.id + ' - ' + payload);
     return new InterventionRequest({
