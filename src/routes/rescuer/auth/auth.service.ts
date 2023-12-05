@@ -16,11 +16,14 @@ import {
 import { Rescuer } from '../../../database/rescuer.schema';
 import { AccountType } from '../../../guards/auth.guard';
 import { SuccessMessage } from '../../../dto.dto';
+import { ReactEmailService } from '../../../services/react-email/react-email.service';
+import * as process from 'process';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(Rescuer.name) private rescuerModel: Model<Rescuer>,
+    private readonly reactEmailService: ReactEmailService,
   ) {}
 
   async register(body: RegisterDTO): Promise<RegisterResponse> {
@@ -101,6 +104,11 @@ export class AuthService {
     const frontUrl = process.env.FRONTEND_URL;
     const _finalUrl = `${frontUrl}/auth/magiclogin?token=${token}`;
     // TODO: Send email
+    this.reactEmailService.sendMagicLinkEmail(
+      body.email,
+      user.firstname,
+      _finalUrl,
+    );
     return {
       message: 'Un lien magique vous a été envoyé par email.',
     };

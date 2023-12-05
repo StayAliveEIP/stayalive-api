@@ -3,6 +3,7 @@ import { render } from '@react-email/render';
 import * as nodemailer from 'nodemailer';
 import * as mailjetTransport from 'nodemailer-mailjet-transport';
 import { VerifyAccountEmail } from './templates/stayalive-verify-account';
+import MagicLinkMail from './templates/stayalive-connexion-link';
 @Injectable()
 export class ReactEmailService {
   private transporter: nodemailer.Transporter;
@@ -22,6 +23,26 @@ export class ReactEmailService {
       VerifyAccountEmail({
         username: username,
         inviteLink: link,
+      }),
+    );
+    const mailOptions = {
+      from: 'noreply@stayalive.fr',
+      to: email,
+      subject: 'Vérification de votre compte StayAlive',
+      html: html,
+    };
+    this.transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+      }
+    });
+  }
+
+  sendMagicLinkEmail(email: string, username: string, link: string) {
+    const html = render(
+      MagicLinkMail({
+        username: username,
+        authLink: link,
       }),
     );
     const mailOptions = {
