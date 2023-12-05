@@ -12,8 +12,13 @@ import { Logger, UseGuards } from '@nestjs/common';
 import { InterventionRequest } from './rescuer.dto';
 import { WsRescuerGuard } from '../../guards/auth.ws.guard';
 import * as jwt from 'jsonwebtoken';
-import { Types} from 'mongoose';
-import {Socket} from "socket.io";
+import { Types } from 'mongoose';
+import { Socket } from 'socket.io';
+import { OnEvent } from '@nestjs/event-emitter';
+import {
+  EmergencyAskAssignEvent,
+  EventType,
+} from '../../services/emergency-manager/emergencyManager.dto';
 @WebSocketGateway({ namespace: '/rescuer/ws' })
 export class RescuerWebsocket
   implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit
@@ -35,6 +40,48 @@ export class RescuerWebsocket
       message: 'coucou',
     });
   }
+
+  @OnEvent(EventType.EMERGENCY_ASK_ASSIGN)
+  private async onEmergencyAskAssign(event: EmergencyAskAssignEvent) {
+    const clientId = this.clients.get(event.rescuerId);
+    if (!clientId) {
+      this.logger.log('No client found for rescuer ' + event.rescuerId + '.');
+      return;
+    }
+    this.logger.log(
+      'Found client for rescuer ' +
+        event.rescuerId +
+        ' with id ' +
+        clientId +
+        '.',
+    );
+    const client = this.clients.get(event.rescuerId);
+    if (!client) {
+      this.logger.log('No client found for rescuer ' + event.rescuerId + '.');
+      return;
+    }
+    this.logger.log(
+      'Found client for rescuer ' +
+        event.rescuerId +
+        ' with id ' +
+        clientId +
+        '.',
+    );
+    client.send(
+      JSON.stringify({
+        event: InterventionRequest.channel,
+        data: {
+          message: 'coucou',
+        },
+      }),
+    );
+  }
+
+  /**
+   * This method is called when a client connects to the websocket server.
+   * It will check if the client is a valid rescuer and if it is, it will add it to the clients map.
+   * @param client The client that connected to the websocket server.
+   */
   handleConnection(@ConnectedSocket() client: Socket): any {
     this.logger.log('Client connected to server: ' + client.id);
     const token = client.handshake.query.token as string;
@@ -55,8 +102,14 @@ export class RescuerWebsocket
       client.disconnect();
     }
   }
+
+  /**
+   * This method is called when a client disconnects from the websocket server.
+   * It will remove the client from the clients map.
+   * @param client The client that disconnected from the websocket server.
+   */
   handleDisconnect(client: any): any {
-    this.logger.log('Client disconnected from server: ' + client.id)
+    this.logger.log('Client disconnected from server: ' + client.id);
     this.clients.forEach((value, key) => {
       if (value.id === client.id) {
         this.clients.delete(key);

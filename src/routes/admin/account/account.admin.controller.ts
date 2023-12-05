@@ -33,7 +33,6 @@ export class AccountAdminController {
     summary: 'Get the information about the account',
     description:
       'Return all the information about the account, the email is verified only if the admin was logged in before.',
-    deprecated: true,
   })
   @UseGuards(AdminAuthGuard)
   async index(@UserId() userId: Types.ObjectId): Promise<InfoResponse> {

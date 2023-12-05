@@ -1,5 +1,5 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { EmergencyService } from './emergency.service';
 import { UserId } from '../../../decorator/userid.decorator';
 import { Types } from 'mongoose';
@@ -10,7 +10,24 @@ import { SuccessMessage } from '../../../dto.dto';
 export class EmergencyController {
   constructor(private readonly service: EmergencyService) {}
 
+  // @Get('/emergency/history')
+  // @ApiOperation({
+  //   summary: 'Get the history of all your emergencies.',
+  // })
+  // async getEmergencyHistory(@UserId() userId: Types.ObjectId) {
+  //   return await this.service.getEmergencyHistory(userId);
+  // }
+
   @Get('/emergency/accept')
+  @ApiOperation({
+    summary: 'Accept an emergency.',
+    description: 'Accept an emergency that has been assigned to you.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'The emergency was accepted.',
+    type: SuccessMessage,
+  })
   async acceptEmergency(
     @UserId() userId: Types.ObjectId,
     @Query('id') id: string,

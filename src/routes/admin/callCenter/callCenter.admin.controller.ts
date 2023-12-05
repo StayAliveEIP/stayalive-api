@@ -27,7 +27,6 @@ export class CallCenterAdminController {
   @ApiOperation({
     summary: 'Create a new call center account',
     description: 'Create a new call center account.',
-    deprecated: true,
   })
   @ApiResponse({
     status: 201,

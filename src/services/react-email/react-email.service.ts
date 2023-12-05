@@ -5,6 +5,7 @@ import * as mailjetTransport from 'nodemailer-mailjet-transport';
 import { VerifyAccountEmail } from './templates/stayalive-verify-account';
 import MagicLinkMail from './templates/stayalive-connexion-link';
 import AccountCreatedMailPassword from './templates/stayalive-password-account';
+
 @Injectable()
 export class ReactEmailService {
   private transporter: nodemailer.Transporter;
