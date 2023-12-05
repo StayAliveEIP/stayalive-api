@@ -23,11 +23,14 @@ import { WebsocketModule } from './websocket/websocket.module';
 import { EmergencyCallCenterModule } from './routes/callCenter/emergency/emergency.callCenter.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { EmergencyManagerModule } from './services/emergency-manager/emergencyManager.module';
+import { ReactEmailModule } from './services/react-email/react-email.module';
 
 @Module({
   imports: [
     // Configure the event
     EventEmitterModule.forRoot(),
+    // Add react email module.
+    ReactEmailModule,
     // Configure the urgency event manager
     EmergencyManagerModule,
     // Set up the environment variables.

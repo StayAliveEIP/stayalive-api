@@ -11,6 +11,7 @@ import {
   getDistanceInKilometers,
 } from '../../utils/position.utils';
 import { Types } from 'mongoose';
+import { RescuerWebsocket } from '../../websocket/rescuer/rescuer.websocket';
 
 @Injectable()
 export class EmergencyManagerService {
@@ -30,11 +31,17 @@ export class EmergencyManagerService {
   private async onEmergencyCreated(event: EmergencyCreatedEvent) {
     const allPositions: RescuerPositionWithId[] =
       await this.getAllPositions(event);
+    if (allPositions.length === 0) {
+      this.logger.log(
+        'No rescuer available for emergency ' + event.emergencyId + '.',
+      );
+      return;
+    }
     const nearestPosition: RescuerPositionWithId | null =
       await this.getNearestPosition(allPositions);
     if (!nearestPosition) {
-      this.logger.log(
-        'No rescuer available for emergency ' + event.emergencyId + '.',
+      this.logger.warn(
+        'No nearest position found for emergency ' + event.emergencyId + '.',
       );
       return;
     }
@@ -77,7 +84,8 @@ export class EmergencyManagerService {
         rescuerAvailable.length +
         ' rescuers available for emergency ' +
         event.emergencyId +
-        '.',
+        ': ' +
+        rescuerAvailable,
     );
     const rescuerWithPosition =
       await this.redis.getAllPosition(rescuerAvailable);
@@ -86,9 +94,21 @@ export class EmergencyManagerService {
         rescuerWithPosition.length +
         ' rescuers with position available for emergency ' +
         event.emergencyId +
-        '.',
+        ': ' +
+        rescuerWithPosition.map((rescuer) => rescuer.id),
     );
-    return rescuerWithPosition;
+    // Map to get only key in array
+    const connected = Array.from(RescuerWebsocket.clients.keys());
+    this.logger.log(
+      'Found ' +
+        connected.length +
+        ' connected rescuers for emergency: ' +
+        connected,
+    );
+    // Keep only connected rescuers
+    return rescuerWithPosition.filter((rescuer) =>
+      connected.map((id) => id.toString()).includes(rescuer.id.toString()),
+    );
   }
 
   private async getNearestPosition(

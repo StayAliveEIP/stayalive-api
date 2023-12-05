@@ -56,7 +56,7 @@ export const MagicLinkMail = ({
                 className="text-white text-[14px] text-center leading-[24px] w-full my-[16px] mx-0"
                 href={authLink}
               >
-                Verifier mon compte
+                Me connecter
               </Button>
             </Section>
           </Container>

@@ -19,12 +19,13 @@ import {
   EmergencyAskAssignEvent,
   EventType,
 } from '../../services/emergency-manager/emergencyManager.dto';
+
 @WebSocketGateway({ namespace: '/rescuer/ws' })
 export class RescuerWebsocket
   implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit
 {
   private readonly logger: Logger = new Logger(RescuerWebsocket.name);
-  private clients: Map<Types.ObjectId, Socket> = new Map<
+  public static clients: Map<Types.ObjectId, Socket> = new Map<
     Types.ObjectId,
     Socket
   >();
@@ -43,38 +44,25 @@ export class RescuerWebsocket
 
   @OnEvent(EventType.EMERGENCY_ASK_ASSIGN)
   private async onEmergencyAskAssign(event: EmergencyAskAssignEvent) {
-    const clientId = this.clients.get(event.rescuerId);
-    if (!clientId) {
-      this.logger.log('No client found for rescuer ' + event.rescuerId + '.');
-      return;
-    }
-    this.logger.log(
-      'Found client for rescuer ' +
-        event.rescuerId +
-        ' with id ' +
-        clientId +
-        '.',
-    );
-    const client = this.clients.get(event.rescuerId);
+    this.logger.debug('Connected sockets: ' + RescuerWebsocket.clients.size);
+    const client = this.getSocketWithId(event.rescuerId);
     if (!client) {
       this.logger.log('No client found for rescuer ' + event.rescuerId + '.');
       return;
     }
-    this.logger.log(
-      'Found client for rescuer ' +
-        event.rescuerId +
-        ' with id ' +
-        clientId +
-        '.',
-    );
-    client.send(
-      JSON.stringify({
-        event: InterventionRequest.channel,
-        data: {
-          message: 'coucou',
-        },
-      }),
-    );
+    this.logger.log('Found client for rescuer ' + event.rescuerId + '.');
+    client.emit(InterventionRequest.channel, {
+      message: 'coucou',
+    });
+  }
+
+  private getSocketWithId(id: Types.ObjectId): Socket | null {
+    for (const [key, value] of RescuerWebsocket.clients) {
+      if (key.equals(id)) {
+        return value;
+      }
+    }
+    return null;
   }
 
   /**
@@ -94,11 +82,10 @@ export class RescuerWebsocket
         client.disconnect();
         return false;
       }
-      this.clients.set(new Types.ObjectId(decoded.id), client);
-      console.log(this.clients);
+      RescuerWebsocket.clients.set(new Types.ObjectId(decoded.id), client);
       return true;
     } catch (err) {
-      this.logger.log(err);
+      this.logger.error(err);
       client.disconnect();
     }
   }
@@ -110,15 +97,14 @@ export class RescuerWebsocket
    */
   handleDisconnect(client: any): any {
     this.logger.log('Client disconnected from server: ' + client.id);
-    this.clients.forEach((value, key) => {
+    RescuerWebsocket.clients.forEach((value, key) => {
       if (value.id === client.id) {
-        this.clients.delete(key);
+        RescuerWebsocket.clients.delete(key);
       }
     });
-    console.log(this.clients);
   }
 
-  afterInit(server: any): any {
+  afterInit() {
     this.logger.log('Rescuer websocket server initialized');
   }
 }

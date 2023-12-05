@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { render } from '@react-email/render';
 import * as nodemailer from 'nodemailer';
 import * as mailjetTransport from 'nodemailer-mailjet-transport';
@@ -9,6 +9,8 @@ import AccountCreatedMailPassword from './templates/stayalive-password-account';
 @Injectable()
 export class ReactEmailService {
   private transporter: nodemailer.Transporter;
+  private logger: Logger = new Logger(ReactEmailService.name);
+
   constructor() {
     this.transporter = nodemailer.createTransport(
       mailjetTransport({
@@ -65,6 +67,7 @@ export class ReactEmailService {
     username: string,
     password: string,
   ) {
+    this.logger.debug('Send a mail to ' + email + ' with password ' + password);
     const html = render(
       AccountCreatedMailPassword({
         username: username,

@@ -33,7 +33,7 @@ export class Emergency {
   @Prop({ required: true })
   status: EmergencyStatus;
 
-  @Prop({ required: true })
+  @Prop({ required: false, type: Types.ObjectId })
   rescuerAssigned: Types.ObjectId;
 }
 
