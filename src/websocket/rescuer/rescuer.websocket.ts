@@ -12,14 +12,13 @@ import { Logger, UseGuards } from '@nestjs/common';
 import { InterventionRequest } from './rescuer.dto';
 import { WsRescuerGuard } from '../../guards/auth.ws.guard';
 import * as jwt from 'jsonwebtoken';
-import { ObjectId } from 'mongoose';
-
+import { Types} from 'mongoose';
 @WebSocketGateway({ namespace: '/rescuer/ws' })
 export class RescuerWebsocket
   implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit
 {
   private readonly logger: Logger = new Logger(RescuerWebsocket.name);
-  private clients: Map<any, ObjectId> = new Map<any, ObjectId>();
+  private clients: Map<Types.ObjectId, any> = new Map<Types.ObjectId, any>();
 
   @WebSocketServer()
   server: Server;
@@ -32,7 +31,7 @@ export class RescuerWebsocket
       message: 'coucou',
     });
   }
-  handleConnection(@ConnectedSocket() client): any {
+  handleConnection(@ConnectedSocket() client: any): any {
     this.logger.log('Client connected to server: ' + client.id);
     const token = client.handshake.query.token;
     try {
@@ -44,7 +43,7 @@ export class RescuerWebsocket
         client.disconnect();
         return false;
       }
-      this.clients.set(decoded.id, client.id);
+      this.clients.set(new Types.ObjectId(decoded.id), client);
       return true;
     } catch (err) {
       this.logger.log(err);
@@ -52,9 +51,9 @@ export class RescuerWebsocket
     }
   }
   handleDisconnect(client: any): any {
-    this.logger.log('Client disconnected from server: ' + client.id);
+    this.logger.log('Client disconnected from server: ' + client.id)
     this.clients.forEach((value, key) => {
-      if (value === client.id) {
+      if (value.id === client.id) {
         this.clients.delete(key);
       }
     });
