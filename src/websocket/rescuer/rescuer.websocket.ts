@@ -13,12 +13,16 @@ import { InterventionRequest } from './rescuer.dto';
 import { WsRescuerGuard } from '../../guards/auth.ws.guard';
 import * as jwt from 'jsonwebtoken';
 import { Types} from 'mongoose';
+import {Socket} from "socket.io";
 @WebSocketGateway({ namespace: '/rescuer/ws' })
 export class RescuerWebsocket
   implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit
 {
   private readonly logger: Logger = new Logger(RescuerWebsocket.name);
-  private clients: Map<Types.ObjectId, any> = new Map<Types.ObjectId, any>();
+  private clients: Map<Types.ObjectId, Socket> = new Map<
+    Types.ObjectId,
+    Socket
+  >();
 
   @WebSocketServer()
   server: Server;
@@ -31,9 +35,9 @@ export class RescuerWebsocket
       message: 'coucou',
     });
   }
-  handleConnection(@ConnectedSocket() client: any): any {
+  handleConnection(@ConnectedSocket() client: Socket): any {
     this.logger.log('Client connected to server: ' + client.id);
-    const token = client.handshake.query.token;
+    const token = client.handshake.query.token as string;
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET) as {
         id: string;
@@ -44,6 +48,7 @@ export class RescuerWebsocket
         return false;
       }
       this.clients.set(new Types.ObjectId(decoded.id), client);
+      console.log(this.clients);
       return true;
     } catch (err) {
       this.logger.log(err);
@@ -57,6 +62,7 @@ export class RescuerWebsocket
         this.clients.delete(key);
       }
     });
+    console.log(this.clients);
   }
 
   afterInit(server: any): any {
