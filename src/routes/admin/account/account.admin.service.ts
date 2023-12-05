@@ -22,12 +22,13 @@ import {
   randomPassword,
   verifyPassword,
 } from '../../../utils/crypt.utils';
+import {ReactEmailService} from "../../../services/react-email/react-email.service";
 
 @Injectable()
 export class AccountAdminService {
   private readonly logger: Logger = new Logger(AccountAdminService.name);
 
-  constructor(@InjectModel(Admin.name) private adminModel: Model<Admin>) {
+  constructor(@InjectModel(Admin.name) private adminModel: Model<Admin>,private readonly reactEmailService: ReactEmailService) {
     this.createDefaultAdminAccount();
   }
 
@@ -99,7 +100,11 @@ export class AccountAdminService {
         "L'administrateur n'a pas pu être créé.",
       );
     }
-    // TODO: Send an email with the password
+    this.reactEmailService.sendMailCreatedAccountPassword(
+      body.email,
+      body.firstname,
+      password,
+    );
     return {
       message: 'Account created for ' + body.email + '.',
     };
