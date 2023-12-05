@@ -12,7 +12,7 @@ import { Logger, UseGuards } from '@nestjs/common';
 import { InterventionRequest } from './rescuer.dto';
 import { WsRescuerGuard } from '../../guards/auth.ws.guard';
 import * as jwt from 'jsonwebtoken';
-import {ObjectId} from "mongoose";
+import { ObjectId } from 'mongoose';
 
 @WebSocketGateway({ namespace: '/rescuer/ws' })
 export class RescuerWebsocket
