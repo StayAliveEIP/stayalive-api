@@ -1,39 +1,31 @@
 import {
   Body,
   Button,
-  Column,
   Container,
   Head,
   Heading,
-  Hr,
   Html,
   Img,
-  Link,
   Preview,
-  Row,
   Section,
   Tailwind,
   Text,
 } from '@react-email/components';
 import * as React from 'react';
 
-interface VercelInviteUserEmailProps {
+interface MagicLinkEmailProps {
   username?: string;
   validationCode?: string;
-  userImage?: string;
-  inviteLink?: string;
+  authLink?: string;
 }
 
-const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : '';
+const baseUrl = 'api.stayalive.fr:3000';
 
-export const MailChangePassword = ({
-  username = 'Bastos',
-  validationCode = '144833',
-  inviteLink = 'https://vercel.com/teams/invite/foo',
-}: VercelInviteUserEmailProps) => {
-  const previewText = `Test`
+export const MagicLinkMail = ({
+  username = 'Erreur',
+  authLink = 'https://stayalive.fr',
+}: MagicLinkEmailProps) => {
+  const previewText = `Lien de connexion`;
 
   return (
     <Html>
@@ -52,20 +44,19 @@ export const MailChangePassword = ({
               />
             </Section>
             <Heading className="text-black text-[24px] font-normal text-center p-0 my-[30px] mx-0">
-              Mot de passe oublié
+              Lien de connexion
             </Heading>
-            <Text className="text-black text-[14px] leading-[24px]">
-
-            </Text>
+            <Text className="text-black text-[14px] leading-[24px]"></Text>
             <Text className="text-black text-[14px] text-center leading-[24px]">
-              Bonjour {username}, vous avez oublier votre mot de passe ? Cliquez sur le bouton ci-dessous pour le changer.
+              Bonjour {username}, vous pouvez vous connecter en cliquant sur le
+              lien ci dessous.
             </Text>
             <Section style={codeContainer}>
               <Button
                 className="text-white text-[14px] text-center leading-[24px] w-full my-[16px] mx-0"
-                href={inviteLink}
+                href={authLink}
               >
-                Changer mon mot de passe
+                Verifier mon compte
               </Button>
             </Section>
           </Container>
@@ -75,21 +66,6 @@ export const MailChangePassword = ({
   );
 };
 
-
-const ButtonStyle = {
-    background: '#000',
-    borderRadius: '4px',
-    color: '#fff',
-    display: 'inline-block',
-    fontSize: '14px',
-    fontWeight: 'bold',
-    lineHeight: '24px',
-    padding: '8px 16px',
-    textDecoration: 'none',
-    verticalAlign: 'middle',
-    width: '100%',
-};
-
 const codeContainer = {
   background: 'red',
   borderRadius: '5px',
@@ -97,4 +73,4 @@ const codeContainer = {
   verticalAlign: 'middle',
   width: '280px',
 };
-export default MailChangePassword;
+export default MagicLinkMail;
