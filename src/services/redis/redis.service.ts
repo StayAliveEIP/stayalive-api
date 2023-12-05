@@ -30,6 +30,19 @@ export class RedisService {
 
   // Status
 
+  public async getAllRescuerAvailable(): Promise<Types.ObjectId[]> {
+    const keys: string[] = await this.client.keys('stayAlive:status:*');
+    const rescuers: Types.ObjectId[] = [];
+    for (const key of keys) {
+      const id: string = key.split(':')[2];
+      const status: Status = await this.getStatusOfRescuer(
+        new Types.ObjectId(id),
+      );
+      if (status === Status.AVAILABLE) rescuers.push(new Types.ObjectId(id));
+    }
+    return rescuers;
+  }
+
   /**
    * Sets the status of the rescuer.
    * @param rescuerId The id of the rescuer.
@@ -111,8 +124,25 @@ export class RedisService {
       const position: RescuerPosition = await this.getPositionOfRescuer(
         new Types.ObjectId(id),
       );
+      if (!position) continue;
       positions.push({
         id: new Types.ObjectId(id),
+        position,
+      });
+    }
+    return positions;
+  }
+
+  public async getAllPosition(
+    rescuers: Array<Types.ObjectId>,
+  ): Promise<RescuerPositionWithId[]> {
+    const positions: RescuerPositionWithId[] = [];
+    for (const rescuer of rescuers) {
+      const position: RescuerPosition =
+        await this.getPositionOfRescuer(rescuer);
+      if (!position) continue;
+      positions.push({
+        id: rescuer,
         position,
       });
     }
