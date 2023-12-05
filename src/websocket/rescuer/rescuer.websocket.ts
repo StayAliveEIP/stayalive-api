@@ -1,4 +1,5 @@
 import {
+  ConnectedSocket,
   OnGatewayConnection,
   OnGatewayDisconnect,
   OnGatewayInit,
@@ -7,30 +8,48 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server } from 'ws';
-import { Logger } from '@nestjs/common';
+import {Logger, UseGuards} from '@nestjs/common';
 import { InterventionRequest } from './rescuer.dto';
+import {WsRescuerGuard} from "../../guards/auth.ws.guard";
+import * as jwt from 'jsonwebtoken';
 
 @WebSocketGateway({ namespace: '/rescuer/ws' })
 export class RescuerWebsocket
   implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit
 {
   private readonly logger: Logger = new Logger(RescuerWebsocket.name);
+  private clients: Map<string, string> = new Map<string, string>();
 
   @WebSocketServer()
   server: Server;
 
-  @SubscribeMessage(InterventionRequest.channel)
+  @UseGuards(WsRescuerGuard)
+  @SubscribeMessage(InterventionRequest.event)
   handleMessage(client: any, payload: any): InterventionRequest {
     this.logger.log('New message from client: ' + client.id + ' - ' + payload);
     return new InterventionRequest({
       message: 'coucou',
     });
   }
-
-  handleConnection(data: any): any {
-    this.logger.log('Client connected to server: ' + data.id);
+  handleConnection(@ConnectedSocket() client): any {
+    this.logger.log('Client connected to server: ' + client.id);
+    const token = client.handshake.query.token;
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET) as {
+        id: string;
+        account: string;
+      };
+      if (decoded.account !== 'rescuer') {
+        client.disconnect();
+        return false;
+      }
+      this.clients.set(decoded.id, client.id);
+      return true;
+    } catch (err) {
+      this.logger.log(err);
+      client.disconnect();
+    }
   }
-
   handleDisconnect(client: any): any {
     this.logger.log('Client disconnected from server: ' + client.id);
   }

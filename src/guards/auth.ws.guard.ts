@@ -1,11 +1,30 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { WsException } from '@nestjs/websockets';
-import { AuthGuard } from '@nestjs/passport';
-import { GuardsConsumer } from '@nestjs/core/guards';
+import { JwtStrategy } from './jwt.strategy';
 
 @Injectable()
-export class WsRescuerGuard extends GuardsConsumer {
+export class WsRescuerGuard implements CanActivate {
+  constructor(private jwtStrategy: JwtStrategy) {}
+
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    throw new WsException('Unauthorized access');
+    const client = context.switchToWs().getClient<any>();
+    const token = this.extractJwtToken(client);
+
+    if (!token) {
+      return false;
+    }
+
+    try {
+      const user = await this.jwtStrategy.validate({ id: token });
+      client.user = user;
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  private extractJwtToken(client: any): string | null {
+    // Example of extracting token from query parameters
+    const token = client.handshake?.query?.token;
+    return token;
   }
 }
