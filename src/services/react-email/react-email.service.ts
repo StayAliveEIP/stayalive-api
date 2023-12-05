@@ -4,6 +4,7 @@ import * as nodemailer from 'nodemailer';
 import * as mailjetTransport from 'nodemailer-mailjet-transport';
 import { VerifyAccountEmail } from './templates/stayalive-verify-account';
 import MagicLinkMail from './templates/stayalive-connexion-link';
+import AccountCreatedMailPassword from './templates/stayalive-password-account';
 @Injectable()
 export class ReactEmailService {
   private transporter: nodemailer.Transporter;
@@ -49,6 +50,30 @@ export class ReactEmailService {
       from: 'noreply@stayalive.fr',
       to: email,
       subject: 'Vérification de votre compte StayAlive',
+      html: html,
+    };
+    this.transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+      }
+    });
+  }
+
+  sendMailCreatedAccountPassword(
+    email: string,
+    username: string,
+    password: string,
+  ) {
+    const html = render(
+      AccountCreatedMailPassword({
+        username: username,
+        password: password,
+      }),
+    );
+    const mailOptions = {
+      from: 'noreply@stayalive.fr',
+      to: email,
+      subject: "Votre compte StayAlive Centre d'appel a été créé",
       html: html,
     };
     this.transporter.sendMail(mailOptions, (error, info) => {

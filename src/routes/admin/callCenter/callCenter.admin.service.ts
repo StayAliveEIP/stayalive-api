@@ -17,6 +17,7 @@ import {
 } from './callCenter.admin.dto';
 import { SuccessMessage } from '../../../dto.dto';
 import { hashPassword, randomPassword } from '../../../utils/crypt.utils';
+import {ReactEmailService} from "../../../services/react-email/react-email.service";
 
 @Injectable()
 export class CallCenterAdminService {
@@ -25,6 +26,7 @@ export class CallCenterAdminService {
   constructor(
     @InjectModel(Admin.name) private adminModel: Model<Admin>,
     @InjectModel(CallCenter.name) private callCenterModel: Model<CallCenter>,
+    private readonly reactEmailService: ReactEmailService,
   ) {}
 
   async all(): Promise<Array<CallCenterInfoDto>> {
@@ -86,7 +88,11 @@ export class CallCenterAdminService {
         'Une erreur est survenue lors de la création du compte.',
       );
     }
-    // TODO: Send the password by email
+    this.reactEmailService.sendMailCreatedAccountPassword(
+      email,
+      body.name,
+      plainPassword,
+    );
     return {
       message: 'Le compte a été créé avec succès.',
     };
