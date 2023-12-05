@@ -7,7 +7,7 @@ import {
   EmergencyInfoResponse,
 } from './emergency.callCenter.dto';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { EventType } from '../../../event/event.dto';
+import { EmergencyCreatedEvent, EventType } from '../../../event/event.dto';
 
 @Injectable()
 export class EmergencyCallCenterService {
@@ -36,11 +36,6 @@ export class EmergencyCallCenterService {
     userId: Types.ObjectId,
     body: CreateNewEmergencyRequest,
   ): Promise<EmergencyInfoResponse> {
-    // this.eventEmitter.emit(EventType.EMERGENCY_CREATED, {
-    //   id: emergency._id,
-    //   lat: body.position.lat,
-    //   long: body.position.long,
-    // });
     // Create a new emergency
     const emergency: Emergency = {
       _id: new Types.ObjectId(),
@@ -54,6 +49,13 @@ export class EmergencyCallCenterService {
       rescuerAssigned: null,
     };
     const result = await this.emergencyModel.create(emergency);
+    // Send the event
+    const emergencyCreated: EmergencyCreatedEvent = {
+      emergencyId: emergency._id,
+      lat: body.position.lat,
+      long: body.position.long,
+    };
+    this.eventEmitter.emit(EventType.EMERGENCY_CREATED, emergencyCreated);
     return {
       id: result._id,
     };
