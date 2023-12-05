@@ -53,6 +53,11 @@ export class RescuerWebsocket
   }
   handleDisconnect(client: any): any {
     this.logger.log('Client disconnected from server: ' + client.id);
+    this.clients.forEach((value, key) => {
+      if (value === client.id) {
+        this.clients.delete(key);
+      }
+    });
   }
 
   afterInit(server: any): any {
