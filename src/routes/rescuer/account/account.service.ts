@@ -20,6 +20,7 @@ import { SuccessMessage } from '../../../dto.dto';
 import { hashPassword, verifyPassword } from '../../../utils/crypt.utils';
 import { Document, DocumentStatus } from '../../../database/document.schema';
 import { RedisService } from '../../../services/redis/redis.service';
+import { ReactEmailService } from '../../../services/react-email/react-email.service';
 
 @Injectable()
 export class AccountService {
@@ -29,6 +30,7 @@ export class AccountService {
     private redisService: RedisService,
     @InjectModel(Rescuer.name) private rescuerModel: Model<Rescuer>,
     @InjectModel(Document.name) private documentModel: Model<Document>,
+    private reactEmailService: ReactEmailService,
   ) {}
 
   async index(req: Request): Promise<AccountIndexResponse> {
@@ -149,11 +151,22 @@ export class AccountService {
         'Cette adresse email est déjà utilisée par un autre utilisateur ou par vous même.',
       );
     }
+    const token: string =
+      Math.random().toString(36).substring(2, 15) +
+      Math.random().toString(36).substring(2, 15);
+
     // Change the email
     user.email.email = body.email;
     user.email.verified = false;
+    user.email.code = token;
+    user.email.lastCodeSent = new Date();
     await user.save();
-    // TODO: send email to verify the new email
+    // Send the email
+    this.reactEmailService.sendMailVerifyEmailCode(
+      body.email,
+      user.firstname,
+      token,
+    );
     return {
       message:
         'Votre adresse email a bien été changée, un email de vérification vous a été envoyé.',

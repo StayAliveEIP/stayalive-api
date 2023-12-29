@@ -103,7 +103,6 @@ export class AuthService {
     const token = generateToken(user._id, AccountType.RESCUER);
     const frontUrl = process.env.FRONTEND_URL;
     const _finalUrl = `${frontUrl}/auth/magiclogin?token=${token}`;
-    // TODO: Send email
     this.reactEmailService.sendMagicLinkEmail(
       body.email,
       user.firstname,

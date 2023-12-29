@@ -7,6 +7,7 @@ import MagicLinkMail from './templates/stayalive-connexion-link';
 import AccountCreatedMailPassword from './templates/stayalive-password-account';
 import MailChangePassword from './templates/stayalive-change-password';
 import MailForgotPasswordCode from './templates/stayalive-forgot-password-code';
+import MailVerifyEmailCode from './templates/stayalive-verify-email-code';
 
 @Injectable()
 export class ReactEmailService {
@@ -93,6 +94,26 @@ export class ReactEmailService {
   sendMailForgotPasswordCode(email: string, username: string, code: string) {
     const html = render(
       MailForgotPasswordCode({
+        username: username,
+        validationCode: code,
+      }),
+    );
+    const mailOptions = {
+      from: 'noreply@stayalive.fr',
+      to: email,
+      subject: 'Réinitialisation de votre mot de passe StayAlive',
+      html: html,
+    };
+    this.transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+      }
+    });
+  }
+
+  sendMailVerifyEmailCode(email: string, username: string, code: string) {
+    const html = render(
+      MailVerifyEmailCode({
         username: username,
         validationCode: code,
       }),
