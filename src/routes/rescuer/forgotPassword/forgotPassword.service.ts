@@ -17,12 +17,13 @@ import {
 } from '../../../services/mailjet/mailjet.service';
 import { hashPassword } from '../../../utils/crypt.utils';
 import { Rescuer } from '../../../database/rescuer.schema';
+import { ReactEmailService } from '../../../services/react-email/react-email.service';
 
 @Injectable()
 export class ForgotPasswordService {
   constructor(
     @InjectModel(Rescuer.name) private rescuerModel: Model<Rescuer>,
-    private readonly mailjetService: MailJetService,
+    private readonly reactEmailService: ReactEmailService,
   ) {}
 
   async index(
@@ -54,23 +55,14 @@ export class ForgotPasswordService {
         'password.lastTokenSent': new Date(),
       },
     );
-    const sendEmailParam: ISendEmailParam = {
-      from: {
-        email: 'noreply@stayalive.fr',
-        name: 'StayAlive',
-      },
-      to: {
-        email: body.email,
-        name: rescuer.firstname + ' ' + rescuer.lastname.toUpperCase(),
-      },
-      subject: 'Réinitialisation de votre mot de passe',
-      isHtml: false,
-      rawBody: 'Votre code de réinitialisation est : ' + token + '.',
-    };
-    this.mailjetService.sendEmailAsync(sendEmailParam);
+    // Send the email
+    this.reactEmailService.sendMailForgotPasswordCode(
+      body.email,
+      rescuer.firstname,
+      token,
+    );
     return {
-      message:
-        'Un email vous a été envoyé pour réinitialiser votre mot de passe.',
+      message: 'Un code de réinitialisation vous a été envoyé par email.',
     };
   }
 

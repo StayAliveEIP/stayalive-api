@@ -1,16 +1,11 @@
 import {
   Body,
-  Button,
-  Column,
   Container,
   Head,
   Heading,
-  Hr,
   Html,
   Img,
-  Link,
   Preview,
-  Row,
   Section,
   Tailwind,
   Text,
@@ -28,10 +23,9 @@ const baseUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : '';
 
-export const MailChangePassword = ({
+export const MailForgotPasswordCode = ({
   username = 'Bastos',
   validationCode = '144833',
-  inviteLink = 'https://vercel.com/teams/invite/foo',
 }: VercelInviteUserEmailProps) => {
   const previewText = `Test`;
 
@@ -52,20 +46,15 @@ export const MailChangePassword = ({
               />
             </Section>
             <Heading className="text-black text-[24px] font-normal text-center p-0 my-[30px] mx-0">
-              Mot de passe oublié
+              Reinitialisation du mot de passe
             </Heading>
             <Text className="text-black text-[14px] leading-[24px]"></Text>
             <Text className="text-black text-[14px] text-center leading-[24px]">
-              Bonjour {username}, vous avez oublier votre mot de passe ? Cliquez
-              sur le bouton ci-dessous pour le changer.
+              Bonjour {username}, vous avez oublier votre mot de passe ? voici
+              votre code de validation :
             </Text>
             <Section style={codeContainer}>
-              <Button
-                className="text-white text-[14px] text-center leading-[24px] w-full my-[16px] mx-0"
-                href={inviteLink}
-              >
-                Changer mon mot de passe
-              </Button>
+              <Text style={code}>{validationCode}</Text>
             </Section>
           </Container>
         </Body>
@@ -74,25 +63,26 @@ export const MailChangePassword = ({
   );
 };
 
-const ButtonStyle = {
-  background: '#000',
-  borderRadius: '4px',
-  color: '#fff',
+const code = {
+  color: '#000',
   display: 'inline-block',
-  fontSize: '14px',
-  fontWeight: 'bold',
-  lineHeight: '24px',
-  padding: '8px 16px',
-  textDecoration: 'none',
-  verticalAlign: 'middle',
+  fontFamily: 'HelveticaNeue-Bold',
+  fontSize: '32px',
+  fontWeight: 700,
+  letterSpacing: '6px',
+  lineHeight: '40px',
+  paddingBottom: '8px',
+  paddingTop: '8px',
+  margin: '0 auto',
   width: '100%',
+  textAlign: 'center' as const,
 };
 
 const codeContainer = {
-  background: 'red',
-  borderRadius: '5px',
+  background: 'rgba(0,0,0,.05)',
+  borderRadius: '4px',
   margin: '16px auto 14px',
   verticalAlign: 'middle',
   width: '280px',
 };
-export default MailChangePassword;
+export default MailForgotPasswordCode;
