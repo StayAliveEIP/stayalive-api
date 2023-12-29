@@ -7,6 +7,7 @@ import { DocumentSchema, Document } from '../../../database/document.schema';
 import { DocumentAdminService } from './document.admin.service';
 import { DocumentAdminController } from './document.admin.controller';
 import { Rescuer, RescuerSchema } from '../../../database/rescuer.schema';
+import {ReactEmailModule} from "../../../services/react-email/react-email.module";
 
 @Module({
   imports: [
@@ -15,8 +16,9 @@ import { Rescuer, RescuerSchema } from '../../../database/rescuer.schema';
     MongooseModule.forFeature([
       { name: Document.name, schema: DocumentSchema },
     ]),
+      ReactEmailModule,
   ],
   controllers: [DocumentAdminController],
-  providers: [JwtStrategy, DocumentAdminService, ReactEmailService],
+  providers: [JwtStrategy, DocumentAdminService],
 })
 export class DocumentAdminModule {}

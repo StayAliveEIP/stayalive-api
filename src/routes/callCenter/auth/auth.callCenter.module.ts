@@ -11,14 +11,16 @@ import {
   CallCenterSchema,
 } from '../../../database/callCenter.schema';
 import { AuthCallCenterService } from './auth.callCenter.service';
+import {ReactEmailModule} from "../../../services/react-email/react-email.module";
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: CallCenter.name, schema: CallCenterSchema },
     ]),
+    ReactEmailModule,
   ],
   controllers: [AuthCallCenterController],
-  providers: [JwtStrategy, AuthCallCenterService, ReactEmailService],
+  providers: [JwtStrategy, AuthCallCenterService],
 })
 export class AuthCallCenterModule {}
