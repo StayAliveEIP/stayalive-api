@@ -57,7 +57,6 @@ export class EmergencyManagerService {
         '.',
     );
     // Send event to ask to assign the rescuer to the emergency
-    await this.setAssignedRescuer(event.emergencyId, nearestPosition.id);
     await this.sendEventAskAssignRescuer(
       event.emergencyId,
       nearestPosition.id,
@@ -155,13 +154,4 @@ export class EmergencyManagerService {
     });
   }
 
-  private async setAssignedRescuer(
-    emergencyId: Types.ObjectId,
-    rescuerId: Types.ObjectId,
-  ) {
-    await this.emergencyModel.updateOne(
-      { _id: emergencyId },
-      { rescuerAssigned: rescuerId },
-    );
-  }
 }
