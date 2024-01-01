@@ -9,11 +9,12 @@ import { Rescuer } from '../../../database/rescuer.schema';
 import { Emergency, EmergencyStatus } from '../../../database/emergency.schema';
 import { SuccessMessage } from '../../../dto.dto';
 import {
-  EmergencyAssignedEvent,
+  EmergencyAssignedEvent, EmergencyRefusedEvent,
   EmergencyTerminatedEvent,
   EventType,
 } from '../../../services/emergency-manager/emergencyManager.dto';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import {reportUnhandledError} from "rxjs/internal/util/reportUnhandledError";
 
 @Injectable()
 export class EmergencyService {
@@ -85,6 +86,30 @@ export class EmergencyService {
     await emergency.save();
     return {
       message: "L'urgence a bien été terminée.",
+    };
+  }
+
+  async refuseEmergency(userId: Types.ObjectId, id: string) {
+    const emergency = await this.emergencyModel.findById(
+      new Types.ObjectId(id),
+    );
+    if (!emergency) {
+      throw new NotFoundException("L'urgence n'existe pas.");
+    }
+    if (emergency.status === EmergencyStatus.RESOLVED) {
+      throw new BadRequestException("L'urgence a déjà été résolue.");
+    }
+    const event: EmergencyRefusedEvent = {
+      emergencyId: emergency._id,
+      rescuerId: userId,
+    };
+    this.eventEmitter.emit(EventType.EMERGENCY_REFUSED, event);
+    const hiddenTab = emergency.rescuerHidden;
+    hiddenTab.push(userId);
+    emergency.rescuerHidden = hiddenTab;
+    await emergency.save();
+    return {
+      message: "Vous avez bien refusé l'urgence",
     };
   }
 

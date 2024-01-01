@@ -35,6 +35,9 @@ export class Emergency {
 
   @Prop({ required: false, type: Types.ObjectId })
   rescuerAssigned: Types.ObjectId;
+
+  @Prop({ required: false, type: Array<Types.ObjectId> })
+  rescuerHidden: Array<Types.ObjectId>;
 }
 
 export const EmergencySchema = SchemaFactory.createForClass(Emergency);

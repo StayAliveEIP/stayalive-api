@@ -4,6 +4,8 @@ import { EmergencyService } from './emergency.service';
 import { UserId } from '../../../decorator/userid.decorator';
 import { Types } from 'mongoose';
 import { SuccessMessage } from '../../../dto.dto';
+import { TypeScriptBinaryLoader } from '@nestjs/cli/lib/compiler/typescript-loader';
+import { QueueScheduler } from 'rxjs/internal/scheduler/QueueScheduler';
 
 @Controller('/rescuer')
 @ApiTags('Emergency')
@@ -43,8 +45,13 @@ export class EmergencyController {
     return await this.service.terminateEmergency(userId, id);
   }
 
+  @Get('/emergency/refuse')
+  async refuseEmergency(
+    @UserId() userId: Types.ObjectId,
+    @Query('id') id: string,
+  ) {}
   /*
-  @Post('/emergency')
+  @Post('/emergency')!
   @ApiBody({ type: newEmergencyDto })
   @ApiResponse({
     status: 200,
