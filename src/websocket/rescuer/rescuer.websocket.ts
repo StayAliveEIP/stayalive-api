@@ -51,9 +51,16 @@ export class RescuerWebsocket
       return;
     }
     this.logger.log('Found client for rescuer ' + event.rescuerId + '.');
-    client.emit(InterventionRequest.channel, {
-      message: 'coucou',
-    });
+
+    const object = {
+      type: 'askAssign',
+      emergencyId: event.emergencyId,
+      rescuerId: event.rescuerId,
+      info: event.info,
+      position: event.position,
+    };
+
+    client.emit(InterventionRequest.channel, object);
   }
 
   private getSocketWithId(id: Types.ObjectId): Socket | null {

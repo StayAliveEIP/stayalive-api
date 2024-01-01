@@ -57,6 +57,7 @@ export class EmergencyCallCenterService {
       emergencyId: emergency._id,
       lat: body.position.lat,
       long: body.position.long,
+      info: body.info,
     };
     this.eventEmitter.emit(EventType.EMERGENCY_CREATED, emergencyCreated);
     return {

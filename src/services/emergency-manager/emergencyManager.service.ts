@@ -10,8 +10,11 @@ import {
   GeoCoordinates,
   getDistanceInKilometers,
 } from '../../utils/position.utils';
-import { Types } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { RescuerWebsocket } from '../../websocket/rescuer/rescuer.websocket';
+import { InjectModel } from '@nestjs/mongoose';
+import { Rescuer } from '../../database/rescuer.schema';
+import { Emergency } from '../../database/emergency.schema';
 
 @Injectable()
 export class EmergencyManagerService {
@@ -20,6 +23,7 @@ export class EmergencyManagerService {
   constructor(
     private readonly redis: RedisService,
     private readonly event: EventEmitter2,
+    @InjectModel(Emergency.name) private emergencyModel: Model<Emergency>,
   ) {}
 
   /**
@@ -53,16 +57,35 @@ export class EmergencyManagerService {
         '.',
     );
     // Send event to ask to assign the rescuer to the emergency
-    await this.sendEventAskAssignRescuer(event.emergencyId, nearestPosition.id);
+    await this.setAssignedRescuer(event.emergencyId, nearestPosition.id);
+    await this.sendEventAskAssignRescuer(
+      event.emergencyId,
+      nearestPosition.id,
+      event.info,
+      {
+        lat: event.lat,
+        lng: event.long,
+      },
+    );
   }
 
   private async sendEventAskAssignRescuer(
     emergencyId: Types.ObjectId,
     rescuerId: Types.ObjectId,
+    info: string = '',
+    position: {
+      lat: number;
+      lng: number;
+    } = {
+      lat: 0,
+      lng: 0,
+    },
   ) {
     const event: EmergencyAskAssignEvent = {
       emergencyId: emergencyId,
       rescuerId: rescuerId,
+      info: info,
+      position: position,
     };
     this.event.emit(EventType.EMERGENCY_ASK_ASSIGN, event);
   }
@@ -130,5 +153,15 @@ export class EmergencyManagerService {
       );
       return prevDistance < currDistance ? prev : curr;
     });
+  }
+
+  private async setAssignedRescuer(
+    emergencyId: Types.ObjectId,
+    rescuerId: Types.ObjectId,
+  ) {
+    await this.emergencyModel.updateOne(
+      { _id: emergencyId },
+      { rescuerAssigned: rescuerId },
+    );
   }
 }

@@ -11,12 +11,18 @@ export enum EventType {
 export class EmergencyAskAssignEvent {
   emergencyId: Types.ObjectId;
   rescuerId: Types.ObjectId;
+  info: string;
+  position: {
+    lat: number;
+    lng: number;
+  };
 }
 
 export class EmergencyCreatedEvent {
   emergencyId: Types.ObjectId;
   lat: number;
   long: number;
+  info: string;
 }
 
 export class EmergencyAssignedEvent {
