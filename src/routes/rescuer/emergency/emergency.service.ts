@@ -9,12 +9,14 @@ import { Rescuer } from '../../../database/rescuer.schema';
 import { Emergency, EmergencyStatus } from '../../../database/emergency.schema';
 import { SuccessMessage } from '../../../dto.dto';
 import {
-  EmergencyAssignedEvent, EmergencyRefusedEvent,
+  EmergencyAssignedEvent,
+  EmergencyCreatedEvent,
+  EmergencyRefusedEvent,
   EmergencyTerminatedEvent,
   EventType,
 } from '../../../services/emergency-manager/emergencyManager.dto';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import {reportUnhandledError} from "rxjs/internal/util/reportUnhandledError";
+import { reportUnhandledError } from 'rxjs/internal/util/reportUnhandledError';
 
 @Injectable()
 export class EmergencyService {
@@ -89,6 +91,7 @@ export class EmergencyService {
     };
   }
 
+  //TODO : Redis
   async refuseEmergency(userId: Types.ObjectId, id: string) {
     const emergency = await this.emergencyModel.findById(
       new Types.ObjectId(id),
@@ -103,11 +106,17 @@ export class EmergencyService {
       emergencyId: emergency._id,
       rescuerId: userId,
     };
-    this.eventEmitter.emit(EventType.EMERGENCY_REFUSED, event);
     const hiddenTab = emergency.rescuerHidden;
     hiddenTab.push(userId);
     emergency.rescuerHidden = hiddenTab;
     await emergency.save();
+    const eventCreatedTemplate: EmergencyCreatedEvent = {
+      emergencyId: emergency._id,
+      lat: emergency.position.lat,
+      long: emergency.position.long,
+      info: emergency.info,
+    };
+    this.eventEmitter.emit(EventType.EMERGENCY_CREATED, eventCreatedTemplate);
     return {
       message: "Vous avez bien refusé l'urgence",
     };

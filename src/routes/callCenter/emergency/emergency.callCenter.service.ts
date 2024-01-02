@@ -50,6 +50,7 @@ export class EmergencyCallCenterService {
       },
       status: EmergencyStatus.PENDING,
       rescuerAssigned: null,
+      rescuerHidden: [],
     };
     const result = await this.emergencyModel.create(emergency);
     // Send the event

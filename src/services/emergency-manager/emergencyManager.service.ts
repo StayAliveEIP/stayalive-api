@@ -3,6 +3,7 @@ import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 import {
   EmergencyAskAssignEvent,
   EmergencyCreatedEvent,
+  EmergencyRefusedEvent,
   EventType,
 } from './emergencyManager.dto';
 import { RedisService, RescuerPositionWithId } from '../redis/redis.service';
@@ -68,6 +69,7 @@ export class EmergencyManagerService {
     );
   }
 
+
   private async sendEventAskAssignRescuer(
     emergencyId: Types.ObjectId,
     rescuerId: Types.ObjectId,
@@ -128,9 +130,31 @@ export class EmergencyManagerService {
         connected,
     );
     // Keep only connected rescuers
-    return rescuerWithPosition.filter((rescuer) =>
+    const connectedRescuer = rescuerWithPosition.filter((rescuer) =>
       connected.map((id) => id.toString()).includes(rescuer.id.toString()),
     );
+
+    //TODO : switch to redis
+
+    // Keep only rescuers that are not hidden
+    const emergency = await this.emergencyModel.findById(event.emergencyId);
+    if (!emergency) {
+      throw new Error('Emergency not found');
+    }
+    // Keep only rescuers that are not hidden (the hidden rescuers are the ones that refused the emergency and the array of hidden rescuers is stored in the emergency and called rescuerHidden)
+    const rescuerNotHidden = connectedRescuer.filter(
+      (rescuer) =>
+        !emergency.rescuerHidden
+          .map((id) => id.toString())
+          .includes(rescuer.id.toString()),
+    );
+    this.logger.log(
+      'Found ' +
+        rescuerNotHidden.length +
+        ' connected rescuers not hidden for emergency: ' +
+        rescuerNotHidden.map((rescuer) => rescuer.id),
+    );
+    return rescuerNotHidden;
   }
 
   private async getNearestPosition(
@@ -153,5 +177,4 @@ export class EmergencyManagerService {
       return prevDistance < currDistance ? prev : curr;
     });
   }
-
 }

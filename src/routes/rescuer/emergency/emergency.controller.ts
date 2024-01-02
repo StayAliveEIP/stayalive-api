@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import {Controller, Get, Query, UseGuards} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { EmergencyService } from './emergency.service';
 import { UserId } from '../../../decorator/userid.decorator';
@@ -6,6 +6,7 @@ import { Types } from 'mongoose';
 import { SuccessMessage } from '../../../dto.dto';
 import { TypeScriptBinaryLoader } from '@nestjs/cli/lib/compiler/typescript-loader';
 import { QueueScheduler } from 'rxjs/internal/scheduler/QueueScheduler';
+import {RescuerAuthGuard} from "../../../guards/auth.route.guard";
 
 @Controller('/rescuer')
 @ApiTags('Emergency')
@@ -45,11 +46,14 @@ export class EmergencyController {
     return await this.service.terminateEmergency(userId, id);
   }
 
+  @UseGuards(RescuerAuthGuard)
   @Get('/emergency/refuse')
   async refuseEmergency(
     @UserId() userId: Types.ObjectId,
     @Query('id') id: string,
-  ) {}
+  ) {
+    return await this.service.refuseEmergency(userId, id);
+  }
   /*
   @Post('/emergency')!
   @ApiBody({ type: newEmergencyDto })
