@@ -93,23 +93,24 @@ export class EmergencyService {
 
   //TODO : Redis
   async refuseEmergency(userId: Types.ObjectId, id: string) {
-    const emergency = await this.emergencyModel.findById(
-      new Types.ObjectId(id),
-    );
+    const emergency = await this.emergencyModel.findById(new Types.ObjectId(id));
     if (!emergency) {
       throw new NotFoundException("L'urgence n'existe pas.");
     }
     if (emergency.status === EmergencyStatus.RESOLVED) {
       throw new BadRequestException("L'urgence a déjà été résolue.");
     }
-    const event: EmergencyRefusedEvent = {
-      emergencyId: emergency._id,
-      rescuerId: userId,
-    };
-    const hiddenTab = emergency.rescuerHidden;
-    hiddenTab.push(userId);
-    emergency.rescuerHidden = hiddenTab;
-    await emergency.save();
+    try {
+      emergency.rescuerHidden.push(new Types.ObjectId(userId));
+      await this.emergencyModel.findByIdAndUpdate(
+        new Types.ObjectId(id),
+        emergency,
+      );
+    } catch (error) {
+      console.error('Error during emergency save operation:', error);
+      throw error;
+    }
+
     const eventCreatedTemplate: EmergencyCreatedEvent = {
       emergencyId: emergency._id,
       lat: emergency.position.lat,
