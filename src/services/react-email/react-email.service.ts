@@ -55,7 +55,7 @@ export class ReactEmailService {
     const mailOptions = {
       from: 'noreply@stayalive.fr',
       to: email,
-      subject: 'Vérification de votre compte StayAlive',
+      subject: 'Connecter vous avec le lien',
       html: html,
     };
     this.transporter.sendMail(mailOptions, (error, info) => {
