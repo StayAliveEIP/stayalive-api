@@ -123,7 +123,7 @@ export class ReactEmailService {
       subject: 'Réinitialisation de votre mot de passe StayAlive',
       html: html,
     };
-    this.transporter.sendMail(mailOptions, (error, info) => {
+    this.transporter.sendMail(mailOptions, (error) => {
       if (error) {
         console.log(error);
       }

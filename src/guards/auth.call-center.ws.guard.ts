@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { JwtStrategy } from './jwt.strategy';
 
 @Injectable()
-export class WsRescuerGuard implements CanActivate {
+export class WsCallCenterGuard implements CanActivate {
   constructor(private jwtStrategy: JwtStrategy) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
