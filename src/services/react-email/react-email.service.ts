@@ -5,7 +5,6 @@ import * as mailjetTransport from 'nodemailer-mailjet-transport';
 import { VerifyAccountEmail } from './templates/stayalive-verify-account';
 import MagicLinkMail from './templates/stayalive-connexion-link';
 import AccountCreatedMailPassword from './templates/stayalive-password-account';
-import MailChangePassword from './templates/stayalive-change-password';
 import MailForgotPasswordCode from './templates/stayalive-forgot-password-code';
 import MailVerifyEmailCode from './templates/stayalive-verify-email-code';
 
