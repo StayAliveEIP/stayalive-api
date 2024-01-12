@@ -9,10 +9,13 @@ import {
 } from '@nestjs/websockets';
 import { Server } from 'ws';
 import { Socket } from 'socket.io';
-import { Logger } from '@nestjs/common';
+import {Logger, UseGuards} from '@nestjs/common';
 import { Types } from 'mongoose';
-import {InterventionRequest} from "../rescuer/rescuer.dto";
-import {CallCenterMessage} from "./call-center.dto";
+import { CallCenterMessage } from './call-center.dto';
+import {WsRescuerGuard} from "../../guards/auth.ws.guard";
+import {WsCallCenterGuard} from "../../guards/auth.call-center.ws.guard";
+import * as jwt from "jsonwebtoken";
+import {Call} from "../../database/call.schema";
 
 @WebSocketGateway({ namespace: '/call-center/ws' })
 export class CallCenterWebsocket
@@ -26,7 +29,7 @@ export class CallCenterWebsocket
 
   @WebSocketServer()
   server: Server;
-
+  @UseGuards(WsCallCenterGuard)
   @SubscribeMessage('message')
   handleMessage(client: any, payload: any): any {
     // Traiter le message reçu et éventuellement répondre
@@ -39,6 +42,21 @@ export class CallCenterWebsocket
   handleConnection(@ConnectedSocket() client: Socket): any {
     this.logger.log('Call Center Client connected to server: ' + client.id);
     const token = client.handshake.query.token as string;
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET) as {
+        id: string;
+        account: string;
+      };
+      if (decoded.account !== 'callCenter') {
+        client.disconnect();
+        return false;
+      }
+      CallCenterWebsocket.clients.set(new Types.ObjectId(decoded.id), client);
+      return true;
+    } catch (err) {
+      this.logger.error(err);
+      client.disconnect();
+    }
   }
 
   handleDisconnect(client: any): any {
