@@ -1,9 +1,6 @@
 // Create a class for WsResponse
 
 import { WsResponse } from '@nestjs/websockets';
-import { Prop } from '@nestjs/mongoose';
-import { Types } from 'mongoose';
-import { EmergencyStatus, Position } from '../../database/emergency.schema';
 
 interface CallCenterData {
   message: string;
