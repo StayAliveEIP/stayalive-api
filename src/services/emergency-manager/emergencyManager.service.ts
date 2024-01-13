@@ -3,7 +3,6 @@ import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 import {
   EmergencyAskAssignEvent,
   EmergencyCreatedEvent,
-  EmergencyRefusedEvent,
   EventType,
 } from './emergencyManager.dto';
 import { RedisService, RescuerPositionWithId } from '../redis/redis.service';
@@ -14,7 +13,6 @@ import {
 import { Model, Types } from 'mongoose';
 import { RescuerWebsocket } from '../../websocket/rescuer/rescuer.websocket';
 import { InjectModel } from '@nestjs/mongoose';
-import { Rescuer } from '../../database/rescuer.schema';
 import { Emergency } from '../../database/emergency.schema';
 
 @Injectable()
@@ -58,6 +56,7 @@ export class EmergencyManagerService {
         '.',
     );
     // Send event to ask to assign the rescuer to the emergency
+    this.runTimer(event.emergencyId, nearestPosition.id);
     await this.sendEventAskAssignRescuer(
       event.emergencyId,
       nearestPosition.id,
@@ -68,7 +67,6 @@ export class EmergencyManagerService {
       },
     );
   }
-
 
   private async sendEventAskAssignRescuer(
     emergencyId: Types.ObjectId,
@@ -91,7 +89,7 @@ export class EmergencyManagerService {
     this.event.emit(EventType.EMERGENCY_ASK_ASSIGN, event);
   }
 
-  private async getAllPositions(
+  private async cgetAllPositions(
     event: EmergencyCreatedEvent,
   ): Promise<RescuerPositionWithId[]> {
     this.logger.log(
@@ -176,5 +174,33 @@ export class EmergencyManagerService {
       );
       return prevDistance < currDistance ? prev : curr;
     });
+  }
+
+  async runTimer(emergencyId: Types.ObjectId, rescuerId: Types.ObjectId) {
+    //run a 45 seconds timer if no rescuer accept the emergency in this time, the emergency a new rescuer will be assigned
+    setTimeout(() => {
+      this.emergencyModel.findById(emergencyId).then((emergency) => {
+        if (!emergency) {
+          throw new Error('Emergency not found');
+        }
+        if (emergency.status === 'ASSIGNED') {
+          return;
+        }
+        //push the rescuer id in the array of hidden rescuers
+        this.logger.log("Emergency not accepted after 45 seconds, trying to find a new rescuer");
+        emergency.rescuerHidden.push(rescuerId);
+        emergency.save();
+        this.logger.log(
+          'Rescuer ' + rescuerId + ' hidden for emergency ' + emergencyId + '.',
+        );
+        //try to find a new rescuer
+        this.onEmergencyCreated({
+          emergencyId: emergencyId,
+          lat: emergency.position.lat,
+          long: emergency.position.long,
+          info: emergency.info,
+        });
+      });
+    }, 45000);
   }
 }
