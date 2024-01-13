@@ -1,0 +1,142 @@
+asyncapi: 2.0.0
+defaultContentType: application/json
+info:
+  title: StayAlive WebSocket API
+  version: '1.0.0'
+  description: |
+    WebSockets API offers real-time data updates. WebSockets is a bidirectional protocol offering fastest real-time data, helping you build real-time applications.
+
+    ### General Considerations
+
+    - All messages sent and received via WebSockets are encoded in JSON format.
+servers:
+  call-center:
+    url: api.stayalive.fr/call-center/ws
+    protocol: wss
+    description: |
+      The Api of Call Center to receive events from the platform.
+  rescuer:
+    url: api.stayalive.fr/rescuer/ws
+    protocol: wss
+    description: |
+      The Api of Rescuer to receive events from the platform.
+
+channels:
+  emergency:
+    subscribe:
+      description: Emergency event channel
+      operationId: sendMessage
+      message:
+        oneOf:
+          - $ref: '#/components/messages/EmergencyEvent'
+
+components:
+  messages:
+    EmergencyEvent:
+      name: EmergencyEvent
+      title: Emergency Event
+      summary: Emergency event
+      description: |
+        This event is sent when a new emergency is created or updated.
+      payload:
+        $ref: '#/components/schemas/emergency'
+  schemas:
+    emergency:
+      type: object
+      properties:
+        eventType:
+          type: string
+          description: Type of the event.
+          examples:
+            - 'emergency.created'
+          enum:
+            - 'emergency.created'
+            - 'emergency.ask.assign'
+            - 'emergency.assigned'
+            - 'emergency.canceled'
+            - 'emergency.terminate'
+            - 'emergency.refused'
+        emergency:
+          type: object
+          description: Detailed information about the emergency.
+          properties:
+            id:
+              type: string
+              description: Unique identifier for the emergency.
+              examples:
+                - '5f4f5e6a-8b0a-4c9a-9b0a-4c9a9b0a4c9a'
+            info:
+              type: string
+              description: Information about the emergency.
+              examples:
+                - 'Fire at residential building, immediate assistance required.'
+            position:
+              type: object
+              properties:
+                latitude:
+                  type: number
+                  format: double
+                  description: Latitude of the emergency location.
+                  examples:
+                    - 40.712776
+                longitude:
+                  type: number
+                  format: double
+                  description: Longitude of the emergency location.
+                  examples:
+                    - -74.005974
+            status:
+              type: string
+              description: Current status of the emergency.
+              examples:
+                - 'PENDING'
+              enum:
+                - 'PENDING'
+                - 'ASSIGNED'
+                - 'RESOLVED'
+                - 'CANCELED'
+        callCenter:
+          type: object
+          description: Information about the call center handling the event.
+          properties:
+            id:
+              type: string
+              description: Unique identifier for the call center.
+              examples:
+                - '5f4f5e6a-8b0a-4c9a-9b0a-4c9a9b0a4c9a'
+            name:
+              type: string
+              description: Name of the call center.
+              examples:
+                - 'Downtown Emergency Response Center'
+        rescuer:
+          type: object
+          nullable: true
+          description: Information about the rescuer assigned to the event, if any.
+          properties:
+            id:
+              type: string
+              description: Unique identifier for the rescuer.
+              examples:
+                - '5f4f5e6a-8b0a-4c9a-9b0a-4c9a9b0a4c9a'
+            firstname:
+              type: string
+              description: First name of the rescuer.
+              examples:
+                - 'John'
+            lastname:
+              type: string
+              description: Last name of the rescuer.
+              examples:
+                - 'Doe'
+            phone:
+              type: string
+              description: Contact phone number for the rescuer.
+              examples:
+                - '+1234567890'
+            email:
+              type: string
+              format: email
+              description: Email address of the rescuer.
+              examples:
+                - 'johndoe@example.com'

@@ -5,6 +5,7 @@ export enum EmergencyStatus {
   PENDING = 'PENDING',
   ASSIGNED = 'ASSIGNED',
   RESOLVED = 'RESOLVED',
+  CANCELED = 'CANCELED',
 }
 
 @Schema({ versionKey: false })
