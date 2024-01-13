@@ -69,7 +69,7 @@ components:
               type: string
               description: Information about the emergency.
               examples:
-                - 'Fire at residential building, immediate assistance required.'
+                - 'A person has a heart attack.'
             position:
               type: object
               properties:
@@ -108,7 +108,7 @@ components:
               type: string
               description: Name of the call center.
               examples:
-                - 'Downtown Emergency Response Center'
+                - 'SAMU Center of Paris'
         rescuer:
           type: object
           nullable: true
