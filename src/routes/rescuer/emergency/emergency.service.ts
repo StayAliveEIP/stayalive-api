@@ -17,6 +17,7 @@ import {
 } from '../../../services/emergency-manager/emergencyManager.dto';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { reportUnhandledError } from 'rxjs/internal/util/reportUnhandledError';
+import { CallCenter } from '../../../database/callCenter.schema';
 
 @Injectable()
 export class EmergencyService {
@@ -24,6 +25,7 @@ export class EmergencyService {
     private eventEmitter: EventEmitter2,
     @InjectModel(Emergency.name) private emergencyModel: Model<Emergency>,
     @InjectModel(Rescuer.name) private rescuerModel: Model<Rescuer>,
+    @InjectModel(CallCenter.name) private callCenterModel: Model<CallCenter>,
   ) {}
 
   async acceptEmergency(
@@ -49,9 +51,21 @@ export class EmergencyService {
     emergency.status = EmergencyStatus.ASSIGNED;
     await emergency.save();
     // Send the event
+    const callCenter = await this.callCenterModel.findById(
+      emergency.callCenterId,
+    );
+    if (!callCenter) {
+      throw new Error('Call center not found');
+    }
+    const rescuer = await this.rescuerModel.findById(userId);
+    if (!rescuer) {
+      throw new Error('Rescuer not found');
+    }
+
     const emergencyAccepted: EmergencyAssignedEvent = {
-      emergencyId: emergency._id,
-      rescuerId: userId,
+      emergency: emergency,
+      callCenter: callCenter,
+      rescuer: rescuer,
     };
     this.eventEmitter.emit(EventType.EMERGENCY_ASSIGNED, emergencyAccepted);
     return {
@@ -93,7 +107,9 @@ export class EmergencyService {
 
   //TODO : Redis
   async refuseEmergency(userId: Types.ObjectId, id: string) {
-    const emergency = await this.emergencyModel.findById(new Types.ObjectId(id));
+    const emergency = await this.emergencyModel.findById(
+      new Types.ObjectId(id),
+    );
     if (!emergency) {
       throw new NotFoundException("L'urgence n'existe pas.");
     }

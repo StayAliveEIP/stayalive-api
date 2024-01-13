@@ -177,7 +177,11 @@ export class EmergencyManagerService {
     });
   }
 
-  async runTimer(emergencyId: Types.ObjectId, rescuerId: Types.ObjectId) {
+  async runTimer(
+    emergencyId: Types.ObjectId,
+    rescuerId: Types.ObjectId,
+    callCenter: any,
+  ) {
     //run a 45 seconds timer if no rescuer accept the emergency in this time, the emergency a new rescuer will be assigned
     setTimeout(() => {
       this.emergencyModel.findById(emergencyId).then((emergency) => {
@@ -201,10 +205,8 @@ export class EmergencyManagerService {
         );
         //try to find a new rescuer
         this.onEmergencyCreated({
-          emergencyId: emergencyId,
-          lat: emergency.position.lat,
-          long: emergency.position.long,
-          info: emergency.info,
+          emergency: emergency,
+          callCenter: callCenter,
         });
       });
     }, 45000);

@@ -45,19 +45,19 @@ export class RescuerWebsocket
   @OnEvent(EventType.EMERGENCY_ASK_ASSIGN)
   private async onEmergencyAskAssign(event: EmergencyAskAssignEvent) {
     this.logger.debug('Connected sockets: ' + RescuerWebsocket.clients.size);
-    const client = this.getSocketWithId(event.rescuerId);
+    const client = this.getSocketWithId(event.rescuer._id);
     if (!client) {
-      this.logger.log('No client found for rescuer ' + event.rescuerId + '.');
+      this.logger.log('No client found for rescuer ' + event.rescuer._id + '.');
       return;
     }
-    this.logger.log('Found client for rescuer ' + event.rescuerId + '.');
+    this.logger.log('Found client for rescuer ' + event.rescuer._id + '.');
 
     const object = {
       type: 'askAssign',
-      emergencyId: event.emergencyId,
-      rescuerId: event.rescuerId,
-      info: event.info,
-      position: event.position,
+      emergencyId: event.emergency._id,
+      rescuerId: event.rescuer._id,
+      info: event.emergency.info,
+      position: event.emergency.position,
     };
 
     client.emit(InterventionRequest.channel, object);

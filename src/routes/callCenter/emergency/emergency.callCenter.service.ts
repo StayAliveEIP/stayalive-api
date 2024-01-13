@@ -11,12 +11,14 @@ import {
   EmergencyCreatedEvent,
   EventType,
 } from '../../../services/emergency-manager/emergencyManager.dto';
+import { CallCenter } from '../../../database/callCenter.schema';
 
 @Injectable()
 export class EmergencyCallCenterService {
   constructor(
     private eventEmitter: EventEmitter2,
     @InjectModel(Emergency.name) private emergencyModel: Model<Emergency>,
+    @InjectModel(CallCenter.name) private callCenterModel: Model<CallCenter>,
   ) {}
 
   async getEmergency(
@@ -53,13 +55,13 @@ export class EmergencyCallCenterService {
       rescuerHidden: [],
     };
     const result = await this.emergencyModel.create(emergency);
+    const callCenter = await this.callCenterModel.findById(userId);
     // Send the event
     const emergencyCreated: EmergencyCreatedEvent = {
-      emergencyId: emergency._id,
-      lat: body.position.lat,
-      long: body.position.long,
-      info: body.info,
+      emergency: result,
+      callCenter: callCenter,
     };
+
     this.eventEmitter.emit(EventType.EMERGENCY_CREATED, emergencyCreated);
     return {
       id: result._id,
