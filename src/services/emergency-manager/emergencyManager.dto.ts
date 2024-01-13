@@ -9,6 +9,7 @@ export enum EventType {
   EMERGENCY_CANCELED = 'emergency.canceled',
   EMERGENCY_TERMINATED = 'emergency.terminate',
   EMERGENCY_REFUSED = 'emergency.refused',
+  EMERGENCY_TIMEOUT = 'emergency.timeout',
 }
 
 export class EmergencyAskAssignEvent {
@@ -41,6 +42,12 @@ export class EmergencyTerminatedEvent {
 }
 
 export class EmergencyRefusedEvent {
+  callCenter: CallCenter;
+  emergency: Emergency;
+  rescuer: Rescuer;
+}
+
+export class EmergencyTimeoutEvent {
   callCenter: CallCenter;
   emergency: Emergency;
   rescuer: Rescuer;

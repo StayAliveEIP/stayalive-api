@@ -16,9 +16,10 @@ import { Types } from 'mongoose';
 import { Socket } from 'socket.io';
 import { OnEvent } from '@nestjs/event-emitter';
 import {
-  EmergencyAskAssignEvent,
+  EmergencyAskAssignEvent, EmergencyCreatedEvent,
   EventType,
 } from '../../services/emergency-manager/emergencyManager.dto';
+import {CallCenterEvent, CallCenterEventData} from "../callCenter/callCenter.dto";
 
 @WebSocketGateway({ namespace: '/rescuer/ws' })
 export class RescuerWebsocket
@@ -113,5 +114,32 @@ export class RescuerWebsocket
 
   afterInit() {
     this.logger.log('Rescuer websocket server initialized');
+  }
+
+  @OnEvent(EventType.EMERGENCY_TIMEOUT)
+  handleEmergencyTimeout(event: EmergencyCreatedEvent) {
+    const socket = this.getSocketWithId(event.callCenter._id);
+    if (!socket) {
+      return;
+    }
+    const eventData: CallCenterEventData = {
+      eventType: EventType.EMERGENCY_TIMEOUT,
+      callCenter: {
+        id: event.callCenter._id.toHexString(),
+        name: event.callCenter.name,
+      },
+      emergency: {
+        id: event.emergency._id.toHexString(),
+        info: event.emergency.info,
+        position: {
+          latitude: event.emergency.position.lat,
+          longitude: event.emergency.position.long,
+        },
+        status: event.emergency.status,
+      },
+      rescuer: null,
+    };
+    const callCenterEvent = new CallCenterEvent(eventData);
+    socket.emit(InterventionRequest.channel, callCenterEvent);
   }
 }
