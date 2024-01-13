@@ -14,6 +14,8 @@ import { Model, Types } from 'mongoose';
 import { RescuerWebsocket } from '../../websocket/rescuer/rescuer.websocket';
 import { InjectModel } from '@nestjs/mongoose';
 import { Emergency } from '../../database/emergency.schema';
+import { Rescuer } from '../../database/rescuer.schema';
+import { CallCenter } from '../../database/callCenter.schema';
 
 @Injectable()
 export class EmergencyManagerService {
@@ -23,6 +25,7 @@ export class EmergencyManagerService {
     private readonly redis: RedisService,
     private readonly event: EventEmitter2,
     @InjectModel(Emergency.name) private emergencyModel: Model<Emergency>,
+    @InjectModel(Rescuer.name) private rescuerModel: Model<Rescuer>,
   ) {}
 
   /**
@@ -56,36 +59,31 @@ export class EmergencyManagerService {
         nearestPosition.id +
         '.',
     );
+    // Get the rescuer in database
+    const rescuer = await this.rescuerModel.findById(nearestPosition.id);
+    if (!rescuer) {
+      // TODO: Add to exception manager and search for another rescuer
+      this.logger.error("Rescuer to assign doesn't exist in database");
+      return;
+    }
     // Send event to ask to assign the rescuer to the emergency
-    await this.runTimer(emergencyId, nearestPosition.id);
+    await this.runTimer(event, rescuer);
     await this.sendEventAskAssignRescuer(
-      emergencyId,
-      nearestPosition.id,
-      event.info,
-      {
-        lat: event.lat,
-        lng: event.long,
-      },
+      rescuer,
+      event.emergency,
+      event.callCenter,
     );
   }
 
   private async sendEventAskAssignRescuer(
-    emergencyId: Types.ObjectId,
-    rescuerId: Types.ObjectId,
-    info: string = '',
-    position: {
-      lat: number;
-      lng: number;
-    } = {
-      lat: 0,
-      lng: 0,
-    },
+    rescuer: Rescuer,
+    emergency: Emergency,
+    callCenter: CallCenter,
   ) {
     const event: EmergencyAskAssignEvent = {
-      emergencyId: emergencyId,
-      rescuerId: rescuerId,
-      info: info,
-      position: position,
+      rescuer: rescuer,
+      emergency: emergency,
+      callCenter: callCenter,
     };
     this.event.emit(EventType.EMERGENCY_ASK_ASSIGN, event);
   }
@@ -95,18 +93,18 @@ export class EmergencyManagerService {
   ): Promise<RescuerPositionWithId[]> {
     this.logger.log(
       'New emergency created: ' +
-        event.emergencyId +
+        event.emergency._id +
         ' - ' +
-        event.lat +
+        event.emergency.position.lat +
         ' - ' +
-        event.long,
+        event.emergency.position.long,
     );
     const rescuerAvailable = await this.redis.getAllRescuerAvailable();
     this.logger.log(
       'Found ' +
         rescuerAvailable.length +
         ' rescuers available for emergency ' +
-        event.emergencyId +
+        event.emergency._id +
         ': ' +
         rescuerAvailable,
     );
@@ -116,7 +114,7 @@ export class EmergencyManagerService {
       'Found ' +
         rescuerWithPosition.length +
         ' rescuers with position available for emergency ' +
-        event.emergencyId +
+        event.emergency._id +
         ': ' +
         rescuerWithPosition.map((rescuer) => rescuer.id),
     );
@@ -136,7 +134,7 @@ export class EmergencyManagerService {
     //TODO : switch to redis
 
     // Keep only rescuers that are not hidden
-    const emergency = await this.emergencyModel.findById(event.emergencyId);
+    const emergency = await this.emergencyModel.findById(event.emergency._id);
     if (!emergency) {
       throw new Error('Emergency not found');
     }
@@ -177,13 +175,11 @@ export class EmergencyManagerService {
     });
   }
 
-  async runTimer(
-    emergencyId: Types.ObjectId,
-    rescuerId: Types.ObjectId,
-    callCenter: any,
-  ) {
+  async runTimer(event: EmergencyCreatedEvent, rescuer: Rescuer) {
     //run a 45 seconds timer if no rescuer accept the emergency in this time, the emergency a new rescuer will be assigned
     setTimeout(() => {
+      const emergencyId = event.emergency._id;
+      const rescuerId = rescuer._id;
       this.emergencyModel.findById(emergencyId).then((emergency) => {
         if (!emergency) {
           throw new Error('Emergency not found');
@@ -204,10 +200,7 @@ export class EmergencyManagerService {
           'Rescuer ' + rescuerId + ' hidden for emergency ' + emergencyId + '.',
         );
         //try to find a new rescuer
-        this.onEmergencyCreated({
-          emergency: emergency,
-          callCenter: callCenter,
-        });
+        this.onEmergencyCreated(event);
       });
     }, 45000);
   }
