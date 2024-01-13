@@ -1,4 +1,6 @@
-import { Types } from 'mongoose';
+import { CallCenter } from '../../database/callCenter.schema';
+import { Emergency } from '../../database/emergency.schema';
+import { Rescuer } from '../../database/rescuer.schema';
 
 export enum EventType {
   EMERGENCY_CREATED = 'emergency.created',
@@ -10,36 +12,36 @@ export enum EventType {
 }
 
 export class EmergencyAskAssignEvent {
-  emergencyId: Types.ObjectId;
-  rescuerId: Types.ObjectId;
-  info: string;
-  position: {
-    lat: number;
-    lng: number;
-  };
+  callCenter: CallCenter;
+  emergency: Emergency;
+  rescuer: Rescuer;
 }
 
 export class EmergencyCreatedEvent {
-  emergencyId: Types.ObjectId;
-  lat: number;
-  long: number;
-  info: string;
+  callCenter: CallCenter;
+  emergency: Emergency;
 }
 
 export class EmergencyAssignedEvent {
-  emergencyId: Types.ObjectId;
-  rescuerId: Types.ObjectId;
+  callCenter: CallCenter;
+  emergency: Emergency;
+  rescuer: Rescuer;
 }
 
 export class EmergencyCanceledEvent {
-  emergencyId: Types.ObjectId;
+  callCenter: CallCenter;
+  emergency: Emergency;
+  rescuer: Rescuer;
 }
 
 export class EmergencyTerminatedEvent {
-  emergencyId: Types.ObjectId;
+  callCenter: CallCenter;
+  emergency: Emergency;
+  rescuer: Rescuer;
 }
 
 export class EmergencyRefusedEvent {
-  emergencyId: Types.ObjectId;
-  rescuerId: Types.ObjectId;
+  callCenter: CallCenter;
+  emergency: Emergency;
+  rescuer: Rescuer;
 }

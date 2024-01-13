@@ -14,7 +14,6 @@ import {
   CreateNewEmergencyRequest,
   EmergencyInfoResponse,
 } from './emergency.callCenter.dto';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Controller('/call-center')
 @ApiTags('Emergency')
@@ -37,6 +36,7 @@ export class EmergencyCallCenterController {
   async getEmergency(
     @UserId() userId: Types.ObjectId,
   ): Promise<Array<EmergencyInfoResponse>> {
+    // TODO: Review the dto for response of this route
     return await this.service.getEmergency(userId);
   }
 

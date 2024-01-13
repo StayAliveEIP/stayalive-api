@@ -32,11 +32,12 @@ export class EmergencyManagerService {
    */
   @OnEvent(EventType.EMERGENCY_CREATED)
   private async onEmergencyCreated(event: EmergencyCreatedEvent) {
+    const emergencyId = event.emergency._id;
     const allPositions: RescuerPositionWithId[] =
       await this.getAllPositions(event);
     if (allPositions.length === 0) {
       this.logger.log(
-        'No rescuer available for emergency ' + event.emergencyId + '.',
+        'No rescuer available for emergency ' + emergencyId + '.',
       );
       return;
     }
@@ -44,21 +45,21 @@ export class EmergencyManagerService {
       await this.getNearestPosition(allPositions);
     if (!nearestPosition) {
       this.logger.warn(
-        'No nearest position found for emergency ' + event.emergencyId + '.',
+        'No nearest position found for emergency ' + emergencyId + '.',
       );
       return;
     }
     this.logger.log(
       'Found nearest position for emergency ' +
-        event.emergencyId +
+        emergencyId +
         ' with rescuer ' +
         nearestPosition.id +
         '.',
     );
     // Send event to ask to assign the rescuer to the emergency
-    this.runTimer(event.emergencyId, nearestPosition.id);
+    await this.runTimer(emergencyId, nearestPosition.id);
     await this.sendEventAskAssignRescuer(
-      event.emergencyId,
+      emergencyId,
       nearestPosition.id,
       event.info,
       {

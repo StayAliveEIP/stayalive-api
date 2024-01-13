@@ -5,6 +5,8 @@ import { IsString, Length } from 'class-validator';
 export class EmergencyInfoResponse {
   @ApiProperty({
     type: Types.ObjectId,
+    required: true,
+    example: '5f9e1d3b3d5b3e1b7c9b4b3e',
   })
   id: Types.ObjectId;
 }
@@ -13,12 +15,14 @@ export class CreateNewEmergencyRequestPosition {
   @ApiProperty({
     type: String,
     required: true,
+    example: '123.123',
   })
   lat: number;
 
   @ApiProperty({
     type: String,
     required: true,
+    example: '123.123',
   })
   long: number;
 }

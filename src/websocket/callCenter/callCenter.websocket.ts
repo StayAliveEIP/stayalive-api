@@ -6,16 +6,29 @@ import {
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
+  WsResponse,
 } from '@nestjs/websockets';
 import { Server } from 'ws';
 import { Socket } from 'socket.io';
-import {Logger, UseGuards} from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import { Types } from 'mongoose';
-import { CallCenterMessage } from './call-center.dto';
-import {WsRescuerGuard} from "../../guards/auth.ws.guard";
-import {WsCallCenterGuard} from "../../guards/auth.call-center.ws.guard";
-import * as jwt from "jsonwebtoken";
-import {Call} from "../../database/call.schema";
+import {
+  CallCenterEvent,
+  CallCenterEventData,
+  CallCenterMessage,
+} from './callCenter.dto';
+import { WsCallCenterGuard } from '../../guards/auth.call-center.ws.guard';
+import * as jwt from 'jsonwebtoken';
+import { OnEvent } from '@nestjs/event-emitter';
+import {
+  EmergencyAskAssignEvent,
+  EmergencyAssignedEvent,
+  EmergencyCanceledEvent,
+  EmergencyCreatedEvent,
+  EmergencyRefusedEvent,
+  EmergencyTerminatedEvent,
+  EventType,
+} from '../../services/emergency-manager/emergencyManager.dto';
 
 @WebSocketGateway({ namespace: '/call-center/ws' })
 export class CallCenterWebsocket
@@ -29,6 +42,7 @@ export class CallCenterWebsocket
 
   @WebSocketServer()
   server: Server;
+
   @UseGuards(WsCallCenterGuard)
   @SubscribeMessage('message')
   handleMessage(client: any, payload: any): any {
@@ -70,5 +84,210 @@ export class CallCenterWebsocket
 
   afterInit() {
     this.logger.log('Call websocket server initialized');
+  }
+
+  getSocketWithId(id: Types.ObjectId): Socket | null {
+    for (const [key, value] of CallCenterWebsocket.clients) {
+      if (key.equals(id)) {
+        return value;
+      }
+    }
+    return null;
+  }
+
+  // Manage event
+
+  @OnEvent(EventType.EMERGENCY_ASK_ASSIGN)
+  handleEmergencyAskAssign(
+    event: EmergencyAskAssignEvent,
+  ): WsResponse<CallCenterEvent> {
+    const socket = this.getSocketWithId(event.callCenter._id);
+    if (!socket) {
+      return;
+    }
+    const eventData: CallCenterEventData = {
+      eventType: EventType.EMERGENCY_ASK_ASSIGN,
+      callCenter: {
+        id: event.callCenter._id.toHexString(),
+        name: event.callCenter.name,
+      },
+      emergency: {
+        id: event.emergency._id.toHexString(),
+        info: event.emergency.info,
+        position: {
+          latitude: event.emergency.position.lat,
+          longitude: event.emergency.position.long,
+        },
+        status: event.emergency.status,
+      },
+      rescuer: {
+        id: event.rescuer._id.toHexString(),
+        firstname: event.rescuer.firstname,
+        lastname: event.rescuer.lastname,
+        email: event.rescuer.email.email,
+        phone: event.rescuer.phone.phone,
+      },
+    };
+    const callCenterEvent = new CallCenterEvent(eventData);
+    socket.emit(CallCenterEvent.channel, callCenterEvent);
+  }
+
+  @OnEvent(EventType.EMERGENCY_ASSIGNED)
+  handleEmergencyAssigned(event: EmergencyAssignedEvent) {
+    const socket = this.getSocketWithId(event.callCenter._id);
+    if (!socket) {
+      return;
+    }
+    const eventData: CallCenterEventData = {
+      eventType: EventType.EMERGENCY_ASSIGNED,
+      callCenter: {
+        id: event.callCenter._id.toHexString(),
+        name: event.callCenter.name,
+      },
+      emergency: {
+        id: event.emergency._id.toHexString(),
+        info: event.emergency.info,
+        position: {
+          latitude: event.emergency.position.lat,
+          longitude: event.emergency.position.long,
+        },
+        status: event.emergency.status,
+      },
+      rescuer: {
+        id: event.rescuer._id.toHexString(),
+        firstname: event.rescuer.firstname,
+        lastname: event.rescuer.lastname,
+        email: event.rescuer.email.email,
+        phone: event.rescuer.phone.phone,
+      },
+    };
+    const callCenterEvent = new CallCenterEvent(eventData);
+    socket.emit(CallCenterEvent.channel, callCenterEvent);
+  }
+
+  @OnEvent(EventType.EMERGENCY_CANCELED)
+  handleEmergencyCanceled(event: EmergencyCanceledEvent) {
+    const socket = this.getSocketWithId(event.callCenter._id);
+    if (!socket) {
+      return;
+    }
+    const eventData: CallCenterEventData = {
+      eventType: EventType.EMERGENCY_CANCELED,
+      callCenter: {
+        id: event.callCenter._id.toHexString(),
+        name: event.callCenter.name,
+      },
+      emergency: {
+        id: event.emergency._id.toHexString(),
+        info: event.emergency.info,
+        position: {
+          latitude: event.emergency.position.lat,
+          longitude: event.emergency.position.long,
+        },
+        status: event.emergency.status,
+      },
+      rescuer: {
+        id: event.rescuer._id.toHexString(),
+        firstname: event.rescuer.firstname,
+        lastname: event.rescuer.lastname,
+        email: event.rescuer.email.email,
+        phone: event.rescuer.phone.phone,
+      },
+    };
+    const callCenterEvent = new CallCenterEvent(eventData);
+    socket.emit(CallCenterEvent.channel, callCenterEvent);
+  }
+
+  @OnEvent(EventType.EMERGENCY_TERMINATED)
+  handleEmergencyTerminated(event: EmergencyTerminatedEvent) {
+    const socket = this.getSocketWithId(event.callCenter._id);
+    if (!socket) {
+      return;
+    }
+    const eventData: CallCenterEventData = {
+      eventType: EventType.EMERGENCY_TERMINATED,
+      callCenter: {
+        id: event.callCenter._id.toHexString(),
+        name: event.callCenter.name,
+      },
+      emergency: {
+        id: event.emergency._id.toHexString(),
+        info: event.emergency.info,
+        position: {
+          latitude: event.emergency.position.lat,
+          longitude: event.emergency.position.long,
+        },
+        status: event.emergency.status,
+      },
+      rescuer: {
+        id: event.rescuer._id.toHexString(),
+        firstname: event.rescuer.firstname,
+        lastname: event.rescuer.lastname,
+        email: event.rescuer.email.email,
+        phone: event.rescuer.phone.phone,
+      },
+    };
+    const callCenterEvent = new CallCenterEvent(eventData);
+    socket.emit(CallCenterEvent.channel, callCenterEvent);
+  }
+
+  @OnEvent(EventType.EMERGENCY_REFUSED)
+  handleEmergencyRefused(event: EmergencyRefusedEvent) {
+    const socket = this.getSocketWithId(event.callCenter._id);
+    if (!socket) {
+      return;
+    }
+    const eventData: CallCenterEventData = {
+      eventType: EventType.EMERGENCY_REFUSED,
+      callCenter: {
+        id: event.callCenter._id.toHexString(),
+        name: event.callCenter.name,
+      },
+      emergency: {
+        id: event.emergency._id.toHexString(),
+        info: event.emergency.info,
+        position: {
+          latitude: event.emergency.position.lat,
+          longitude: event.emergency.position.long,
+        },
+        status: event.emergency.status,
+      },
+      rescuer: {
+        id: event.rescuer._id.toHexString(),
+        firstname: event.rescuer.firstname,
+        lastname: event.rescuer.lastname,
+        email: event.rescuer.email.email,
+        phone: event.rescuer.phone.phone,
+      },
+    };
+    const callCenterEvent = new CallCenterEvent(eventData);
+    socket.emit(CallCenterEvent.channel, callCenterEvent);
+  }
+
+  @OnEvent(EventType.EMERGENCY_CREATED)
+  handleEmergencyCreated(event: EmergencyCreatedEvent) {
+    const socket = this.getSocketWithId(event.callCenter._id);
+    if (!socket) {
+      return;
+    }
+    const eventData: CallCenterEventData = {
+      eventType: EventType.EMERGENCY_CREATED,
+      callCenter: {
+        id: event.callCenter._id.toHexString(),
+        name: event.callCenter.name,
+      },
+      emergency: {
+        id: event.emergency._id.toHexString(),
+        info: event.emergency.info,
+        position: {
+          latitude: event.emergency.position.lat,
+          longitude: event.emergency.position.long,
+        },
+        status: event.emergency.status,
+      },
+      rescuer: null,
+    };
+    const callCenterEvent = new CallCenterEvent(eventData);
+    socket.emit(CallCenterEvent.channel, callCenterEvent);
   }
 }
