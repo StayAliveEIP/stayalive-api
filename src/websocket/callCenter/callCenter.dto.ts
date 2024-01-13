@@ -2,25 +2,18 @@
 
 import { WsResponse } from '@nestjs/websockets';
 
-interface CallCenterData {
-  message: string;
+export enum CallCenterEventType {
+  CREATED = 'CREATED',
+  CANCELED = 'CANCELED',
+  ASSIGNED = 'ASSIGNED',
+  REFUSED = 'REFUSED',
+  ASK_ASSIGN = 'ASK_ASSIGN',
+  ASK_TIMEOUT = 'ASK_TIMEOUT',
+  TERMINATED = 'TERMINATED',
 }
 
-export class CallCenterMessage implements WsResponse<CallCenterData> {
-  data: CallCenterData;
-  event: string;
-
-  // Create a static property to store the event name
-  static channel = 'message';
-
-  constructor(data: CallCenterData) {
-    this.data = data;
-    this.event = CallCenterMessage.channel;
-  }
-}
-
-export interface CallCenterEventData {
-  eventType: string;
+export interface CallCenterWsData {
+  eventType: CallCenterEventType;
   emergency: {
     id: string;
     info: string;
@@ -43,15 +36,15 @@ export interface CallCenterEventData {
   } | null;
 }
 
-export class CallCenterEvent implements WsResponse<CallCenterEventData> {
-  data: CallCenterEventData;
+export class CallCenterWsResponse implements WsResponse<CallCenterWsData> {
+  data: CallCenterWsData;
   event: string;
 
   // Create a static property to store the event name
   static channel = 'emergency';
 
-  constructor(data: CallCenterEventData) {
+  constructor(data: CallCenterWsData) {
     this.data = data;
-    this.event = CallCenterEvent.channel;
+    this.event = CallCenterWsResponse.channel;
   }
 }

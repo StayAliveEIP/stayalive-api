@@ -3,23 +3,26 @@ import {
   OnGatewayConnection,
   OnGatewayDisconnect,
   OnGatewayInit,
-  SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server } from 'ws';
-import { Logger, UseGuards } from '@nestjs/common';
-import { InterventionRequest } from './rescuer.dto';
-import { WsRescuerGuard } from '../../guards/auth.ws.guard';
+import { Logger } from '@nestjs/common';
+import {
+  RescuerWsResponse,
+  RescuerEventType,
+  RescuerWsData,
+} from './rescuer.dto';
 import * as jwt from 'jsonwebtoken';
 import { Types } from 'mongoose';
 import { Socket } from 'socket.io';
 import { OnEvent } from '@nestjs/event-emitter';
 import {
-  EmergencyAskAssignEvent, EmergencyCreatedEvent,
+  EmergencyAskAssignEvent,
+  EmergencyTerminatedEvent,
+  EmergencyTimeoutEvent,
   EventType,
 } from '../../services/emergency-manager/emergencyManager.dto';
-import {CallCenterEvent, CallCenterEventData} from "../callCenter/callCenter.dto";
 
 @WebSocketGateway({ namespace: '/rescuer/ws' })
 export class RescuerWebsocket
@@ -34,17 +37,8 @@ export class RescuerWebsocket
   @WebSocketServer()
   server: Server;
 
-  @UseGuards(WsRescuerGuard)
-  @SubscribeMessage(InterventionRequest.channel)
-  handleMessage(client: any, payload: any): InterventionRequest {
-    this.logger.log('New message from client: ' + client.id + ' - ' + payload);
-    return new InterventionRequest({
-      message: 'coucou',
-    });
-  }
-
   @OnEvent(EventType.EMERGENCY_ASK_ASSIGN)
-  private async onEmergencyAskAssign(event: EmergencyAskAssignEvent) {
+  onEmergencyAskAssign(event: EmergencyAskAssignEvent) {
     this.logger.debug('Connected sockets: ' + RescuerWebsocket.clients.size);
     const client = this.getSocketWithId(event.rescuer._id);
     if (!client) {
@@ -54,14 +48,14 @@ export class RescuerWebsocket
     this.logger.log('Found client for rescuer ' + event.rescuer._id + '.');
 
     const object = {
-      type: 'askAssign',
+      type: EventType.EMERGENCY_ASK_ASSIGN,
       emergencyId: event.emergency._id,
       rescuerId: event.rescuer._id,
       info: event.emergency.info,
       position: event.emergency.position,
     };
 
-    client.emit(InterventionRequest.channel, object);
+    client.emit(RescuerWsResponse.channel, object);
   }
 
   private getSocketWithId(id: Types.ObjectId): Socket | null {
@@ -116,14 +110,14 @@ export class RescuerWebsocket
     this.logger.log('Rescuer websocket server initialized');
   }
 
-  @OnEvent(EventType.EMERGENCY_TIMEOUT)
-  handleEmergencyTimeout(event: EmergencyCreatedEvent) {
-    const socket = this.getSocketWithId(event.callCenter._id);
+  @OnEvent(EventType.EMERGENCY_ASK_ASSIGN)
+  handleEmergencyAskAssign(event: EmergencyAskAssignEvent) {
+    const socket = this.getSocketWithId(event.rescuer._id);
     if (!socket) {
       return;
     }
-    const eventData: any = {
-      type: EventType.EMERGENCY_TIMEOUT,
+    const eventData: RescuerWsData = {
+      eventType: RescuerEventType.ASK,
       callCenter: {
         id: event.callCenter._id.toHexString(),
         name: event.callCenter.name,
@@ -137,9 +131,60 @@ export class RescuerWebsocket
         },
         status: event.emergency.status,
       },
-      rescuer: null,
     };
-    const callCenterEvent = new CallCenterEvent(eventData);
-    socket.emit(InterventionRequest.channel, callCenterEvent);
+    const rescuerEvent = new RescuerWsResponse(eventData);
+    socket.emit(RescuerWsResponse.channel, rescuerEvent);
+  }
+
+  @OnEvent(EventType.EMERGENCY_TIMEOUT)
+  handleEmergencyTimeout(event: EmergencyTimeoutEvent) {
+    const socket = this.getSocketWithId(event.callCenter._id);
+    if (!socket) {
+      return;
+    }
+    const eventData: RescuerWsData = {
+      eventType: RescuerEventType.TIMEOUT,
+      callCenter: {
+        id: event.callCenter._id.toHexString(),
+        name: event.callCenter.name,
+      },
+      emergency: {
+        id: event.emergency._id.toHexString(),
+        info: event.emergency.info,
+        position: {
+          latitude: event.emergency.position.lat,
+          longitude: event.emergency.position.long,
+        },
+        status: event.emergency.status,
+      },
+    };
+    const rescuerEvent = new RescuerWsResponse(eventData);
+    socket.emit(RescuerWsResponse.channel, rescuerEvent);
+  }
+
+  @OnEvent(EventType.EMERGENCY_TERMINATED)
+  handleEmergencyTerminated(event: EmergencyTerminatedEvent) {
+    const socket = this.getSocketWithId(event.callCenter._id);
+    if (!socket) {
+      return;
+    }
+    const eventData: RescuerWsData = {
+      eventType: RescuerEventType.TERMINATED,
+      callCenter: {
+        id: event.callCenter._id.toHexString(),
+        name: event.callCenter.name,
+      },
+      emergency: {
+        id: event.emergency._id.toHexString(),
+        info: event.emergency.info,
+        position: {
+          latitude: event.emergency.position.lat,
+          longitude: event.emergency.position.long,
+        },
+        status: event.emergency.status,
+      },
+    };
+    const rescuerEvent = new RescuerWsResponse(eventData);
+    socket.emit(RescuerWsResponse.channel, rescuerEvent);
   }
 }

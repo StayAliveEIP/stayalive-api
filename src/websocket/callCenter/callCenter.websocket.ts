@@ -3,21 +3,19 @@ import {
   OnGatewayConnection,
   OnGatewayDisconnect,
   OnGatewayInit,
-  SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
   WsResponse,
 } from '@nestjs/websockets';
 import { Server } from 'ws';
 import { Socket } from 'socket.io';
-import { Logger, UseGuards } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { Types } from 'mongoose';
 import {
-  CallCenterEvent,
-  CallCenterEventData,
-  CallCenterMessage,
+  CallCenterWsResponse,
+  CallCenterWsData,
+  CallCenterEventType,
 } from './callCenter.dto';
-import { WsCallCenterGuard } from '../../guards/auth.call-center.ws.guard';
 import * as jwt from 'jsonwebtoken';
 import { OnEvent } from '@nestjs/event-emitter';
 import {
@@ -42,16 +40,6 @@ export class CallCenterWebsocket
 
   @WebSocketServer()
   server: Server;
-
-  @UseGuards(WsCallCenterGuard)
-  @SubscribeMessage('message')
-  handleMessage(client: any, payload: any): any {
-    // Traiter le message reçu et éventuellement répondre
-    this.logger.log('New message from client: ' + client.id + ' - ' + payload);
-    return new CallCenterMessage({
-      message: 'coucou',
-    });
-  }
 
   handleConnection(@ConnectedSocket() client: Socket): any {
     this.logger.log('Call Center Client connected to server: ' + client.id);
@@ -100,13 +88,13 @@ export class CallCenterWebsocket
   @OnEvent(EventType.EMERGENCY_ASK_ASSIGN)
   handleEmergencyAskAssign(
     event: EmergencyAskAssignEvent,
-  ): WsResponse<CallCenterEvent> {
+  ): WsResponse<CallCenterWsResponse> {
     const socket = this.getSocketWithId(event.callCenter._id);
     if (!socket) {
       return;
     }
-    const eventData: CallCenterEventData = {
-      eventType: EventType.EMERGENCY_ASK_ASSIGN,
+    const eventData: CallCenterWsData = {
+      eventType: CallCenterEventType.ASK_ASSIGN,
       callCenter: {
         id: event.callCenter._id.toHexString(),
         name: event.callCenter.name,
@@ -128,8 +116,8 @@ export class CallCenterWebsocket
         phone: event.rescuer.phone.phone,
       },
     };
-    const callCenterEvent = new CallCenterEvent(eventData);
-    socket.emit(CallCenterEvent.channel, callCenterEvent);
+    const callCenterEvent = new CallCenterWsResponse(eventData);
+    socket.emit(CallCenterWsResponse.channel, callCenterEvent);
   }
 
   @OnEvent(EventType.EMERGENCY_ASSIGNED)
@@ -138,8 +126,8 @@ export class CallCenterWebsocket
     if (!socket) {
       return;
     }
-    const eventData: CallCenterEventData = {
-      eventType: EventType.EMERGENCY_ASSIGNED,
+    const eventData: CallCenterWsData = {
+      eventType: CallCenterEventType.ASSIGNED,
       callCenter: {
         id: event.callCenter._id.toHexString(),
         name: event.callCenter.name,
@@ -161,8 +149,8 @@ export class CallCenterWebsocket
         phone: event.rescuer.phone.phone,
       },
     };
-    const callCenterEvent = new CallCenterEvent(eventData);
-    socket.emit(CallCenterEvent.channel, callCenterEvent);
+    const callCenterEvent = new CallCenterWsResponse(eventData);
+    socket.emit(CallCenterWsResponse.channel, callCenterEvent);
   }
 
   @OnEvent(EventType.EMERGENCY_CANCELED)
@@ -171,8 +159,8 @@ export class CallCenterWebsocket
     if (!socket) {
       return;
     }
-    const eventData: CallCenterEventData = {
-      eventType: EventType.EMERGENCY_CANCELED,
+    const eventData: CallCenterWsData = {
+      eventType: CallCenterEventType.CANCELED,
       callCenter: {
         id: event.callCenter._id.toHexString(),
         name: event.callCenter.name,
@@ -194,8 +182,8 @@ export class CallCenterWebsocket
         phone: event.rescuer.phone.phone,
       },
     };
-    const callCenterEvent = new CallCenterEvent(eventData);
-    socket.emit(CallCenterEvent.channel, callCenterEvent);
+    const callCenterEvent = new CallCenterWsResponse(eventData);
+    socket.emit(CallCenterWsResponse.channel, callCenterEvent);
   }
 
   @OnEvent(EventType.EMERGENCY_TERMINATED)
@@ -204,8 +192,8 @@ export class CallCenterWebsocket
     if (!socket) {
       return;
     }
-    const eventData: CallCenterEventData = {
-      eventType: EventType.EMERGENCY_TERMINATED,
+    const eventData: CallCenterWsData = {
+      eventType: CallCenterEventType.TERMINATED,
       callCenter: {
         id: event.callCenter._id.toHexString(),
         name: event.callCenter.name,
@@ -227,8 +215,8 @@ export class CallCenterWebsocket
         phone: event.rescuer.phone.phone,
       },
     };
-    const callCenterEvent = new CallCenterEvent(eventData);
-    socket.emit(CallCenterEvent.channel, callCenterEvent);
+    const callCenterEvent = new CallCenterWsResponse(eventData);
+    socket.emit(CallCenterWsResponse.channel, callCenterEvent);
   }
 
   @OnEvent(EventType.EMERGENCY_REFUSED)
@@ -237,8 +225,8 @@ export class CallCenterWebsocket
     if (!socket) {
       return;
     }
-    const eventData: CallCenterEventData = {
-      eventType: EventType.EMERGENCY_REFUSED,
+    const eventData: CallCenterWsData = {
+      eventType: CallCenterEventType.REFUSED,
       callCenter: {
         id: event.callCenter._id.toHexString(),
         name: event.callCenter.name,
@@ -260,8 +248,8 @@ export class CallCenterWebsocket
         phone: event.rescuer.phone.phone,
       },
     };
-    const callCenterEvent = new CallCenterEvent(eventData);
-    socket.emit(CallCenterEvent.channel, callCenterEvent);
+    const callCenterEvent = new CallCenterWsResponse(eventData);
+    socket.emit(CallCenterWsResponse.channel, callCenterEvent);
   }
 
   @OnEvent(EventType.EMERGENCY_CREATED)
@@ -270,8 +258,8 @@ export class CallCenterWebsocket
     if (!socket) {
       return;
     }
-    const eventData: CallCenterEventData = {
-      eventType: EventType.EMERGENCY_CREATED,
+    const eventData: CallCenterWsData = {
+      eventType: CallCenterEventType.CREATED,
       callCenter: {
         id: event.callCenter._id.toHexString(),
         name: event.callCenter.name,
@@ -287,8 +275,8 @@ export class CallCenterWebsocket
       },
       rescuer: null,
     };
-    const callCenterEvent = new CallCenterEvent(eventData);
-    socket.emit(CallCenterEvent.channel, callCenterEvent);
+    const callCenterEvent = new CallCenterWsResponse(eventData);
+    socket.emit(CallCenterWsResponse.channel, callCenterEvent);
   }
 
   @OnEvent(EventType.EMERGENCY_TIMEOUT)
@@ -297,8 +285,8 @@ export class CallCenterWebsocket
     if (!socket) {
       return;
     }
-    const eventData: CallCenterEventData = {
-      eventType: EventType.EMERGENCY_TIMEOUT,
+    const eventData: CallCenterWsData = {
+      eventType: CallCenterEventType.ASK_TIMEOUT,
       callCenter: {
         id: event.callCenter._id.toHexString(),
         name: event.callCenter.name,
@@ -314,7 +302,7 @@ export class CallCenterWebsocket
       },
       rescuer: null,
     };
-    const callCenterEvent = new CallCenterEvent(eventData);
-    socket.emit(CallCenterEvent.channel, callCenterEvent);
+    const callCenterEvent = new CallCenterWsResponse(eventData);
+    socket.emit(CallCenterWsResponse.channel, callCenterEvent);
   }
 }

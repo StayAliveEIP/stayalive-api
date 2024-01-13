@@ -2,21 +2,38 @@
 
 import { WsResponse } from '@nestjs/websockets';
 
-interface InterventionRequestData {
-  message: string;
+export interface RescuerWsData {
+  eventType: RescuerEventType;
+  emergency: {
+    id: string;
+    info: string;
+    position: {
+      latitude: number;
+      longitude: number;
+    };
+    status: string;
+  };
+  callCenter: {
+    id: string;
+    name: string;
+  };
 }
 
-export class InterventionRequest
-  implements WsResponse<InterventionRequestData>
-{
-  data: InterventionRequestData;
+export enum RescuerEventType {
+  ASK = 'ASK',
+  TIMEOUT = 'TIMEOUT',
+  TERMINATED = 'TERMINATED',
+}
+
+export class RescuerWsResponse implements WsResponse<RescuerWsData> {
+  data: RescuerWsData;
   event: string;
 
   // Create a static property to store the event name
-  static channel = 'interventionRequest';
+  static channel = 'emergency';
 
-  constructor(data: InterventionRequestData) {
+  constructor(data: RescuerWsData) {
     this.data = data;
-    this.event = InterventionRequest.channel;
+    this.event = RescuerWsResponse.channel;
   }
 }

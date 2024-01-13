@@ -1,7 +1,7 @@
-asyncapi: 2.0.0
+asyncapi: 2.2.0
 defaultContentType: application/json
 info:
-  title: StayAlive WebSocket API
+  title: StayAlive WebSocket (Socket.io) API Documentation
   version: '1.0.0'
   description: |
     WebSockets API offers real-time data updates. WebSockets is a bidirectional protocol offering fastest real-time data, helping you build real-time applications.
@@ -9,53 +9,63 @@ info:
     ### General Considerations
 
     - All messages sent and received via WebSockets are encoded in JSON format.
+    - All the messages was sent via socket.io protocol and via the 'emergency' channel.
 servers:
-  call-center:
-    url: api.stayalive.fr/call-center/ws
-    protocol: wss
+  stayalive:
+    url: api.stayalive.fr
+    protocol: socketio
     description: |
       The Api of Call Center to receive events from the platform.
-  rescuer:
-    url: api.stayalive.fr/rescuer/ws
-    protocol: wss
-    description: |
-      The Api of Rescuer to receive events from the platform.
 
 channels:
-  emergency:
+  '/call-center/ws':
     subscribe:
-      description: Emergency event channel
-      operationId: sendMessage
+      description: Receive emergency events for your call center.
+      summary: Please use this channel to receive emergency events for your call center.
       message:
         oneOf:
-          - $ref: '#/components/messages/EmergencyEvent'
+          - $ref: '#/components/messages/CallCenterEvent'
+  '/rescuer/ws':
+    subscribe:
+      description: Receive emergency events for your rescuer.
+      summary: Please use this channel to receive emergency events for your rescuer.
+      message:
+        oneOf:
+          - $ref: '#/components/messages/RescuerEvent'
 
 components:
   messages:
-    EmergencyEvent:
-      name: EmergencyEvent
-      title: Emergency Event
-      summary: Emergency event
+    CallCenterEvent:
+      title: Call Center Emergency Event
       description: |
         This event is sent when a new emergency is created or updated.
       payload:
-        $ref: '#/components/schemas/emergency'
+        $ref: '#/components/schemas/callCenterEvent'
+    RescuerEvent:
+      title: Emergency Event
+      description: |
+          This event is sent when a new emergency is created or updated.
+      payload:
+        $ref: '#/components/schemas/rescuerEvent'
   schemas:
-    emergency:
+    callCenterEvent:
+      title: Call Center Emergency Event
+      name: emergency
       type: object
       properties:
         eventType:
           type: string
           description: Type of the event.
           examples:
-            - 'emergency.created'
+            - 'CREATED'
           enum:
-            - 'emergency.created'
-            - 'emergency.ask.assign'
-            - 'emergency.assigned'
-            - 'emergency.canceled'
-            - 'emergency.terminate'
-            - 'emergency.refused'
+            - 'CREATED'
+            - 'CANCELED'
+            - 'ASSIGNED'
+            - 'REFUSED'
+            - 'ASK_ASSIGN'
+            - 'ASK_TIMEOUT'
+            - 'TERMINATED'
         emergency:
           type: object
           description: Detailed information about the emergency.
@@ -109,7 +119,7 @@ components:
               description: Name of the call center.
               examples:
                 - 'SAMU Center of Paris'
-        rescuer:
+        rescuerEvent:
           type: object
           nullable: true
           description: Information about the rescuer assigned to the event, if any.
@@ -140,3 +150,70 @@ components:
               description: Email address of the rescuer.
               examples:
                 - 'johndoe@example.com'
+    rescuerEvent:
+      title: Rescuer Emergency Event
+      name: emergency
+      type: object
+      properties:
+        eventType:
+          type: string
+          description: Type of the event.
+          examples:
+            - 'ASK'
+          enum:
+            - 'ASK'
+            - 'TIMEOUT'
+            - 'TERMINATED'
+        emergency:
+          type: object
+          description: Detailed information about the emergency.
+          properties:
+            id:
+              type: string
+              description: Unique identifier for the emergency.
+              examples:
+                - '5f4f5e6a-8b0a-4c9a-9b0a-4c9a9b0a4c9a'
+            info:
+              type: string
+              description: Information about the emergency.
+              examples:
+                - 'A person has a heart attack.'
+            position:
+              type: object
+              properties:
+                latitude:
+                  type: number
+                  format: double
+                  description: Latitude of the emergency location.
+                  examples:
+                    - 40.712776
+                longitude:
+                  type: number
+                  format: double
+                  description: Longitude of the emergency location.
+                  examples:
+                    - -74.005974
+            status:
+              type: string
+              description: Current status of the emergency.
+              examples:
+                - 'PENDING'
+              enum:
+                - 'PENDING'
+                - 'ASSIGNED'
+                - 'RESOLVED'
+                - 'CANCELED'
+        callCenter:
+          type: object
+          description: Information about the call center handling the event.
+          properties:
+            id:
+              type: string
+              description: Unique identifier for the call center.
+              examples:
+                - '5f4f5e6a-8b0a-4c9a-9b0a-4c9a9b0a4c9a'
+            name:
+              type: string
+              description: Name of the call center.
+              examples:
+                - 'SAMU Center of Paris'
