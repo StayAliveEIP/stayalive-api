@@ -3,6 +3,7 @@ import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 import {
   EmergencyAskAssignEvent,
   EmergencyCreatedEvent,
+  EmergencyTimeoutEvent,
   EventType,
 } from './emergencyManager.dto';
 import { RedisService, RescuerPositionWithId } from '../redis/redis.service';
@@ -176,6 +177,11 @@ export class EmergencyManagerService {
     });
   }
 
+  @OnEvent(EventType.EMERGENCY_TIMEOUT)
+  async onEmergencyTimeout(event: EmergencyTimeoutEvent) {
+    await this.onEmergencyCreated(event);
+  }
+
   async runTimer(event: EmergencyCreatedEvent, rescuer: Rescuer) {
     //run a 45 seconds timer if no rescuer accept the emergency in this time, the emergency a new rescuer will be assigned
     setTimeout(async () => {
@@ -208,10 +214,13 @@ export class EmergencyManagerService {
           result,
       );
       //try to find a new rescuer
-      await this.onEmergencyCreated({
-        emergency: emergency,
+      //emit event timeout
+      const eventTimeout: EmergencyTimeoutEvent = {
         callCenter: event.callCenter,
-      });
+        emergency: event.emergency,
+        rescuer: rescuer,
+      };
+      this.event.emit(EventType.EMERGENCY_TIMEOUT, eventTimeout);
     }, 45000);
   }
 }

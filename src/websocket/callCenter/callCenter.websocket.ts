@@ -290,4 +290,31 @@ export class CallCenterWebsocket
     const callCenterEvent = new CallCenterEvent(eventData);
     socket.emit(CallCenterEvent.channel, callCenterEvent);
   }
+
+  @OnEvent(EventType.EMERGENCY_TIMEOUT)
+  handleEmergencyTimeout(event: EmergencyCreatedEvent) {
+    const socket = this.getSocketWithId(event.callCenter._id);
+    if (!socket) {
+      return;
+    }
+    const eventData: CallCenterEventData = {
+      eventType: EventType.EMERGENCY_TIMEOUT,
+      callCenter: {
+        id: event.callCenter._id.toHexString(),
+        name: event.callCenter.name,
+      },
+      emergency: {
+        id: event.emergency._id.toHexString(),
+        info: event.emergency.info,
+        position: {
+          latitude: event.emergency.position.lat,
+          longitude: event.emergency.position.long,
+        },
+        status: event.emergency.status,
+      },
+      rescuer: null,
+    };
+    const callCenterEvent = new CallCenterEvent(eventData);
+    socket.emit(CallCenterEvent.channel, callCenterEvent);
+  }
 }
