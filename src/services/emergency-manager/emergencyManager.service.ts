@@ -16,6 +16,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Emergency } from '../../database/emergency.schema';
 import { Rescuer } from '../../database/rescuer.schema';
 import { CallCenter } from '../../database/callCenter.schema';
+import { async } from 'rxjs';
 
 @Injectable()
 export class EmergencyManagerService {
@@ -177,30 +178,39 @@ export class EmergencyManagerService {
 
   async runTimer(event: EmergencyCreatedEvent, rescuer: Rescuer) {
     //run a 45 seconds timer if no rescuer accept the emergency in this time, the emergency a new rescuer will be assigned
-    setTimeout(() => {
+    setTimeout(async () => {
       const emergencyId = event.emergency._id;
       const rescuerId = rescuer._id;
-      this.emergencyModel.findById(emergencyId).then((emergency) => {
-        if (!emergency) {
-          throw new Error('Emergency not found');
-        }
-        if (emergency.status === 'ASSIGNED') {
-          return;
-        }
-        //push the rescuer id in the array of hidden rescuers
-        this.logger.log(
-          'Emergency not accepted after 45 seconds, trying to find a new rescuer',
-        );
-        emergency.rescuerHidden.push(new Types.ObjectId(rescuerId));
-        this.emergencyModel.updateOne(
-          { _id: emergencyId },
-          { rescuerHidden: emergency.rescuerHidden },
-        );
-        this.logger.log(
-          'Rescuer ' + rescuerId + ' hidden for emergency ' + emergencyId + '.',
-        );
-        //try to find a new rescuer
-        this.onEmergencyCreated(event);
+
+      const emergency = await this.emergencyModel.findById(emergencyId);
+      if (!emergency) {
+        this.logger.error('Emergency not found with id ' + emergencyId);
+        return;
+      }
+      if (emergency.status === 'ASSIGNED') {
+        return;
+      }
+      //push the rescuer id in the array of hidden rescuers
+      this.logger.log(
+        'Emergency not accepted after 45 seconds, trying to find a new rescuer',
+      );
+      emergency.rescuerHidden.push(new Types.ObjectId(rescuerId));
+      const result = await this.emergencyModel.updateOne(
+        { _id: emergencyId },
+        { $push: { rescuerHidden: new Types.ObjectId(rescuerId) } },
+      );
+      this.logger.log(
+        'Rescuer ' +
+          rescuerId +
+          ' hidden for emergency ' +
+          emergencyId +
+          ': ' +
+          result,
+      );
+      //try to find a new rescuer
+      await this.onEmergencyCreated({
+        emergency: emergency,
+        callCenter: event.callCenter,
       });
     }, 45000);
   }
