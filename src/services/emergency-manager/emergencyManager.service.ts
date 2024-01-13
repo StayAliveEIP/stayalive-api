@@ -17,7 +17,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Emergency } from '../../database/emergency.schema';
 import { Rescuer } from '../../database/rescuer.schema';
 import { CallCenter } from '../../database/callCenter.schema';
-import { async } from 'rxjs';
 
 @Injectable()
 export class EmergencyManagerService {

@@ -122,8 +122,8 @@ export class RescuerWebsocket
     if (!socket) {
       return;
     }
-    const eventData: CallCenterEventData = {
-      eventType: EventType.EMERGENCY_TIMEOUT,
+    const eventData: any = {
+      type: EventType.EMERGENCY_TIMEOUT,
       callCenter: {
         id: event.callCenter._id.toHexString(),
         name: event.callCenter.name,
