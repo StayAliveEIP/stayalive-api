@@ -78,6 +78,16 @@ export class EmergencyService {
     const emergency = await this.emergencyModel.findById(
       new Types.ObjectId(id),
     );
+    const callCenter = await this.callCenterModel.findById(
+      emergency.callCenterId,
+    );
+    if (!callCenter) {
+      throw new Error('Call center not found');
+    }
+    const rescuer = await this.rescuerModel.findById(userId);
+    if (!rescuer) {
+      throw new Error('Rescuer not found');
+    }
     if (!emergency) {
       throw new NotFoundException("L'urgence n'existe pas.");
     }
@@ -94,7 +104,9 @@ export class EmergencyService {
     }
     // Send event
     const event: EmergencyTerminatedEvent = {
-      emergencyId: emergency._id,
+      emergency: emergency,
+      callCenter: callCenter,
+      rescuer: rescuer,
     };
     this.eventEmitter.emit(EventType.EMERGENCY_TERMINATED, event);
     // Terminate the emergency
@@ -128,10 +140,8 @@ export class EmergencyService {
     }
 
     const eventCreatedTemplate: EmergencyCreatedEvent = {
-      emergencyId: emergency._id,
-      lat: emergency.position.lat,
-      long: emergency.position.long,
-      info: emergency.info,
+      emergency: emergency,
+      callCenter: await this.callCenterModel.findById(emergency.callCenterId),
     };
     this.eventEmitter.emit(EventType.EMERGENCY_CREATED, eventCreatedTemplate);
     return {
