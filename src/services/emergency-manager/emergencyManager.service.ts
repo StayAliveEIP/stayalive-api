@@ -89,7 +89,7 @@ export class EmergencyManagerService {
     this.event.emit(EventType.EMERGENCY_ASK_ASSIGN, event);
   }
 
-  private async cgetAllPositions(
+  private async getAllPositions(
     event: EmergencyCreatedEvent,
   ): Promise<RescuerPositionWithId[]> {
     this.logger.log(
@@ -187,9 +187,14 @@ export class EmergencyManagerService {
           return;
         }
         //push the rescuer id in the array of hidden rescuers
-        this.logger.log("Emergency not accepted after 45 seconds, trying to find a new rescuer");
-        emergency.rescuerHidden.push(rescuerId);
-        emergency.save();
+        this.logger.log(
+          'Emergency not accepted after 45 seconds, trying to find a new rescuer',
+        );
+        emergency.rescuerHidden.push(new Types.ObjectId(rescuerId));
+        this.emergencyModel.updateOne(
+          { _id: emergencyId },
+          { rescuerHidden: emergency.rescuerHidden },
+        );
         this.logger.log(
           'Rescuer ' + rescuerId + ' hidden for emergency ' + emergencyId + '.',
         );
