@@ -211,7 +211,7 @@ export class EmergencyManagerService {
           ' hidden for emergency ' +
           emergencyId +
           ': ' +
-          result,
+          JSON.stringify(result),
       );
       //try to find a new rescuer
       //emit event timeout
