@@ -30,7 +30,7 @@ export class RescuerWsResponse implements WsResponse<RescuerWsData> {
   event: string;
 
   // Create a static property to store the event name
-  static channel = 'emergency';
+  static channel = 'message';
 
   constructor(data: RescuerWsData) {
     this.data = data;

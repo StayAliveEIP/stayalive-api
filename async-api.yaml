@@ -1,38 +1,54 @@
-asyncapi: 2.2.0
-defaultContentType: application/json
+asyncapi: "3.0.0"
 info:
   title: StayAlive WebSocket (Socket.io) API Documentation
-  version: '1.0.0'
-  description: |
-    WebSockets API offers real-time data updates. WebSockets is a bidirectional protocol offering fastest real-time data, helping you build real-time applications.
+  version: 1.0.0
+  description: >
+    WebSockets API offers real-time data updates. WebSockets is a bidirectional
+    protocol offering fastest real-time data, helping you build real-time
+    applications.
+
 
     ### General Considerations
 
+
     - All messages sent and received via WebSockets are encoded in JSON format.
-    - All the messages was sent via socket.io protocol and via the 'emergency' channel.
+    
+    - All message are sent in the socket.io channel name: message.
+defaultContentType: application/json
 servers:
   stayalive:
-    url: api.stayalive.fr
+    host: api.stayalive.fr
     protocol: socketio
     description: |
       The Api of Call Center to receive events from the platform.
-
 channels:
-  '/call-center/ws':
-    subscribe:
-      description: Receive emergency events for your call center.
-      summary: Please use this channel to receive emergency events for your call center.
-      message:
-        oneOf:
-          - $ref: '#/components/messages/CallCenterEvent'
-  '/rescuer/ws':
-    subscribe:
-      description: Receive emergency events for your rescuer.
-      summary: Please use this channel to receive emergency events for your rescuer.
-      message:
-        oneOf:
-          - $ref: '#/components/messages/RescuerEvent'
-
+  'callCenter':
+    address: /call-center/ws
+    messages:
+      receive.message:
+        $ref: '#/components/messages/CallCenterEvent'
+  rescuer:
+    address: /rescuer/ws
+    messages:
+      receive.message:
+        $ref: '#/components/messages/RescuerEvent'
+operations:
+  /call-center/ws:
+    action: receive
+    channel:
+      $ref: '#/channels/callCenter'
+    summary: Please use this channel to receive emergency events for your call center.
+    description: "Receive emergency events for your call center."
+    messages:
+      - $ref: '#/channels/callCenter/messages/receive.message'
+  /rescuer/ws:
+    action: receive
+    channel:
+      $ref: '#/channels/rescuer'
+    summary: Please use this channel to receive emergency events for your rescuer.
+    description: Receive emergency events for your rescuer.
+    messages:
+      - $ref: '#/channels/rescuer/messages/receive.message'
 components:
   messages:
     CallCenterEvent:
@@ -44,7 +60,7 @@ components:
     RescuerEvent:
       title: Emergency Event
       description: |
-          This event is sent when a new emergency is created or updated.
+        This event is sent when a new emergency is created or updated.
       payload:
         $ref: '#/components/schemas/rescuerEvent'
   schemas:
@@ -57,15 +73,15 @@ components:
           type: string
           description: Type of the event.
           examples:
-            - 'CREATED'
+            - CREATED
           enum:
-            - 'CREATED'
-            - 'CANCELED'
-            - 'ASSIGNED'
-            - 'REFUSED'
-            - 'ASK_ASSIGN'
-            - 'ASK_TIMEOUT'
-            - 'TERMINATED'
+            - CREATED
+            - CANCELED
+            - ASSIGNED
+            - REFUSED
+            - ASK_ASSIGN
+            - ASK_TIMEOUT
+            - TERMINATED
         emergency:
           type: object
           description: Detailed information about the emergency.
@@ -74,12 +90,12 @@ components:
               type: string
               description: Unique identifier for the emergency.
               examples:
-                - '5f4f5e6a-8b0a-4c9a-9b0a-4c9a9b0a4c9a'
+                - 5f4f5e6a-8b0a-4c9a-9b0a-4c9a9b0a4c9a
             info:
               type: string
               description: Information about the emergency.
               examples:
-                - 'A person has a heart attack.'
+                - A person has a heart attack.
             position:
               type: object
               properties:
@@ -99,12 +115,12 @@ components:
               type: string
               description: Current status of the emergency.
               examples:
-                - 'PENDING'
+                - PENDING
               enum:
-                - 'PENDING'
-                - 'ASSIGNED'
-                - 'RESOLVED'
-                - 'CANCELED'
+                - PENDING
+                - ASSIGNED
+                - RESOLVED
+                - CANCELED
         callCenter:
           type: object
           description: Information about the call center handling the event.
@@ -113,12 +129,12 @@ components:
               type: string
               description: Unique identifier for the call center.
               examples:
-                - '5f4f5e6a-8b0a-4c9a-9b0a-4c9a9b0a4c9a'
+                - 5f4f5e6a-8b0a-4c9a-9b0a-4c9a9b0a4c9a
             name:
               type: string
               description: Name of the call center.
               examples:
-                - 'SAMU Center of Paris'
+                - SAMU Center of Paris
         rescuerEvent:
           type: object
           nullable: true
@@ -128,17 +144,17 @@ components:
               type: string
               description: Unique identifier for the rescuer.
               examples:
-                - '5f4f5e6a-8b0a-4c9a-9b0a-4c9a9b0a4c9a'
+                - 5f4f5e6a-8b0a-4c9a-9b0a-4c9a9b0a4c9a
             firstname:
               type: string
               description: First name of the rescuer.
               examples:
-                - 'John'
+                - John
             lastname:
               type: string
               description: Last name of the rescuer.
               examples:
-                - 'Doe'
+                - Doe
             phone:
               type: string
               description: Contact phone number for the rescuer.
@@ -149,7 +165,7 @@ components:
               format: email
               description: Email address of the rescuer.
               examples:
-                - 'johndoe@example.com'
+                - johndoe@example.com
     rescuerEvent:
       title: Rescuer Emergency Event
       name: emergency
@@ -159,11 +175,11 @@ components:
           type: string
           description: Type of the event.
           examples:
-            - 'ASK'
+            - ASK
           enum:
-            - 'ASK'
-            - 'TIMEOUT'
-            - 'TERMINATED'
+            - ASK
+            - TIMEOUT
+            - TERMINATED
         emergency:
           type: object
           description: Detailed information about the emergency.
@@ -172,12 +188,12 @@ components:
               type: string
               description: Unique identifier for the emergency.
               examples:
-                - '5f4f5e6a-8b0a-4c9a-9b0a-4c9a9b0a4c9a'
+                - 5f4f5e6a-8b0a-4c9a-9b0a-4c9a9b0a4c9a
             info:
               type: string
               description: Information about the emergency.
               examples:
-                - 'A person has a heart attack.'
+                - A person has a heart attack.
             position:
               type: object
               properties:
@@ -197,12 +213,12 @@ components:
               type: string
               description: Current status of the emergency.
               examples:
-                - 'PENDING'
+                - PENDING
               enum:
-                - 'PENDING'
-                - 'ASSIGNED'
-                - 'RESOLVED'
-                - 'CANCELED'
+                - PENDING
+                - ASSIGNED
+                - RESOLVED
+                - CANCELED
         callCenter:
           type: object
           description: Information about the call center handling the event.
@@ -211,9 +227,9 @@ components:
               type: string
               description: Unique identifier for the call center.
               examples:
-                - '5f4f5e6a-8b0a-4c9a-9b0a-4c9a9b0a4c9a'
+                - 5f4f5e6a-8b0a-4c9a-9b0a-4c9a9b0a4c9a
             name:
               type: string
               description: Name of the call center.
               examples:
-                - 'SAMU Center of Paris'
+                - SAMU Center of Paris

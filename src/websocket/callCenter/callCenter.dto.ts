@@ -41,7 +41,7 @@ export class CallCenterWsResponse implements WsResponse<CallCenterWsData> {
   event: string;
 
   // Create a static property to store the event name
-  static channel = 'emergency';
+  static channel = 'message';
 
   constructor(data: CallCenterWsData) {
     this.data = data;
