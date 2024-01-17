@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Types } from 'mongoose';
-import {IsNotEmpty, IsString, Length} from 'class-validator';
+import { IsNotEmpty, IsString, Length } from 'class-validator';
 
 export class EmergencyInfoResponse {
   @ApiProperty({
@@ -20,12 +20,16 @@ export class EmergencyInfoResponse {
   @ApiProperty({
     type: Object,
     required: true,
-    example: {
-      id: '5f9e1d3b3d5b3e1b7c9b4b3e',
-      firstname: 'John',
-      lastname: 'Doe',
-      phone: '1234567890',
-    },
+    example:
+      {
+        id: '5f9e1d3b3d5b3e1b7c9b4b3e',
+        firstname: 'John',
+        lastname: 'Doe',
+        phone: '1234567890',
+      } || null,
+    description: 'The rescuer assigned to the emergency WARNING: can be null',
+
+
   })
   rescuerAssigned: {
     id: Types.ObjectId;

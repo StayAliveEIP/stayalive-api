@@ -44,7 +44,7 @@ export class EmergencyCallCenterController {
   @ApiOperation({ summary: 'Create a new emergency' })
   @ApiResponse({
     status: 200,
-    description: 'The emergency was created.',
+    description: 'The emergency was created. (rescuerAssigned can be null)',
     type: EmergencyInfoResponse,
   })
   @UseGuards(CallCenterAuthGuard)
