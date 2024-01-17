@@ -68,7 +68,7 @@ export class EmergencyCallCenterService {
             phone: emergency.rescuerAssigned.phone.phone,
           }
         : null,
-      info: emergency.info,
+      info: emergency.info ? emergency.info : '',
     }));
   }
 
