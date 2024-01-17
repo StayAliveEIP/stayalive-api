@@ -29,6 +29,9 @@ export class Emergency {
   position: Position;
 
   @Prop({ required: true })
+  address: string;
+
+  @Prop({ required: true })
   callCenterId: Types.ObjectId;
 
   @Prop({ required: true })
