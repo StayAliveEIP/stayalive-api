@@ -47,7 +47,7 @@ export class AuthCallCenterService {
     // Generate a new token
     const token = generateToken(admin.id, AccountType.CALL_CENTER);
     return {
-      token: token,
+      accessToken: token,
     };
   }
 }
