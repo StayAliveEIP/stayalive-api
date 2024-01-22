@@ -149,6 +149,24 @@ export class EmergencyService {
     };
   }
 
+  async getEmergencyHistory(userId: Types.ObjectId) {
+    const rescuer = await this.rescuerModel.findById(userId);
+    if (!rescuer) {
+      throw new NotFoundException('Rescuer not found');
+    }
+    const emergencies = await this.emergencyModel
+      .find({
+        rescuerAssigned: userId,
+      })
+      .exec();
+    return emergencies.map((emergency) => ({
+      id: emergency._id,
+      status: emergency.status,
+      address: emergency.address,
+      info: emergency.info ? emergency.info : '',
+    }));
+  }
+
   /*
   async createEmergency(emergency: newEmergencyDto) {
     const newEmergency: Call = {
