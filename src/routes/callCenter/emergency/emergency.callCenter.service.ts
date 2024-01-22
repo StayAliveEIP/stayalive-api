@@ -50,11 +50,14 @@ export class EmergencyCallCenterService {
           rescuerAssigned: '$rescuerAssignedInfo',
           status: 1,
           address: 1,
+          info: 1,
         },
       },
     ];
 
     const emergencies = await this.emergencyModel.aggregate(pipeline).exec();
+
+    console.log(emergencies);
 
     return emergencies.map((emergency) => ({
       id: emergency.id,
