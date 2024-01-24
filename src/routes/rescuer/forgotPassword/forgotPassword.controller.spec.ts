@@ -15,7 +15,7 @@ import {
 } from './forgotPassword.dto';
 import { NotFoundException } from '@nestjs/common';
 import { Rescuer, RescuerSchema } from '../../../database/rescuer.schema';
-import { ReactEmailService } from '../../../services/react-email/react-email.service';
+import {ReactEmailService} from "../../../services/react-email/react-email.service";
 
 describe('ForgotPasswordController', () => {
   let authController: AuthController;
@@ -65,7 +65,7 @@ describe('ForgotPasswordController', () => {
         ]),
       ],
       controllers: [ForgotPasswordController],
-      providers: [ForgotPasswordService],
+      providers: [ForgotPasswordService, ReactEmailService],
     }).compile();
     forgotPasswordController = appForgotPassword.get<ForgotPasswordController>(
       ForgotPasswordController,
@@ -112,7 +112,7 @@ describe('ForgotPasswordController', () => {
         };
         const response = await forgotPasswordController.index(body);
         expect(response.message).toBe(
-          'Un email vous a été envoyé pour réinitialiser votre mot de passe.',
+          'Un code de réinitialisation vous a été envoyé par email.',
         );
       });
     });
