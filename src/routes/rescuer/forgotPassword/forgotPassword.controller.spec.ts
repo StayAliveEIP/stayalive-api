@@ -112,7 +112,7 @@ describe('ForgotPasswordController', () => {
         };
         const response = await forgotPasswordController.index(body);
         expect(response.message).toBe(
-          'Un email vous a été envoyé pour réinitialiser votre mot de passe.',
+          'Un code de réinitialisation vous a été envoyé par email.',
         );
       });
     });
