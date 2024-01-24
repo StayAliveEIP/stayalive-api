@@ -16,7 +16,6 @@ import { AuthCallCenterService } from './auth.callCenter.service';
 
 describe('AuthCallCenterController', () => {
   let appController: AuthCallCenterController;
-  let service: AuthCallCenterService;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
@@ -40,7 +39,6 @@ describe('AuthCallCenterController', () => {
       providers: [ReactEmailService, AuthCallCenterService],
     }).compile();
     appController = app.get<AuthCallCenterController>(AuthCallCenterController);
-    service = app.get<AuthCallCenterService>(AuthCallCenterService);
   });
 
   afterAll(async () => {
