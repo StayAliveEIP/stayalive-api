@@ -8,6 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { envValidation } from '../../../validation/env.validation';
 import { MailJetModule } from '../../../services/mailjet/mailjet.module';
 import { Rescuer, RescuerSchema } from '../../../database/rescuer.schema';
+import {ReactEmailService} from "../../../services/react-email/react-email.service";
 
 describe('AuthController', () => {
   let appController: AuthController;
@@ -34,7 +35,7 @@ describe('AuthController', () => {
         ]),
       ],
       controllers: [AuthController],
-      providers: [AuthService],
+      providers: [AuthService, ReactEmailService],
     }).compile();
     appController = app.get<AuthController>(AuthController);
   });

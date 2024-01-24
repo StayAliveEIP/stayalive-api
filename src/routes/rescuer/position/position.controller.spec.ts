@@ -61,9 +61,8 @@ describe('PositionController', () => {
     });
 
     it('Get the previous position inserted', async () => {
-      const result: PositionDto = await positionController.getPosition(
-        randomObjectId,
-      );
+      const result: PositionDto =
+        await positionController.getPosition(randomObjectId);
       expect(result).toStrictEqual(positionDto);
     });
 

@@ -4,8 +4,6 @@ import { EmergencyService } from './emergency.service';
 import { UserId } from '../../../decorator/userid.decorator';
 import { Types } from 'mongoose';
 import { SuccessMessage } from '../../../dto.dto';
-import { TypeScriptBinaryLoader } from '@nestjs/cli/lib/compiler/typescript-loader';
-import { QueueScheduler } from 'rxjs/internal/scheduler/QueueScheduler';
 import { RescuerAuthGuard } from '../../../guards/auth.route.guard';
 
 @Controller('/rescuer')
