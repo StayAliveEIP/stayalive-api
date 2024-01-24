@@ -12,7 +12,6 @@ import {
   EventType,
 } from '../../../services/emergency-manager/emergencyManager.dto';
 import { CallCenter } from '../../../database/callCenter.schema';
-import { Rescuer } from '../../../database/rescuer.schema';
 
 @Injectable()
 export class EmergencyCallCenterService {
