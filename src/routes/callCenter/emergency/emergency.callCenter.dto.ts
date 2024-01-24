@@ -28,8 +28,6 @@ export class EmergencyInfoResponse {
         phone: '1234567890',
       } || null,
     description: 'The rescuer assigned to the emergency WARNING: can be null',
-
-
   })
   rescuerAssigned: {
     id: Types.ObjectId;
