@@ -5,6 +5,7 @@ import { UserId } from '../../../decorator/userid.decorator';
 import { Types } from 'mongoose';
 import { SuccessMessage } from '../../../dto.dto';
 import { RescuerAuthGuard } from '../../../guards/auth.route.guard';
+import {EmergencyAcceptDto} from "./emergency.dto";
 
 @Controller('/rescuer')
 @ApiTags('Emergency')
@@ -33,25 +34,25 @@ export class EmergencyController {
   })
   async acceptEmergency(
     @UserId() userId: Types.ObjectId,
-    @Query('id') id: string,
+    @Query('id') emergency :  EmergencyAcceptDto,
   ): Promise<SuccessMessage> {
-    return await this.service.acceptEmergency(userId, id);
+    return await this.service.acceptEmergency(userId, emergency.id);
   }
 
   @Get('/emergency/terminate')
   async terminateEmergency(
     @UserId() userId: Types.ObjectId,
-    @Query('id') id: string,
+    @Query('id') emergency: EmergencyAcceptDto,
   ): Promise<SuccessMessage> {
-    return await this.service.terminateEmergency(userId, id);
+    return await this.service.terminateEmergency(userId, emergency.id);
   }
 
   @UseGuards(RescuerAuthGuard)
   @Get('/emergency/refuse')
   async refuseEmergency(
     @UserId() userId: Types.ObjectId,
-    @Query('id') id: string,
+    @Query('id') emergency: EmergencyAcceptDto,
   ): Promise<SuccessMessage> {
-    return await this.service.refuseEmergency(userId, id);
+    return await this.service.refuseEmergency(userId, emergency.id);
   }
 }
