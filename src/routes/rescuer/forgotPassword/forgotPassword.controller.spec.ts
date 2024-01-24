@@ -15,7 +15,7 @@ import {
 } from './forgotPassword.dto';
 import { NotFoundException } from '@nestjs/common';
 import { Rescuer, RescuerSchema } from '../../../database/rescuer.schema';
-import {ReactEmailService} from "../../../services/react-email/react-email.service";
+import { ReactEmailService } from '../../../services/react-email/react-email.service';
 
 describe('ForgotPasswordController', () => {
   let authController: AuthController;
