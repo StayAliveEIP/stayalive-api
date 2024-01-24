@@ -94,9 +94,8 @@ describe('AuthController', () => {
           email: email,
           password: 'password123!',
         };
-        const loginResponsePromise: LoginResponse = await appController.login(
-          body,
-        );
+        const loginResponsePromise: LoginResponse =
+          await appController.login(body);
         expect(loginResponsePromise.accessToken).toBeDefined();
         accessToken = loginResponsePromise.accessToken;
       });

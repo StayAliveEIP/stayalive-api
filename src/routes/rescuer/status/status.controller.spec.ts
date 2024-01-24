@@ -5,7 +5,8 @@ import { getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { Rescuer, RescuerSchema } from '../../../database/rescuer.schema';
 import { StatusController } from './status.controller';
 import { StatusService } from './status.service';
-import mongoose, { Model, Types } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
+import { Status } from './status.dto';
 
 describe('StatusController', () => {
   let statutController: StatusController;
@@ -41,12 +42,11 @@ describe('StatusController', () => {
   });
 
   describe('setStatus and getStatus', async () => {
-    const randomObjectId = new Types.ObjectId();
     const rescuer = await rescuerModel.findOne({ firstname: 'test' });
     const rescuerId = rescuer._id;
     it('should return void', async () => {
       const result = await statutController.setStatus(rescuerId, {
-        status: 'AVAILABLE',
+        status: Status.AVAILABLE,
       });
       expect(result).toBe(undefined);
     });
