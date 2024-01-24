@@ -15,6 +15,7 @@ import {
 } from './forgotPassword.dto';
 import { NotFoundException } from '@nestjs/common';
 import { Rescuer, RescuerSchema } from '../../../database/rescuer.schema';
+import {ReactEmailService} from "../../../services/react-email/react-email.service";
 
 describe('ForgotPasswordController', () => {
   let authController: AuthController;
@@ -42,7 +43,7 @@ describe('ForgotPasswordController', () => {
         ]),
       ],
       controllers: [AuthController],
-      providers: [AuthService],
+      providers: [AuthService, ReactEmailService],
     }).compile();
     authController = appAuth.get<AuthController>(AuthController);
 
@@ -64,7 +65,7 @@ describe('ForgotPasswordController', () => {
         ]),
       ],
       controllers: [ForgotPasswordController],
-      providers: [ForgotPasswordService],
+      providers: [ForgotPasswordService, ReactEmailService],
     }).compile();
     forgotPasswordController = appForgotPassword.get<ForgotPasswordController>(
       ForgotPasswordController,
