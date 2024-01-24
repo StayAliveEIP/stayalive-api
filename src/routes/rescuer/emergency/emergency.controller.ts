@@ -21,6 +21,7 @@ export class EmergencyController {
   //   return await this.service.getEmergencyHistory(userId);
   // }
 
+  @UseGuards(RescuerAuthGuard)
   @Get('/emergency/accept')
   @ApiOperation({
     summary: 'Accept an emergency.',

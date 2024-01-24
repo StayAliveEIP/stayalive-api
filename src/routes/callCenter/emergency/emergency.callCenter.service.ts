@@ -12,6 +12,7 @@ import {
   EventType,
 } from '../../../services/emergency-manager/emergencyManager.dto';
 import { CallCenter } from '../../../database/callCenter.schema';
+import { Rescuer } from '../../../database/rescuer.schema';
 
 @Injectable()
 export class EmergencyCallCenterService {
@@ -25,31 +26,66 @@ export class EmergencyCallCenterService {
     userId: Types.ObjectId,
   ): Promise<Array<EmergencyInfoResponse>> {
     // Get all emergencies that your previously created
-    const emergencies = await this.emergencyModel.find({
-      callCenterId: userId,
-    });
-    const emergenciesInfo: Array<EmergencyInfoResponse> = [];
-    emergencies.forEach((emergency) => {
-      emergenciesInfo.push({
-        id: emergency._id,
-      });
-    });
-    return emergenciesInfo;
+    const pipeline = [
+      {
+        $match: { callCenterId: userId },
+      },
+      {
+        $lookup: {
+          from: 'rescuers', // the collection name of Rescuer in your database
+          localField: 'rescuerAssigned',
+          foreignField: '_id',
+          as: 'rescuerAssignedInfo',
+        },
+      },
+      {
+        $unwind: {
+          path: '$rescuerAssignedInfo',
+          preserveNullAndEmptyArrays: true, // to keep emergencies with null rescuerAssigned
+        },
+      },
+      {
+        $project: {
+          id: '$_id',
+          rescuerAssigned: '$rescuerAssignedInfo',
+          status: 1,
+          address: 1,
+        },
+      },
+    ];
+
+    const emergencies = await this.emergencyModel.aggregate(pipeline).exec();
+
+    return emergencies.map((emergency) => ({
+      id: emergency.id,
+      status: emergency.status,
+      address: emergency.address,
+      rescuerAssigned: emergency.rescuerAssigned
+        ? {
+            id: emergency.rescuerAssigned._id,
+            firstname: emergency.rescuerAssigned.firstname,
+            lastname: emergency.rescuerAssigned.lastname,
+            phone: emergency.rescuerAssigned.phone.phone,
+          }
+        : null,
+      info: emergency.info ? emergency.info : '',
+    }));
   }
 
   async createEmergency(
     userId: Types.ObjectId,
     body: CreateNewEmergencyRequest,
-  ): Promise<EmergencyInfoResponse> {
+  ): Promise<any> {
     // Create a new emergency
     const emergency: Emergency = {
       _id: new Types.ObjectId(),
       callCenterId: userId,
-      info: body.info,
+      info: body.info ? body.info : '',
       position: {
-        lat: body.position.lat,
-        long: body.position.long,
+        lat: 123,
+        long: 123,
       },
+      address: body.address,
       status: EmergencyStatus.PENDING,
       rescuerAssigned: null,
       rescuerHidden: [],
