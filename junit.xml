@@ -1,3 +1,318 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="0" failures="0" errors="0" time="11.487">
+<testsuites name="jest tests" tests="19" failures="9" errors="0" time="12.882">
+  <testsuite name="ReactEmailService" errors="0" failures="1" skipped="0" timestamp="2024-01-24T21:36:10" time="10.198" tests="1">
+    <testcase classname="ReactEmailService should be defined" name="ReactEmailService should be defined" time="0.018">
+      <failure>Error: Mailjet API_KEY is required
+    at basicConnectStrategy (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/node-mailjet@3.4.1/node_modules/node-mailjet/mailjet-client.js:182:13)
+    at MailjetClient.Object.&lt;anonymous&gt;.MailjetClient.connectStrategy (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/node-mailjet@3.4.1/node_modules/node-mailjet/mailjet-client.js:177:12)
+    at MailjetClient.Object.&lt;anonymous&gt;.MailjetClient.connect (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/node-mailjet@3.4.1/node_modules/node-mailjet/mailjet-client.js:161:15)
+    at Function.Object.&lt;anonymous&gt;.MailjetClient.connect (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/node-mailjet@3.4.1/node_modules/node-mailjet/mailjet-client.js:147:30)
+    at new MailjetTransport (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/nodemailer-mailjet-transport@1.0.4_nodemailer@6.9.7/node_modules/nodemailer-mailjet-transport/lib/mailjet-transport.js:33:25)
+    at Object.&lt;anonymous&gt;.module.exports (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/nodemailer-mailjet-transport@1.0.4_nodemailer@6.9.7/node_modules/nodemailer-mailjet-transport/lib/mailjet-transport.js:159:10)
+    at new ReactEmailService (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/src/services/react-email/react-email.service.ts:18:7)
+    at TestingInjector.instantiateClass (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:365:19)
+    at callback (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:65:45)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at TestingInjector.resolveConstructorParams (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:144:24)
+    at TestingInjector.loadInstance (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:70:13)
+    at TestingInjector.loadProvider (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:97:9)
+    at /Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:56:13
+    at async Promise.all (index 3)
+    at TestingInstanceLoader.createInstancesOfProviders (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:55:9)
+    at /Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:40:13
+    at async Promise.all (index 1)
+    at TestingInstanceLoader.createInstances (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:39:9)
+    at TestingInstanceLoader.createInstancesOfDependencies (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:22:13)
+    at TestingInstanceLoader.createInstancesOfDependencies (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-instance-loader.js:9:9)
+    at TestingModuleBuilder.createInstancesOfDependencies (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-module.builder.js:118:9)
+    at TestingModuleBuilder.compile (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-module.builder.js:74:9)
+    at Object.&lt;anonymous&gt; (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/src/services/react-email/react-email.service.spec.ts:8:35)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="PositionController" errors="0" failures="0" skipped="0" timestamp="2024-01-24T21:36:10" time="11.284" tests="4">
+    <testcase classname="PositionController Test to set the position of rescuer and get it Set the position of the rescuer" name="PositionController Test to set the position of rescuer and get it Set the position of the rescuer" time="0.012">
+    </testcase>
+    <testcase classname="PositionController Test to set the position of rescuer and get it Get the previous position inserted" name="PositionController Test to set the position of rescuer and get it Get the previous position inserted" time="0.097">
+    </testcase>
+    <testcase classname="PositionController Test to set the position of rescuer and get it Delete the previous position" name="PositionController Test to set the position of rescuer and get it Delete the previous position" time="0.031">
+    </testcase>
+    <testcase classname="PositionController Test to set the position of rescuer and get it Should return an error if the position was deleted" name="PositionController Test to set the position of rescuer and get it Should return an error if the position was deleted" time="0.01">
+    </testcase>
+  </testsuite>
+  <testsuite name="AuthController" errors="0" failures="3" skipped="0" timestamp="2024-01-24T21:36:10" time="12.092" tests="3">
+    <testcase classname="AuthController Test to get account information Register the rescuer should pass the register and get the message" name="AuthController Test to get account information Register the rescuer should pass the register and get the message" time="0.059">
+      <failure>Error: Nest can&apos;t resolve dependencies of the AuthService (RescuerModel, ?). Please make sure that the argument ReactEmailService at index [1] is available in the RootTestModule context.
+
+Potential solutions:
+- Is RootTestModule a valid NestJS module?
+- If ReactEmailService is a provider, is it part of the current RootTestModule?
+- If ReactEmailService is exported from a separate @Module, is that module imported within RootTestModule?
+  @Module({
+    imports: [ /* the Module containing ReactEmailService */ ]
+  })
+
+    at TestingInjector.lookupComponentInParentModules (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:254:19)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at TestingInjector.resolveComponentInstance (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:207:33)
+    at TestingInjector.resolveComponentInstance (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-injector.js:19:45)
+    at resolveParam (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:128:38)
+    at async Promise.all (index 1)
+    at TestingInjector.resolveConstructorParams (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:143:27)
+    at TestingInjector.loadInstance (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:70:13)
+    at TestingInjector.loadProvider (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:97:9)
+    at /Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:56:13
+    at async Promise.all (index 3)
+    at TestingInstanceLoader.createInstancesOfProviders (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:55:9)
+    at /Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:40:13
+    at async Promise.all (index 1)
+    at TestingInstanceLoader.createInstances (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:39:9)
+    at TestingInstanceLoader.createInstancesOfDependencies (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:22:13)
+    at TestingInstanceLoader.createInstancesOfDependencies (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-instance-loader.js:9:9)
+    at TestingModuleBuilder.createInstancesOfDependencies (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-module.builder.js:118:9)
+    at TestingModuleBuilder.compile (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-module.builder.js:74:9)
+    at Object.&lt;anonymous&gt; (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/src/routes/rescuer/account/account.controller.spec.ts:25:36)</failure>
+    </testcase>
+    <testcase classname="AuthController Test to get account information Login the rescuer should pass the login and get the access token" name="AuthController Test to get account information Login the rescuer should pass the login and get the access token" time="0.013">
+      <failure>Error: Nest can&apos;t resolve dependencies of the AuthService (RescuerModel, ?). Please make sure that the argument ReactEmailService at index [1] is available in the RootTestModule context.
+
+Potential solutions:
+- Is RootTestModule a valid NestJS module?
+- If ReactEmailService is a provider, is it part of the current RootTestModule?
+- If ReactEmailService is exported from a separate @Module, is that module imported within RootTestModule?
+  @Module({
+    imports: [ /* the Module containing ReactEmailService */ ]
+  })
+
+    at TestingInjector.lookupComponentInParentModules (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:254:19)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at TestingInjector.resolveComponentInstance (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:207:33)
+    at TestingInjector.resolveComponentInstance (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-injector.js:19:45)
+    at resolveParam (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:128:38)
+    at async Promise.all (index 1)
+    at TestingInjector.resolveConstructorParams (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:143:27)
+    at TestingInjector.loadInstance (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:70:13)
+    at TestingInjector.loadProvider (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:97:9)
+    at /Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:56:13
+    at async Promise.all (index 3)
+    at TestingInstanceLoader.createInstancesOfProviders (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:55:9)
+    at /Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:40:13
+    at async Promise.all (index 1)
+    at TestingInstanceLoader.createInstances (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:39:9)
+    at TestingInstanceLoader.createInstancesOfDependencies (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:22:13)
+    at TestingInstanceLoader.createInstancesOfDependencies (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-instance-loader.js:9:9)
+    at TestingModuleBuilder.createInstancesOfDependencies (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-module.builder.js:118:9)
+    at TestingModuleBuilder.compile (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-module.builder.js:74:9)
+    at Object.&lt;anonymous&gt; (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/src/routes/rescuer/account/account.controller.spec.ts:25:36)</failure>
+    </testcase>
+    <testcase classname="AuthController Test to get account information Get the account information should pass the get account information and get the account information" name="AuthController Test to get account information Get the account information should pass the get account information and get the account information" time="0.008">
+      <failure>Error: Nest can&apos;t resolve dependencies of the AuthService (RescuerModel, ?). Please make sure that the argument ReactEmailService at index [1] is available in the RootTestModule context.
+
+Potential solutions:
+- Is RootTestModule a valid NestJS module?
+- If ReactEmailService is a provider, is it part of the current RootTestModule?
+- If ReactEmailService is exported from a separate @Module, is that module imported within RootTestModule?
+  @Module({
+    imports: [ /* the Module containing ReactEmailService */ ]
+  })
+
+    at TestingInjector.lookupComponentInParentModules (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:254:19)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at TestingInjector.resolveComponentInstance (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:207:33)
+    at TestingInjector.resolveComponentInstance (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-injector.js:19:45)
+    at resolveParam (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:128:38)
+    at async Promise.all (index 1)
+    at TestingInjector.resolveConstructorParams (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:143:27)
+    at TestingInjector.loadInstance (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:70:13)
+    at TestingInjector.loadProvider (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:97:9)
+    at /Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:56:13
+    at async Promise.all (index 3)
+    at TestingInstanceLoader.createInstancesOfProviders (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:55:9)
+    at /Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:40:13
+    at async Promise.all (index 1)
+    at TestingInstanceLoader.createInstances (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:39:9)
+    at TestingInstanceLoader.createInstancesOfDependencies (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:22:13)
+    at TestingInstanceLoader.createInstancesOfDependencies (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-instance-loader.js:9:9)
+    at TestingModuleBuilder.createInstancesOfDependencies (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-module.builder.js:118:9)
+    at TestingModuleBuilder.compile (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-module.builder.js:74:9)
+    at Object.&lt;anonymous&gt; (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/src/routes/rescuer/account/account.controller.spec.ts:25:36)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="DocumentController" errors="0" failures="0" skipped="0" timestamp="2024-01-24T21:36:10" time="12.336" tests="4">
+    <testcase classname="DocumentController Upload, download and delete a document Should accept the upload process" name="DocumentController Upload, download and delete a document Should accept the upload process" time="0.111">
+    </testcase>
+    <testcase classname="DocumentController Upload, download and delete a document Should download the previous file uploaded" name="DocumentController Upload, download and delete a document Should download the previous file uploaded" time="0.033">
+    </testcase>
+    <testcase classname="DocumentController Upload, download and delete a document Should get information about the file uploaded" name="DocumentController Upload, download and delete a document Should get information about the file uploaded" time="0.02">
+    </testcase>
+    <testcase classname="DocumentController Upload, download and delete a document Should delete the previous file uploaded" name="DocumentController Upload, download and delete a document Should delete the previous file uploaded" time="0.028">
+    </testcase>
+  </testsuite>
+  <testsuite name="ForgotPasswordController" errors="0" failures="5" skipped="0" timestamp="2024-01-24T21:36:10" time="12.466" tests="5">
+    <testcase classname="ForgotPasswordController Register the rescuer and send a login link Send a forgot password should not pass the forgot password form" name="ForgotPasswordController Register the rescuer and send a login link Send a forgot password should not pass the forgot password form" time="0.076">
+      <failure>Error: Nest can&apos;t resolve dependencies of the ForgotPasswordService (RescuerModel, ?). Please make sure that the argument ReactEmailService at index [1] is available in the RootTestModule context.
+
+Potential solutions:
+- Is RootTestModule a valid NestJS module?
+- If ReactEmailService is a provider, is it part of the current RootTestModule?
+- If ReactEmailService is exported from a separate @Module, is that module imported within RootTestModule?
+  @Module({
+    imports: [ /* the Module containing ReactEmailService */ ]
+  })
+
+    at TestingInjector.lookupComponentInParentModules (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:254:19)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at TestingInjector.resolveComponentInstance (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:207:33)
+    at TestingInjector.resolveComponentInstance (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-injector.js:19:45)
+    at resolveParam (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:128:38)
+    at async Promise.all (index 1)
+    at TestingInjector.resolveConstructorParams (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:143:27)
+    at TestingInjector.loadInstance (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:70:13)
+    at TestingInjector.loadProvider (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:97:9)
+    at /Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:56:13
+    at async Promise.all (index 3)
+    at TestingInstanceLoader.createInstancesOfProviders (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:55:9)
+    at /Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:40:13
+    at async Promise.all (index 1)
+    at TestingInstanceLoader.createInstances (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:39:9)
+    at TestingInstanceLoader.createInstancesOfDependencies (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:22:13)
+    at TestingInstanceLoader.createInstancesOfDependencies (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-instance-loader.js:9:9)
+    at TestingModuleBuilder.createInstancesOfDependencies (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-module.builder.js:118:9)
+    at TestingModuleBuilder.compile (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-module.builder.js:74:9)
+    at Object.&lt;anonymous&gt; (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/src/routes/rescuer/forgotPassword/forgotPassword.controller.spec.ts:50:46)</failure>
+    </testcase>
+    <testcase classname="ForgotPasswordController Register the rescuer and send a login link Register the rescuer should pass the register and get the message" name="ForgotPasswordController Register the rescuer and send a login link Register the rescuer should pass the register and get the message" time="0.026">
+      <failure>Error: Nest can&apos;t resolve dependencies of the ForgotPasswordService (RescuerModel, ?). Please make sure that the argument ReactEmailService at index [1] is available in the RootTestModule context.
+
+Potential solutions:
+- Is RootTestModule a valid NestJS module?
+- If ReactEmailService is a provider, is it part of the current RootTestModule?
+- If ReactEmailService is exported from a separate @Module, is that module imported within RootTestModule?
+  @Module({
+    imports: [ /* the Module containing ReactEmailService */ ]
+  })
+
+    at TestingInjector.lookupComponentInParentModules (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:254:19)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at TestingInjector.resolveComponentInstance (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:207:33)
+    at TestingInjector.resolveComponentInstance (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-injector.js:19:45)
+    at resolveParam (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:128:38)
+    at async Promise.all (index 1)
+    at TestingInjector.resolveConstructorParams (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:143:27)
+    at TestingInjector.loadInstance (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:70:13)
+    at TestingInjector.loadProvider (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:97:9)
+    at /Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:56:13
+    at async Promise.all (index 3)
+    at TestingInstanceLoader.createInstancesOfProviders (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:55:9)
+    at /Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:40:13
+    at async Promise.all (index 1)
+    at TestingInstanceLoader.createInstances (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:39:9)
+    at TestingInstanceLoader.createInstancesOfDependencies (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:22:13)
+    at TestingInstanceLoader.createInstancesOfDependencies (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-instance-loader.js:9:9)
+    at TestingModuleBuilder.createInstancesOfDependencies (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-module.builder.js:118:9)
+    at TestingModuleBuilder.compile (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-module.builder.js:74:9)
+    at Object.&lt;anonymous&gt; (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/src/routes/rescuer/forgotPassword/forgotPassword.controller.spec.ts:50:46)</failure>
+    </testcase>
+    <testcase classname="ForgotPasswordController Register the rescuer and send a login link Send a forgot password should pass the forgot password form" name="ForgotPasswordController Register the rescuer and send a login link Send a forgot password should pass the forgot password form" time="0.021">
+      <failure>Error: Nest can&apos;t resolve dependencies of the ForgotPasswordService (RescuerModel, ?). Please make sure that the argument ReactEmailService at index [1] is available in the RootTestModule context.
+
+Potential solutions:
+- Is RootTestModule a valid NestJS module?
+- If ReactEmailService is a provider, is it part of the current RootTestModule?
+- If ReactEmailService is exported from a separate @Module, is that module imported within RootTestModule?
+  @Module({
+    imports: [ /* the Module containing ReactEmailService */ ]
+  })
+
+    at TestingInjector.lookupComponentInParentModules (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:254:19)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at TestingInjector.resolveComponentInstance (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:207:33)
+    at TestingInjector.resolveComponentInstance (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-injector.js:19:45)
+    at resolveParam (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:128:38)
+    at async Promise.all (index 1)
+    at TestingInjector.resolveConstructorParams (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:143:27)
+    at TestingInjector.loadInstance (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:70:13)
+    at TestingInjector.loadProvider (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:97:9)
+    at /Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:56:13
+    at async Promise.all (index 3)
+    at TestingInstanceLoader.createInstancesOfProviders (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:55:9)
+    at /Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:40:13
+    at async Promise.all (index 1)
+    at TestingInstanceLoader.createInstances (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:39:9)
+    at TestingInstanceLoader.createInstancesOfDependencies (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:22:13)
+    at TestingInstanceLoader.createInstancesOfDependencies (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-instance-loader.js:9:9)
+    at TestingModuleBuilder.createInstancesOfDependencies (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-module.builder.js:118:9)
+    at TestingModuleBuilder.compile (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-module.builder.js:74:9)
+    at Object.&lt;anonymous&gt; (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/src/routes/rescuer/forgotPassword/forgotPassword.controller.spec.ts:50:46)</failure>
+    </testcase>
+    <testcase classname="ForgotPasswordController Register the rescuer and send a login link Should modify the password should not pass the forgot password form" name="ForgotPasswordController Register the rescuer and send a login link Should modify the password should not pass the forgot password form" time="0.021">
+      <failure>Error: Nest can&apos;t resolve dependencies of the ForgotPasswordService (RescuerModel, ?). Please make sure that the argument ReactEmailService at index [1] is available in the RootTestModule context.
+
+Potential solutions:
+- Is RootTestModule a valid NestJS module?
+- If ReactEmailService is a provider, is it part of the current RootTestModule?
+- If ReactEmailService is exported from a separate @Module, is that module imported within RootTestModule?
+  @Module({
+    imports: [ /* the Module containing ReactEmailService */ ]
+  })
+
+    at TestingInjector.lookupComponentInParentModules (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:254:19)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at TestingInjector.resolveComponentInstance (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:207:33)
+    at TestingInjector.resolveComponentInstance (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-injector.js:19:45)
+    at resolveParam (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:128:38)
+    at async Promise.all (index 1)
+    at TestingInjector.resolveConstructorParams (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:143:27)
+    at TestingInjector.loadInstance (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:70:13)
+    at TestingInjector.loadProvider (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:97:9)
+    at /Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:56:13
+    at async Promise.all (index 3)
+    at TestingInstanceLoader.createInstancesOfProviders (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:55:9)
+    at /Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:40:13
+    at async Promise.all (index 1)
+    at TestingInstanceLoader.createInstances (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:39:9)
+    at TestingInstanceLoader.createInstancesOfDependencies (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:22:13)
+    at TestingInstanceLoader.createInstancesOfDependencies (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-instance-loader.js:9:9)
+    at TestingModuleBuilder.createInstancesOfDependencies (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-module.builder.js:118:9)
+    at TestingModuleBuilder.compile (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-module.builder.js:74:9)
+    at Object.&lt;anonymous&gt; (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/src/routes/rescuer/forgotPassword/forgotPassword.controller.spec.ts:50:46)</failure>
+    </testcase>
+    <testcase classname="ForgotPasswordController Register the rescuer and send a login link Should modify the password should pass the forgot password form" name="ForgotPasswordController Register the rescuer and send a login link Should modify the password should pass the forgot password form" time="0.018">
+      <failure>Error: Nest can&apos;t resolve dependencies of the ForgotPasswordService (RescuerModel, ?). Please make sure that the argument ReactEmailService at index [1] is available in the RootTestModule context.
+
+Potential solutions:
+- Is RootTestModule a valid NestJS module?
+- If ReactEmailService is a provider, is it part of the current RootTestModule?
+- If ReactEmailService is exported from a separate @Module, is that module imported within RootTestModule?
+  @Module({
+    imports: [ /* the Module containing ReactEmailService */ ]
+  })
+
+    at TestingInjector.lookupComponentInParentModules (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:254:19)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at TestingInjector.resolveComponentInstance (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:207:33)
+    at TestingInjector.resolveComponentInstance (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-injector.js:19:45)
+    at resolveParam (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:128:38)
+    at async Promise.all (index 1)
+    at TestingInjector.resolveConstructorParams (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:143:27)
+    at TestingInjector.loadInstance (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:70:13)
+    at TestingInjector.loadProvider (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/injector.js:97:9)
+    at /Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:56:13
+    at async Promise.all (index 3)
+    at TestingInstanceLoader.createInstancesOfProviders (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:55:9)
+    at /Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:40:13
+    at async Promise.all (index 1)
+    at TestingInstanceLoader.createInstances (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:39:9)
+    at TestingInstanceLoader.createInstancesOfDependencies (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+core@10.2.10_@nestjs+common@10.2.10_@nestjs+microservices@10.2.10_@nestjs+platform-ex_nmwwxa4zjr27gywwanzrhjgp6q/node_modules/@nestjs/core/injector/instance-loader.js:22:13)
+    at TestingInstanceLoader.createInstancesOfDependencies (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-instance-loader.js:9:9)
+    at TestingModuleBuilder.createInstancesOfDependencies (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-module.builder.js:118:9)
+    at TestingModuleBuilder.compile (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/node_modules/.pnpm/@nestjs+testing@10.2.10_@nestjs+common@10.2.10_@nestjs+core@10.2.10_@nestjs+microservices@10._srhk7ty2weefjsak4eei33beju/node_modules/@nestjs/testing/testing-module.builder.js:74:9)
+    at Object.&lt;anonymous&gt; (/Users/floriandamiot/Documents/WebstormProjects/stayalive-api/src/routes/rescuer/forgotPassword/forgotPassword.controller.spec.ts:50:46)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="AuthController" errors="0" failures="0" skipped="0" timestamp="2024-01-24T21:36:10" time="12.48" tests="2">
+    <testcase classname="AuthController Register and login the rescuer Register the rescuer should pass the register and get the message" name="AuthController Register and login the rescuer Register the rescuer should pass the register and get the message" time="0.248">
+    </testcase>
+    <testcase classname="AuthController Register and login the rescuer Login the rescuer should pass the login and get the access token" name="AuthController Register and login the rescuer Login the rescuer should pass the login and get the access token" time="0.129">
+    </testcase>
+  </testsuite>
 </testsuites>

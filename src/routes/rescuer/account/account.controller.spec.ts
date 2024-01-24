@@ -11,6 +11,9 @@ import { AuthController } from '../auth/auth.controller';
 import { AccountController } from './account.controller';
 import { AccountService } from './account.service';
 import { verifyToken } from '../../../utils/crypt.utils';
+import { ReactEmailService } from '../../../services/react-email/react-email.service';
+import { RedisService } from '../../../services/redis/redis.service';
+import { DocumentSchema, Document } from '../../../database/document.schema';
 
 describe('AuthController', () => {
   let appController: AuthController;
@@ -38,9 +41,13 @@ describe('AuthController', () => {
         MongooseModule.forFeature([
           { name: Rescuer.name, schema: RescuerSchema },
         ]),
+        // Get the rescuer model.
+        MongooseModule.forFeature([
+          { name: Document.name, schema: DocumentSchema },
+        ]),
       ],
       controllers: [AuthController],
-      providers: [AuthService],
+      providers: [AuthService, ReactEmailService, RedisService],
     }).compile();
     appController = appAuth.get<AuthController>(AuthController);
 
@@ -60,9 +67,13 @@ describe('AuthController', () => {
         MongooseModule.forFeature([
           { name: Rescuer.name, schema: RescuerSchema },
         ]),
+        // Get the rescuer model.
+        MongooseModule.forFeature([
+          { name: Document.name, schema: DocumentSchema },
+        ]),
       ],
       controllers: [AccountController],
-      providers: [AccountService],
+      providers: [AccountService, ReactEmailService, RedisService],
     }).compile();
     accountController = appAccount.get<AccountController>(AccountController);
   });

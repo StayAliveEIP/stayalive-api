@@ -16,6 +16,7 @@ import { SuccessMessage } from '../../../dto.dto';
 import { DocumentInformation } from './document.dto';
 import { StreamableFile } from '@nestjs/common';
 import * as Stream from 'stream';
+import { ReactEmailService } from '../../../services/react-email/react-email.service';
 
 describe('DocumentController', () => {
   let documentController: DocumentController;
@@ -42,7 +43,7 @@ describe('DocumentController', () => {
         ]),
       ],
       controllers: [DocumentController],
-      providers: [DocumentService],
+      providers: [DocumentService, ReactEmailService],
     }).compile();
     documentController = app.get<DocumentController>(DocumentController);
   });
