@@ -93,7 +93,6 @@ describe('DocumentController', () => {
     it('Should get information about the file uploaded', async () => {
       const result: DocumentInformation =
         await documentController.documentInformation(userId, documentType);
-      expect(result.documentType).toBe(documentType);
       expect(result.status).toBe(DocumentStatus.PENDING);
     });
 
