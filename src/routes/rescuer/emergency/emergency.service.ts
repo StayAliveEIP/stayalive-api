@@ -118,7 +118,10 @@ export class EmergencyService {
   }
 
   //TODO : Redis
-  async refuseEmergency(userId: Types.ObjectId, id: string) {
+  async refuseEmergency(
+    userId: Types.ObjectId,
+    id: string,
+  ): Promise<SuccessMessage> {
     const emergency = await this.emergencyModel.findById(
       new Types.ObjectId(id),
     );
