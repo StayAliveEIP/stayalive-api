@@ -8,7 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { envValidation } from '../../../validation/env.validation';
 import { MailJetModule } from '../../../services/mailjet/mailjet.module';
 import { Rescuer, RescuerSchema } from '../../../database/rescuer.schema';
-import {ReactEmailService} from "../../../services/react-email/react-email.service";
+import { ReactEmailService } from '../../../services/react-email/react-email.service';
 
 describe('AuthController', () => {
   let appController: AuthController;
@@ -67,9 +67,8 @@ describe('AuthController', () => {
           email: email,
           password: 'password123!',
         };
-        const loginResponsePromise: LoginResponse = await appController.login(
-          body,
-        );
+        const loginResponsePromise: LoginResponse =
+          await appController.login(body);
         expect(loginResponsePromise.accessToken).toBeDefined();
       });
     });

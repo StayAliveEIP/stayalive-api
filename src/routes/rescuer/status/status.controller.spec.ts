@@ -1,19 +1,20 @@
+import mongoose, { Types } from 'mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigModule } from '@nestjs/config';
 import { envValidation } from '../../../validation/env.validation';
-import { getModelToken, MongooseModule } from '@nestjs/mongoose';
+import { MongooseModule } from '@nestjs/mongoose';
 import { Rescuer, RescuerSchema } from '../../../database/rescuer.schema';
+import { RedisModule } from '../../../services/redis/redis.module';
 import { StatusController } from './status.controller';
 import { StatusService } from './status.service';
-import mongoose, { Model } from 'mongoose';
-import { Status } from './status.dto';
+import { Status, StatusDto } from './status.dto';
 
-describe('StatusController', () => {
-  let statutController: StatusController;
+describe('PositionController', () => {
+  let statusController: StatusController;
 
-  let rescuerModel;
+  // TODO: Fix not disconnecting redis
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const app: TestingModule = await Test.createTestingModule({
       imports: [
         // Set up the environment variables.
@@ -21,6 +22,8 @@ describe('StatusController', () => {
           isGlobal: true,
           validationSchema: envValidation,
         }),
+        RedisModule,
+        // Connect to the MongoDB database.
         MongooseModule.forRoot(process.env.MONGODB_URI, {
           dbName: process.env.MONGODB_DATABASE,
         }),
@@ -32,28 +35,37 @@ describe('StatusController', () => {
       controllers: [StatusController],
       providers: [StatusService],
     }).compile();
-    statutController = app.get<StatusController>(StatusController);
-
-    rescuerModel = app.get<Model<Rescuer>>(getModelToken(Rescuer.name));
+    statusController = app.get<StatusController>(StatusController);
   });
 
   afterAll(async () => {
     await mongoose.disconnect();
   });
 
-  describe('setStatus and getStatus', async () => {
-    const rescuer = await rescuerModel.findOne({ firstname: 'test' });
-    const rescuerId = rescuer._id;
-    it('should return void', async () => {
-      const result = await statutController.setStatus(rescuerId, {
-        status: Status.AVAILABLE,
-      });
-      expect(result).toBe(undefined);
+  describe('Test to set and get the status', () => {
+    const randomObjectId = new Types.ObjectId();
+
+    it('Get the status as not available because not set', async () => {
+      const result: StatusDto =
+        await statusController.getStatus(randomObjectId);
+      expect(result.status).toBe(Status.NOT_AVAILABLE);
     });
 
-    it('should return status', async () => {
-      const result = await statutController.getStatus(rescuerId);
-      expect(result).toHaveProperty('status');
+    it('Set the status', async () => {
+      const statusDto: StatusDto = {
+        status: Status.AVAILABLE,
+      };
+      const result: StatusDto = await statusController.setStatus(
+        randomObjectId,
+        statusDto,
+      );
+      expect(result.status).toBe(statusDto.status);
+    });
+
+    it('Get the status as available', async () => {
+      const result: StatusDto =
+        await statusController.getStatus(randomObjectId);
+      expect(result.status).toBe(Status.AVAILABLE);
     });
   });
 });

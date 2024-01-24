@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -11,7 +11,6 @@ import { RescuerAuthGuard } from '../../../guards/auth.route.guard';
 import { StatusDto } from './status.dto';
 import { UserId } from '../../../decorator/userid.decorator';
 import { Types } from 'mongoose';
-import { async } from 'rxjs';
 
 @Controller('/rescuer')
 @ApiTags('Status')
