@@ -5,7 +5,7 @@ import { UserId } from '../../../decorator/userid.decorator';
 import { Types } from 'mongoose';
 import { SuccessMessage } from '../../../dto.dto';
 import { RescuerAuthGuard } from '../../../guards/auth.route.guard';
-import {EmergencyAcceptDto} from "./emergency.dto";
+import { EmergencyAcceptDto, EmergencyHistoryResponse } from './emergency.dto';
 
 @Controller('/rescuer')
 @ApiTags('Emergency')
@@ -17,7 +17,15 @@ export class EmergencyController {
   @ApiOperation({
     summary: 'Get the history of all your emergencies.',
   })
-  async getEmergencyHistory(@UserId() userId: Types.ObjectId) {
+  @ApiResponse({
+    status: 200,
+    description: 'The history of all your emergencies.',
+    type: EmergencyHistoryResponse,
+    isArray: true,
+  })
+  async getEmergencyHistory(
+    @UserId() userId: Types.ObjectId,
+  ): Promise<Array<EmergencyHistoryResponse>> {
     return await this.service.getEmergencyHistory(userId);
   }
 
@@ -34,7 +42,7 @@ export class EmergencyController {
   })
   async acceptEmergency(
     @UserId() userId: Types.ObjectId,
-    @Query('id') emergency :  EmergencyAcceptDto,
+    @Query('id') emergency: EmergencyAcceptDto,
   ): Promise<SuccessMessage> {
     return await this.service.acceptEmergency(userId, emergency.id);
   }
