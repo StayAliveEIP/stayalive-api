@@ -82,6 +82,29 @@ const RescuerMock = {
   available: false,
 };
 
+const CallCenterMock = {
+  _id: '659186382823853a4345289a',
+  name: 'test',
+  phone: '0652173532',
+  email: {
+    email: 'bastiencantet@outlook.fr',
+    lastCodeSent: null,
+    code: null,
+    verified: true,
+  },
+  password: {
+    password: '$2b$10$R0gEM3QMJZkAhVqtdUY5zOgEbvJh.hDSAgi4Vbc7ef6i5Ux3tEnLG',
+    token: null,
+    lastTokenSent: null,
+    lastChange: null,
+  },
+  address: {
+    street: 'derde',
+    city: 'ded',
+    zip: '7373',
+  },
+};
+
 class EmergencyModelMock {
   constructor(public data) {}
 
@@ -98,12 +121,21 @@ class EmergencyModelMock {
   });
 
   static save = jest.fn().mockResolvedValue(EmergencyMockAccept);
+
+  static findByIdAndUpdate = jest.fn().mockResolvedValue(EmergencyMockAccept);
 }
 
 class RescuerModelMock {
   constructor(private data) {}
   static findById = jest.fn().mockImplementation(() => {
     return new RescuerModelMock(RescuerMock);
+  });
+}
+
+class CallCenterModelMock {
+  constructor(private data) {}
+  static findById = jest.fn().mockImplementation(() => {
+    return new CallCenterModelMock(CallCenterMock).data;
   });
 }
 
@@ -137,6 +169,10 @@ describe('EmergencyController', () => {
           provide: getModelToken(Rescuer.name),
           useValue: RescuerModelMock,
         },
+        {
+          provide: getModelToken(CallCenter.name),
+          useValue: CallCenterModelMock,
+        },
         EventEmitter2,
       ],
     }).compile();
@@ -166,6 +202,17 @@ describe('EmergencyController', () => {
           status: 'ASSIGNED',
         },
       ]);
+    });
+
+    it('Refuse the emergency', async () => {
+      const result = await emergencyController.refuseEmergency(
+        new Types.ObjectId('5f9d88b9d4f0f1b1a8c9d9a0'),
+        { id: '65a85fda8590c63d49fc84c4' },
+      );
+
+      expect(result).toStrictEqual({
+        message: "Vous avez bien refusé l'urgence",
+      });
     });
   });
 });
