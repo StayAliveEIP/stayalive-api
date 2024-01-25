@@ -56,8 +56,6 @@ export class EmergencyCallCenterService {
 
     const emergencies = await this.emergencyModel.aggregate(pipeline).exec();
 
-    console.log(emergencies);
-
     return emergencies.map((emergency) => ({
       id: emergency.id,
       status: emergency.status,

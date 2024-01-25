@@ -7,34 +7,153 @@ import {
   CreateNewEmergencyRequest,
   EmergencyInfoResponse,
 } from './emergency.callCenter.dto';
+import { ConfigModule } from '@nestjs/config';
+import { envValidation } from '../../../validation/env.validation';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Rescuer, RescuerSchema } from '../../../database/rescuer.schema';
+import { Emergency, EmergencySchema } from '../../../database/emergency.schema';
+import {
+  CallCenter,
+  CallCenterSchema,
+} from '../../../database/callCenter.schema';
+import { Admin, AdminSchema } from '../../../database/admin.schema';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+
+const CallCenterMock = {
+  id: '659186382823853a4345289a',
+  name: 'test',
+  phone: '0652173532',
+  email: {
+    email: 'bastiencantet@outlook.fr',
+    lastCodeSent: null,
+    code: null,
+    verified: true,
+  },
+  password: {
+    password: '$2b$10$R0gEM3QMJZkAhVqtdUY5zOgEbvJh.hDSAgi4Vbc7ef6i5Ux3tEnLG',
+    token: null,
+    lastTokenSent: null,
+    lastChange: null,
+  },
+  address: {
+    street: 'derde',
+    city: 'ded',
+    zip: '7373',
+  },
+};
+
+const CallCenterMockArray = [
+  {
+    id: '659186382823853a4345289a',
+    name: 'test',
+    phone: '0652173532',
+    email: {
+      email: 'bastiencantet@outlook.fr',
+      lastCodeSent: null,
+      code: null,
+      verified: true,
+    },
+    password: {
+      password: '$2b$10$R0gEM3QMJZkAhVqtdUY5zOgEbvJh.hDSAgi4Vbc7ef6i5Ux3tEnLG',
+      token: null,
+      lastTokenSent: null,
+      lastChange: null,
+    },
+    address: {
+      street: 'derde',
+      city: 'ded',
+      zip: '7373',
+    },
+  },
+];
+
+class CallCenterModelMock {
+  constructor(private data) {}
+  static findById = jest.fn().mockImplementation(() => {
+    return new CallCenterModelMock(CallCenterMock).data;
+  });
+  static findOne = jest.fn().mockImplementation(() => {
+    return null;
+  });
+  static create = jest.fn().mockImplementation(() => {
+    return new CallCenterModelMock(CallCenterMock).data;
+  });
+  static find = jest.fn().mockImplementation(() => {
+    return new CallCenterModelMock(CallCenterMockArray).data;
+  });
+  static deleteOne = jest.fn().mockImplementation(() => {
+    return new CallCenterModelMock(CallCenterMock).data;
+  });
+}
+
+const EmergencyMockAccept = {
+  _id: '65a85fda8590c63d49fc84c4',
+  info: 'string',
+  position: {
+    lat: 123,
+    long: 123,
+    _id: '65a85fda8590c63d49fc84c5',
+  },
+  address: '17 rue des Lilas , Paris',
+  callCenterId: {
+    $oid: '659186382823853a4345289a',
+  },
+  status: 'PENDING',
+  rescuerAssigned: {
+    $oid: '656e753981729a32ca66aac8',
+  },
+  rescuerHidden: [],
+};
+
+class EmergencyMock {
+  constructor(private data) {}
+  static save = jest.fn().mockResolvedValue(EmergencyMockAccept);
+  static create = jest.fn().mockResolvedValue(EmergencyMockAccept);
+  static aggregate = jest.fn().mockImplementation(() => {
+    return {
+      exec: jest.fn().mockResolvedValue([]),
+    };
+  });
+}
 
 describe('EmergencyCallCenterController', () => {
   let controller: EmergencyCallCenterController;
-  let emergencyService: EmergencyCallCenterService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [
+        ConfigModule.forRoot({
+          isGlobal: true,
+          validationSchema: envValidation,
+        }),
+        MongooseModule.forRoot(process.env.MONGODB_URI, {
+          dbName: process.env.MONGODB_DATABASE,
+        }),
+        MongooseModule.forFeature([
+          { name: Rescuer.name, schema: RescuerSchema },
+          { name: Emergency.name, schema: EmergencySchema },
+          { name: CallCenter.name, schema: CallCenterSchema },
+          { name: Admin.name, schema: AdminSchema },
+        ]),
+      ],
       controllers: [EmergencyCallCenterController],
       providers: [
+        EmergencyCallCenterService,
+        ReactEmailService,
+        EventEmitter2,
         {
-          provide: EmergencyCallCenterService,
-          useValue: {
-            getEmergency: jest.fn(),
-            createEmergency: jest.fn(),
-          },
+          provide: 'CallCenterModel',
+          useValue: CallCenterModelMock,
         },
         {
-          provide: ReactEmailService,
-          useValue: {},
+          provide: 'EmergencyModel',
+          useValue: EmergencyMock,
         },
       ],
     }).compile();
 
     controller = module.get<EmergencyCallCenterController>(
       EmergencyCallCenterController,
-    );
-    emergencyService = module.get<EmergencyCallCenterService>(
-      EmergencyCallCenterService,
     );
   });
 
@@ -45,12 +164,8 @@ describe('EmergencyCallCenterController', () => {
   describe('getEmergency', () => {
     it('should return an array of emergencies', async () => {
       const userId = new Types.ObjectId();
-      const result: EmergencyInfoResponse[] = [];
-      jest
-        .spyOn(emergencyService, 'getEmergency')
-        .mockImplementation(async () => result);
-
-      expect(await controller.getEmergency(userId)).toBe(result);
+      const result = await controller.getEmergency(userId);
+      expect(result).toEqual([]);
     });
   });
 
@@ -61,20 +176,10 @@ describe('EmergencyCallCenterController', () => {
         info: 'Urgent help needed',
         address: '123 Main St',
       };
-      const response: EmergencyInfoResponse = {
-        id: new Types.ObjectId(),
-        status: 'PENDING',
-        address: emergencyRequest.address,
-        info: emergencyRequest.info,
-        rescuerAssigned: null,
-      };
-      jest
-        .spyOn(emergencyService, 'createEmergency')
-        .mockImplementation(async () => response);
-
-      expect(await controller.createEmergency(userId, emergencyRequest)).toBe(
-        response,
-      );
+      const result = await controller.createEmergency(userId, emergencyRequest);
+      expect(result).toEqual({
+        id: '65a85fda8590c63d49fc84c4',
+      });
     });
   });
 });
