@@ -42,6 +42,7 @@ export const randomPassword = (): string => {
 /**
  * This method will generate a token for the user given in parameter.
  * @param id The id of the user.
+ * @param account The account type of the user.
  */
 export const generateToken = (
   id: Types.ObjectId,
