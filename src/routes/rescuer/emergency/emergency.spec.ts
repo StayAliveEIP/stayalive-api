@@ -139,6 +139,11 @@ class CallCenterModelMock {
   });
 }
 
+class EmergencyMock {
+  constructor(private data) {}
+  static save = jest.fn().mockResolvedValue(EmergencyMockAccept);
+}
+
 describe('EmergencyController', () => {
   let emergencyController: EmergencyController;
 
@@ -172,6 +177,10 @@ describe('EmergencyController', () => {
         {
           provide: getModelToken(CallCenter.name),
           useValue: CallCenterModelMock,
+        },
+        {
+          provide: Emergency,
+          useValue: EmergencyMock,
         },
         EventEmitter2,
       ],
