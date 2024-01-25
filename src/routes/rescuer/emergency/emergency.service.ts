@@ -16,7 +16,6 @@ import {
   EventType,
 } from '../../../services/emergency-manager/emergencyManager.dto';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { reportUnhandledError } from 'rxjs/internal/util/reportUnhandledError';
 import { CallCenter } from '../../../database/callCenter.schema';
 
 @Injectable()
