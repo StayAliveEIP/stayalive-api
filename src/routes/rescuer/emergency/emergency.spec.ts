@@ -107,7 +107,6 @@ class RescuerModelMock {
   });
 }
 
-
 describe('EmergencyController', () => {
   let emergencyController: EmergencyController;
 
@@ -169,16 +168,4 @@ describe('EmergencyController', () => {
       ]);
     });
   });
-
-//   describe('Accept an emergency', () => {
-//     it('Accept an emergency', async () => {
-//       const result = await emergencyController.acceptEmergency(
-//         new Types.ObjectId('5f9d88b9d4f0f1b1a8c9d9a0'),
-//         { id: '65a85fda8590c63d49fc84c4' },
-//       );
-//       expect(result).toStrictEqual({
-//         message: "L'urgence a été acceptée.",
-//       });
-//     });
-//   });
-// });
+});

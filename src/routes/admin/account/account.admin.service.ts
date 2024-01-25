@@ -22,19 +22,22 @@ import {
   randomPassword,
   verifyPassword,
 } from '../../../utils/crypt.utils';
-import {ReactEmailService} from "../../../services/react-email/react-email.service";
+import { ReactEmailService } from '../../../services/react-email/react-email.service';
 
 @Injectable()
 export class AccountAdminService {
   private readonly logger: Logger = new Logger(AccountAdminService.name);
 
-  constructor(@InjectModel(Admin.name) private adminModel: Model<Admin>,private readonly reactEmailService: ReactEmailService) {
+  constructor(
+    @InjectModel(Admin.name) private adminModel: Model<Admin>,
+    private readonly reactEmailService: ReactEmailService,
+  ) {
     this.createDefaultAdminAccount();
   }
 
   async info(userId: Types.ObjectId): Promise<InfoResponse> {
     // Find the admin
-    const admin = await this.adminModel.findById(userId);
+    const admin = await this.adminModel.findOne({ _id: userId });
     if (!admin) {
       throw new NotFoundException("L'administrateur n'a pas pu être trouvé.");
     }

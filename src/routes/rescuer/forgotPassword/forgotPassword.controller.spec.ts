@@ -1,3 +1,5 @@
+jest.useFakeTimers();
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';

@@ -35,7 +35,7 @@ export class AccountAdminController {
       'Return all the information about the account, the email is verified only if the admin was logged in before.',
   })
   @UseGuards(AdminAuthGuard)
-  async index(@UserId() userId: Types.ObjectId): Promise<InfoResponse> {
+  async info(@UserId() userId: Types.ObjectId): Promise<InfoResponse> {
     return this.service.info(userId);
   }
 

@@ -12,67 +12,103 @@ import {
 import { SuccessMessage } from '../../../dto.dto';
 import { ConfigModule } from '@nestjs/config';
 import { envValidation } from '../../../validation/env.validation';
+import { getModelToken, MongooseModule } from '@nestjs/mongoose';
+import { Admin, AdminSchema } from '../../../database/admin.schema';
+
+const adminMockData = {
+  id: '60e6f7b3f5b6f0b3f4f9f6e0',
+  firstname: 'John',
+  lastname: 'Doe',
+  email: {
+    email: 'john@doe.com',
+    verified: true,
+  },
+};
+
+class AdminModelMock {
+  constructor(private data) {
+    this.data = data;
+  }
+
+  static findOne = jest.fn().mockImplementation(() => {
+    return new AdminModelMock(adminMockData).data;
+  });
+
+  static find = jest.fn().mockImplementation(() => {
+    return [new AdminModelMock(adminMockData).data];
+  });
+
+  static save = jest.fn().mockImplementation(() => {
+    return new AdminModelMock(adminMockData).data;
+  });
+}
 
 describe('AccountAdminController', () => {
-  let controller: AccountAdminController;
+  let accountController: AccountAdminController;
   let accountService: AccountAdminService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [AccountAdminController],
       imports: [
         // Set up the environment variables.
         ConfigModule.forRoot({
           isGlobal: true,
           validationSchema: envValidation,
         }),
+        MongooseModule.forRoot(process.env.MONGODB_URI, {
+          dbName: process.env.MONGODB_DATABASE,
+        }),
+        MongooseModule.forFeature([{ name: Admin.name, schema: AdminSchema }]),
       ],
+      controllers: [AccountAdminController],
       providers: [
+        AccountAdminService,
         {
-          provide: AccountAdminService,
-          useValue: {
-            info: jest.fn(),
-            all: jest.fn(),
-            new: jest.fn(),
-            delete: jest.fn(),
-            deleteMyAccount: jest.fn(),
-          },
+          provide: getModelToken(Admin.name),
+          useValue: AdminModelMock,
         },
         ReactEmailService,
       ],
     }).compile();
-
-    controller = module.get<AccountAdminController>(AccountAdminController);
     accountService = module.get<AccountAdminService>(AccountAdminService);
+    accountController = module.get<AccountAdminController>(
+      AccountAdminController,
+    );
   });
 
   it('should be defined', () => {
-    expect(controller).toBeDefined();
+    expect(accountController).toBeDefined();
   });
 
-  describe('index', () => {
+  describe('info', () => {
     it('should return account information', async () => {
-      const userId = new Types.ObjectId();
-      const mockResponse: InfoResponse = {
-        id: userId.toHexString(),
+      // Execute the test
+      const id = new Types.ObjectId('60e6f7b3f5b6f0b3f4f9f6e0');
+      const result: InfoResponse = {
+        id: id.toString(),
         firstname: 'John',
         lastname: 'Doe',
         email: 'john@doe.com',
         emailVerified: true,
       };
 
-      jest.spyOn(accountService, 'info').mockResolvedValue(mockResponse);
-
-      expect(await controller.index(userId)).toBe(mockResponse);
+      expect(await accountController.info(id)).toStrictEqual(result);
     });
   });
 
   describe('all', () => {
     it('should return all admin accounts', async () => {
-      const mockResponse: InfoResponse[] = [];
-      jest.spyOn(accountService, 'all').mockResolvedValue(mockResponse);
-
-      expect(await controller.all()).toBe(mockResponse);
+      const id = new Types.ObjectId('60e6f7b3f5b6f0b3f4f9f6e0');
+      const result = [
+        {
+          id: id.toString(),
+          firstname: 'John',
+          lastname: 'Doe',
+          email: 'john@doe.com',
+          emailVerified: true,
+        },
+      ];
+      expect(await accountController.all()).toStrictEqual(result);
     });
   });
 
@@ -89,7 +125,9 @@ describe('AccountAdminController', () => {
 
       jest.spyOn(accountService, 'new').mockResolvedValue(mockResponse);
 
-      expect(await controller.new(requestBody)).toBe(mockResponse);
+      expect(await accountController.new(requestBody)).toStrictEqual(
+        mockResponse,
+      );
     });
   });
 
@@ -104,7 +142,7 @@ describe('AccountAdminController', () => {
 
       jest.spyOn(accountService, 'delete').mockResolvedValue(mockResponse);
 
-      expect(await controller.delete(requestBody)).toBe(mockResponse);
+      expect(await accountController.delete(requestBody)).toBe(mockResponse);
     });
   });
 
@@ -122,7 +160,7 @@ describe('AccountAdminController', () => {
         .spyOn(accountService, 'deleteMyAccount')
         .mockResolvedValue(mockResponse);
 
-      expect(await controller.deleteMyAccount(userId, requestBody)).toBe(
+      expect(await accountController.deleteMyAccount(userId, requestBody)).toBe(
         mockResponse,
       );
     });

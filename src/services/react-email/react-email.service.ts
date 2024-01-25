@@ -10,7 +10,7 @@ import MailVerifyEmailCode from './templates/stayalive-verify-email-code';
 
 @Injectable()
 export class ReactEmailService {
-  private transporter: nodemailer.Transporter;
+  public transporter: nodemailer.Transporter;
   private logger: Logger = new Logger(ReactEmailService.name);
 
   constructor() {
@@ -37,7 +37,7 @@ export class ReactEmailService {
       subject: 'Vérification de votre compte StayAlive',
       html: html,
     };
-    this.transporter.sendMail(mailOptions, (error, info) => {
+    this.transporter.sendMail(mailOptions, (error) => {
       if (error) {
         console.log(error);
       }
@@ -57,7 +57,7 @@ export class ReactEmailService {
       subject: 'Connecter vous avec le lien',
       html: html,
     };
-    this.transporter.sendMail(mailOptions, (error, info) => {
+    this.transporter.sendMail(mailOptions, (error) => {
       if (error) {
         console.log(error);
       }
@@ -82,7 +82,7 @@ export class ReactEmailService {
       subject: "Votre compte StayAlive Centre d'appel a été créé",
       html: html,
     };
-    this.transporter.sendMail(mailOptions, (error, info) => {
+    this.transporter.sendMail(mailOptions, (error) => {
       console.log('sendMailCreatedAccountPassword');
       if (error) {
         console.log(error);
@@ -103,7 +103,7 @@ export class ReactEmailService {
       subject: 'Réinitialisation de votre mot de passe StayAlive',
       html: html,
     };
-    this.transporter.sendMail(mailOptions, (error, info) => {
+    this.transporter.sendMail(mailOptions, (error) => {
       if (error) {
         console.log(error);
       }
