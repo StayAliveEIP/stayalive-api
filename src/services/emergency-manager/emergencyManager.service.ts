@@ -25,6 +25,7 @@ export class EmergencyManagerService {
   constructor(
     private readonly redis: RedisService,
     private readonly event: EventEmitter2,
+    private readonly websocketRescuer: RescuerWebsocket,
     @InjectModel(Emergency.name) private emergencyModel: Model<Emergency>,
     @InjectModel(Rescuer.name) private rescuerModel: Model<Rescuer>,
   ) {}
@@ -35,7 +36,7 @@ export class EmergencyManagerService {
    * @private This method is private because it should only be called by the event emitter.
    */
   @OnEvent(EventType.EMERGENCY_CREATED)
-  private async onEmergencyCreated(event: EmergencyCreatedEvent) {
+  public async onEmergencyCreated(event: EmergencyCreatedEvent) {
     const emergencyId = event.emergency._id;
     const allPositions: RescuerPositionWithId[] =
       await this.getAllPositions(event);
@@ -120,7 +121,7 @@ export class EmergencyManagerService {
         rescuerWithPosition.map((rescuer) => rescuer.id),
     );
     // Map to get only key in array
-    const connected = Array.from(RescuerWebsocket.clients.keys());
+    const connected = Array.from(this.websocketRescuer.clients.keys());
     this.logger.log(
       'Found ' +
         connected.length +
@@ -155,10 +156,11 @@ export class EmergencyManagerService {
     return rescuerNotHidden;
   }
 
-  private async getNearestPosition(
+  public async getNearestPosition(
     allPositions: RescuerPositionWithId[],
   ): Promise<RescuerPositionWithId | null> {
-    if (allPositions.length === 0) return null;
+    if (allPositions.length === 0)
+      return null;
     return allPositions.reduce((prev, curr) => {
       getDistanceInKilometers(
         new GeoCoordinates(prev.position.lat, prev.position.lng),

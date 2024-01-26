@@ -17,7 +17,6 @@ import { DocumentAdminModule } from './routes/admin/document/document.admin.modu
 import { AuthCallCenterModule } from './routes/callCenter/auth/auth.callCenter.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { EmergencyCallCenterModule } from './routes/callCenter/emergency/emergency.callCenter.module';
-import { WsAdapter } from '@nestjs/platform-ws';
 
 const createSwaggerForApi = (
   app: INestApplication,

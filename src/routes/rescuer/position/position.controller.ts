@@ -3,22 +3,18 @@ import {
   Controller,
   Delete,
   Get,
-  Param,
   Post,
-  Sse,
   UseGuards,
 } from '@nestjs/common';
 import { RescuerAuthGuard } from '../../../guards/auth.route.guard';
 import {
   ApiBearerAuth,
   ApiOperation,
-  ApiParam,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import { PositionService } from './position.service';
 import { PositionDto } from './position.dto';
-import { Observable } from 'rxjs';
 import { SuccessMessage } from '../../../dto.dto';
 import { UserId } from '../../../decorator/userid.decorator';
 import { Types } from 'mongoose';
