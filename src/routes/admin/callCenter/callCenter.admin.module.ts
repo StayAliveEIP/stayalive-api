@@ -9,7 +9,7 @@ import {
   CallCenter,
   CallCenterSchema,
 } from '../../../database/callCenter.schema';
-import {ReactEmailModule} from "../../../services/react-email/react-email.module";
+import { ReactEmailModule } from '../../../services/react-email/react-email.module';
 
 @Module({
   imports: [

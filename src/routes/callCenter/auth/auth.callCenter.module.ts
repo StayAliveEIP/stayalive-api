@@ -11,7 +11,7 @@ import {
   CallCenterSchema,
 } from '../../../database/callCenter.schema';
 import { AuthCallCenterService } from './auth.callCenter.service';
-import {ReactEmailModule} from "../../../services/react-email/react-email.module";
+import { ReactEmailModule } from '../../../services/react-email/react-email.module';
 
 @Module({
   imports: [
