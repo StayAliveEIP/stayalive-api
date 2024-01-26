@@ -130,6 +130,29 @@ describe('AuthController', () => {
         expect(response.lastname).toBe('TEST');
         expect(response.phone.phone).toBe('0102030405');
       });
+
+      describe('Delete the account', () => {
+        it('should pass the delete account and get the message', async () => {
+          expect(accessToken).toBeDefined();
+          const objectId: Types.ObjectId | null = verifyToken(
+            accessToken.split(' ')[1],
+          );
+          expect(objectId).not.toBeNull();
+          const request: any = {
+            user: {
+              userId: objectId,
+            },
+          };
+          const body = {
+            password: 'password123!',
+          };
+          const response = await accountController.deleteAccount(
+            new Types.ObjectId(objectId),
+            body,
+          );
+          expect(response.message).toBe('Votre compte a bien été supprimé.');
+        });
+      });
     });
   });
 });
