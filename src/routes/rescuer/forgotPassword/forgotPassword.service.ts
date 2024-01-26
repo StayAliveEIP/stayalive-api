@@ -11,10 +11,6 @@ import {
   ForgotPasswordResetDTO,
   ForgotPasswordResetResponse,
 } from './forgotPassword.dto';
-import {
-  ISendEmailParam,
-  MailJetService,
-} from '../../../services/mailjet/mailjet.service';
 import { hashPassword } from '../../../utils/crypt.utils';
 import { Rescuer } from '../../../database/rescuer.schema';
 import { ReactEmailService } from '../../../services/react-email/react-email.service';

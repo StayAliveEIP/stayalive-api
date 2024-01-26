@@ -14,7 +14,6 @@ describe('ReactEmailService', () => {
           validationSchema: envValidation,
         }),
       ],
-
       providers: [ReactEmailService],
     }).compile();
 
