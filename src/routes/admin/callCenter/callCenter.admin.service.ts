@@ -17,7 +17,7 @@ import {
 } from './callCenter.admin.dto';
 import { SuccessMessage } from '../../../dto.dto';
 import { hashPassword, randomPassword } from '../../../utils/crypt.utils';
-import {ReactEmailService} from "../../../services/react-email/react-email.service";
+import { ReactEmailService } from '../../../services/react-email/react-email.service';
 
 @Injectable()
 export class CallCenterAdminService {

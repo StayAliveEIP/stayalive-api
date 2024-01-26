@@ -3,10 +3,7 @@ import { EmergencyCallCenterController } from './emergency.callCenter.controller
 import { EmergencyCallCenterService } from './emergency.callCenter.service';
 import { ReactEmailService } from '../../../services/react-email/react-email.service';
 import { Types } from 'mongoose';
-import {
-  CreateNewEmergencyRequest,
-  EmergencyInfoResponse,
-} from './emergency.callCenter.dto';
+import { CreateNewEmergencyRequest } from './emergency.callCenter.dto';
 import { ConfigModule } from '@nestjs/config';
 import { envValidation } from '../../../validation/env.validation';
 import { MongooseModule } from '@nestjs/mongoose';

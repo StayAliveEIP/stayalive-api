@@ -159,8 +159,7 @@ export class EmergencyManagerService {
   public async getNearestPosition(
     allPositions: RescuerPositionWithId[],
   ): Promise<RescuerPositionWithId | null> {
-    if (allPositions.length === 0)
-      return null;
+    if (allPositions.length === 0) return null;
     return allPositions.reduce((prev, curr) => {
       getDistanceInKilometers(
         new GeoCoordinates(prev.position.lat, prev.position.lng),

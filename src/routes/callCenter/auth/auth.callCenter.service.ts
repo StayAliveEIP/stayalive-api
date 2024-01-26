@@ -4,12 +4,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Admin } from '../../../database/admin.schema';
 import { Model } from 'mongoose';
-import {
-  LoginAdminRequest,
-  LoginAdminResponse,
-} from '../../admin/auth/auth.admin.dto';
 import { generateToken, verifyPassword } from '../../../utils/crypt.utils';
 import { CallCenter } from '../../../database/callCenter.schema';
 import {

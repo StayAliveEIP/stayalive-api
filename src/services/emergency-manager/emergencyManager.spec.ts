@@ -1,18 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigModule } from '@nestjs/config';
 import { envValidation } from '../../validation/env.validation';
-import { MailJetModule } from '../mailjet/mailjet.module';
 import { getModelToken, MongooseModule } from '@nestjs/mongoose';
-import { CallCenter, CallCenterSchema } from '../../database/callCenter.schema';
+import { CallCenter } from '../../database/callCenter.schema';
 import { ReactEmailService } from '../react-email/react-email.service';
 import mongoose, { Types } from 'mongoose';
 import { EmergencyManagerService } from './emergencyManager.service';
-import { Emergency, EmergencySchema, EmergencyStatus } from '../../database/emergency.schema';
-import { RescuerWebsocket } from '../../websocket/rescuer/rescuer.websocket';
+import { Emergency, EmergencyStatus } from '../../database/emergency.schema';
 import { WebsocketModule } from '../../websocket/websocket.module';
 import { RedisModule } from '../redis/redis.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { Rescuer, RescuerSchema } from '../../database/rescuer.schema';
+import { Rescuer } from '../../database/rescuer.schema';
 import { EmergencyCreatedEvent } from './emergencyManager.dto';
 import { RescuerPositionWithId } from '../redis/redis.service';
 
@@ -24,21 +22,21 @@ const RESCUER_MOCK: Rescuer = {
     lastCodeSent: null,
     verified: true,
   },
-  firstname: "Test",
-  lastname: "Test",
+  firstname: 'Test',
+  lastname: 'Test',
   password: {
-    password: "fsongfsdjbfgopsd",
+    password: 'fsongfsdjbfgopsd',
     lastChange: null,
     lastTokenSent: null,
     token: null,
   },
   phone: {
-    phone: "123456789",
-    code: "123456",
+    phone: '123456789',
+    code: '123456',
     lastCodeSent: null,
     verified: true,
-  }
-}
+  },
+};
 
 class RescuerModelMock {
   constructor(public data: Rescuer) {}
@@ -171,7 +169,8 @@ describe('Emergency Manager', () => {
           },
         },
       ];
-      const nearestPositionTwo = await service.getNearestPosition(allPositionTwo);
+      const nearestPositionTwo =
+        await service.getNearestPosition(allPositionTwo);
       expect(nearestPositionTwo).toStrictEqual(allPositionTwo[0]);
     });
   });

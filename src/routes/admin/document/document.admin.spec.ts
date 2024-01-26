@@ -29,7 +29,7 @@ const RescuerMock = {
 class DocumenModelMock {
   constructor(public data) {}
 
-  static findOne = jest.fn().mockImplementation((query) => {
+  static findOne = jest.fn().mockImplementation(() => {
     return new DocumenModelMock(DocumentAllMock).data;
   });
 }
@@ -37,7 +37,7 @@ class DocumenModelMock {
 class RescuerModelMock {
   constructor(public data) {}
 
-  static findOne = jest.fn().mockImplementation((query) => {
+  static findOne = jest.fn().mockImplementation(() => {
     return new RescuerModelMock(RescuerMock).data;
   });
 }

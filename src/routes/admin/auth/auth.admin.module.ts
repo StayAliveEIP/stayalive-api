@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { JwtStrategy } from '../../../guards/jwt.strategy';
-import { ReactEmailService } from '../../../services/react-email/react-email.service';
 import { Admin, AdminSchema } from '../../../database/admin.schema';
 import { AuthAdminService } from './auth.admin.service';
 import { AuthAdminController } from './auth.admin.controller';
-import {ReactEmailModule} from "../../../services/react-email/react-email.module";
+import { ReactEmailModule } from '../../../services/react-email/react-email.module';
 
 @Module({
   imports: [

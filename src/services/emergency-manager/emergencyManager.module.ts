@@ -5,7 +5,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Emergency, EmergencySchema } from '../../database/emergency.schema';
 import { Rescuer, RescuerSchema } from '../../database/rescuer.schema';
 import { WebsocketModule } from '../../websocket/websocket.module';
-import { RescuerWebsocket } from '../../websocket/rescuer/rescuer.websocket';
 
 @Module({
   providers: [EmergencyManagerService],

@@ -186,11 +186,6 @@ describe('AuthController', () => {
             accessToken.split(' ')[1],
           );
           expect(objectId).not.toBeNull();
-          const request: any = {
-            user: {
-              userId: objectId,
-            },
-          };
           const body = {
             password: 'password123!',
           };
