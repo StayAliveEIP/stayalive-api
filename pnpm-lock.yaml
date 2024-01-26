@@ -122,6 +122,9 @@ dependencies:
   socket.io:
     specifier: ^4.7.4
     version: 4.7.4
+  ws:
+    specifier: ^8.16.0
+    version: 8.16.0
 
 devDependencies:
   '@nestjs/cli':

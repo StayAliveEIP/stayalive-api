@@ -4,7 +4,6 @@ import { ConfigModule } from '@nestjs/config';
 import { envValidation } from '../../../validation/env.validation';
 import { MailJetModule } from '../../../services/mailjet/mailjet.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AuthController } from '../../rescuer/auth/auth.controller';
 import {
   CallCenter,
   CallCenterSchema,
