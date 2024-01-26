@@ -14,7 +14,7 @@ import {
 import { Model, Types } from 'mongoose';
 import { RescuerWebsocket } from '../../websocket/rescuer/rescuer.websocket';
 import { InjectModel } from '@nestjs/mongoose';
-import { Emergency } from '../../database/emergency.schema';
+import { Emergency, EmergencyStatus } from '../../database/emergency.schema';
 import { Rescuer } from '../../database/rescuer.schema';
 import { CallCenter } from '../../database/callCenter.schema';
 
@@ -46,8 +46,7 @@ export class EmergencyManagerService {
       );
       return;
     }
-    const nearestPosition: RescuerPositionWithId | null =
-      await this.getNearestPosition(allPositions);
+    const nearestPosition = await this.getNearestPosition(allPositions);
     if (!nearestPosition) {
       this.logger.warn(
         'No nearest position found for emergency ' + emergencyId + '.',
@@ -159,8 +158,7 @@ export class EmergencyManagerService {
   public async getNearestPosition(
     allPositions: RescuerPositionWithId[],
   ): Promise<RescuerPositionWithId | null> {
-    if (allPositions.length === 0)
-      return null;
+    if (allPositions.length === 0) return null;
     return allPositions.reduce((prev, curr) => {
       getDistanceInKilometers(
         new GeoCoordinates(prev.position.lat, prev.position.lng),
@@ -183,7 +181,7 @@ export class EmergencyManagerService {
     await this.onEmergencyCreated(event);
   }
 
-  async runTimer(event: EmergencyCreatedEvent, rescuer: Rescuer) {
+  public async runTimer(event: EmergencyCreatedEvent, rescuer: Rescuer) {
     //run a 45 seconds timer if no rescuer accept the emergency in this time, the emergency a new rescuer will be assigned
     setTimeout(async () => {
       const emergencyId = event.emergency._id;
@@ -194,7 +192,7 @@ export class EmergencyManagerService {
         this.logger.error('Emergency not found with id ' + emergencyId);
         return;
       }
-      if (emergency.status === 'ASSIGNED') {
+      if (emergency.status === EmergencyStatus.ASSIGNED) {
         return;
       }
       //push the rescuer id in the array of hidden rescuers
