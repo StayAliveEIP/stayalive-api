@@ -55,6 +55,23 @@ const EmergencyMockAccept = {
   rescuerHidden: [],
 };
 
+const EmergencyMockTerminate = {
+  _id: '65a85fda8590c63d49fc84c4',
+  info: 'string',
+  position: {
+    lat: 123,
+    long: 123,
+    _id: '65a85fda8590c63d49fc84c5',
+  },
+  address: '17 rue des Lilas , Paris',
+  callCenterId: {
+    $oid: '659186382823853a4345289a',
+  },
+  status: 'ACCEPTED',
+  rescuerAssigned: new Types.ObjectId('5f9d88b9d4f0f1b1a8c9d9a0'),
+  rescuerHidden: [],
+};
+
 const RescuerMock = {
   _id: {
     $oid: '64c0ea5b7efe61feb45b9ab2',
@@ -82,6 +99,29 @@ const RescuerMock = {
   available: false,
 };
 
+const CallCenterMock = {
+  _id: '659186382823853a4345289a',
+  name: 'test',
+  phone: '0652173532',
+  email: {
+    email: 'bastiencantet@outlook.fr',
+    lastCodeSent: null,
+    code: null,
+    verified: true,
+  },
+  password: {
+    password: '$2b$10$R0gEM3QMJZkAhVqtdUY5zOgEbvJh.hDSAgi4Vbc7ef6i5Ux3tEnLG',
+    token: null,
+    lastTokenSent: null,
+    lastChange: null,
+  },
+  address: {
+    street: 'derde',
+    city: 'ded',
+    zip: '7373',
+  },
+};
+
 class EmergencyModelMock {
   constructor(public data) {}
 
@@ -93,11 +133,18 @@ class EmergencyModelMock {
     };
   });
 
-  static findById = jest.fn().mockImplementation(() => {
-    return new EmergencyModelMock(EmergencyMockAccept).data;
-  });
+  static findById = jest
+    .fn()
+    .mockImplementationOnce(() => {
+      return new EmergencyModelMock(EmergencyMockTerminate).data;
+    })
+    .mockImplementation(() => {
+      return new EmergencyModelMock(EmergencyMockAccept).data;
+    });
 
   static save = jest.fn().mockResolvedValue(EmergencyMockAccept);
+
+  static findByIdAndUpdate = jest.fn().mockResolvedValue(EmergencyMockAccept);
 }
 
 class RescuerModelMock {
@@ -105,6 +152,18 @@ class RescuerModelMock {
   static findById = jest.fn().mockImplementation(() => {
     return new RescuerModelMock(RescuerMock);
   });
+}
+
+class CallCenterModelMock {
+  constructor(private data) {}
+  static findById = jest.fn().mockImplementation(() => {
+    return new CallCenterModelMock(CallCenterMock).data;
+  });
+}
+
+class EmergencyMock {
+  constructor(private data) {}
+  static save = jest.fn().mockResolvedValue(EmergencyMockAccept);
 }
 
 describe('EmergencyController', () => {
@@ -137,6 +196,14 @@ describe('EmergencyController', () => {
           provide: getModelToken(Rescuer.name),
           useValue: RescuerModelMock,
         },
+        {
+          provide: getModelToken(CallCenter.name),
+          useValue: CallCenterModelMock,
+        },
+        {
+          provide: Emergency,
+          useValue: EmergencyMock,
+        },
         EventEmitter2,
       ],
     }).compile();
@@ -154,6 +221,17 @@ describe('EmergencyController', () => {
   });
 
   describe('History of the emergencies', () => {
+    it('Terminate the emergency', async () => {
+      const result = await emergencyController.terminateEmergency(
+        new Types.ObjectId('5f9d88b9d4f0f1b1a8c9d9a0'),
+        { id: '65a85fda8590c63d49fc84c4' },
+      );
+
+      expect(result).toStrictEqual({
+        message: "L'urgence a bien été terminée.",
+      });
+    });
+
     it('Get the history of the emergencies', async () => {
       const result = await emergencyController.getEmergencyHistory(
         new Types.ObjectId('5f9d88b9d4f0f1b1a8c9d9a0'),
@@ -166,6 +244,28 @@ describe('EmergencyController', () => {
           status: 'ASSIGNED',
         },
       ]);
+    });
+
+    it('Refuse the emergency', async () => {
+      const result = await emergencyController.refuseEmergency(
+        new Types.ObjectId('5f9d88b9d4f0f1b1a8c9d9a0'),
+        { id: '65a85fda8590c63d49fc84c4' },
+      );
+
+      expect(result).toStrictEqual({
+        message: "Vous avez bien refusé l'urgence",
+      });
+    });
+
+    it('Accept the emergency', async () => {
+      const result = await emergencyController.acceptEmergency(
+        new Types.ObjectId('5f9d88b9d4f0f1b1a8c9d9a0'),
+        { id: '65a85fda8590c63d49fc84c4' },
+      );
+
+      expect(result).toStrictEqual({
+        message: "Vous avez bien accepté l'urgence.",
+      });
     });
   });
 });

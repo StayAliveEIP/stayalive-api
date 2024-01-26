@@ -11,7 +11,6 @@ import { SuccessMessage } from '../../../dto.dto';
 import {
   EmergencyAssignedEvent,
   EmergencyCreatedEvent,
-  EmergencyRefusedEvent,
   EmergencyTerminatedEvent,
   EventType,
 } from '../../../services/emergency-manager/emergencyManager.dto';
@@ -45,11 +44,22 @@ export class EmergencyService {
     if (emergency.status === EmergencyStatus.RESOLVED) {
       throw new BadRequestException("L'urgence a déjà été résolue.");
     }
-    // Assign the emergency to the rescuer
-    emergency.rescuerAssigned = userId;
-    emergency.status = EmergencyStatus.ASSIGNED;
-    await emergency.save();
-    // Send the event
+
+    const updatedEmergency = await this.emergencyModel.findByIdAndUpdate(
+      new Types.ObjectId(id),
+      {
+        $set: {
+          rescuerAssigned: userId,
+          status: EmergencyStatus.ASSIGNED,
+        },
+      },
+      { new: true },
+    );
+
+    if (!updatedEmergency) {
+      throw new Error('Failed to update emergency.');
+    }
+
     const callCenter = await this.callCenterModel.findById(
       emergency.callCenterId,
     );
@@ -98,6 +108,7 @@ export class EmergencyService {
       throw new BadRequestException("L'urgence a déjà été résolue.");
     }
     // Verify that the rescuer is the one assigned to the emergency
+
     if (!emergency.rescuerAssigned.equals(userId)) {
       throw new BadRequestException("Vous n'êtes pas assigné à cette urgence.");
     }
@@ -109,8 +120,14 @@ export class EmergencyService {
     };
     this.eventEmitter.emit(EventType.EMERGENCY_TERMINATED, event);
     // Terminate the emergency
-    emergency.status = EmergencyStatus.RESOLVED;
-    await emergency.save();
+    const updatedEmergency = await this.emergencyModel.findByIdAndUpdate(
+      new Types.ObjectId(id),
+      { $set: { status: EmergencyStatus.RESOLVED } },
+      { new: true },
+    );
+    if (!updatedEmergency) {
+      throw new Error('Failed to update emergency.');
+    }
     return {
       message: "L'urgence a bien été terminée.",
     };
@@ -168,92 +185,4 @@ export class EmergencyService {
       info: emergency.info ? emergency.info : '',
     }));
   }
-
-  /*
-  async createEmergency(emergency: newEmergencyDto) {
-    const newEmergency: Call = {
-      from: emergency.from,
-      at: emergency.at,
-      for: emergency.for,
-      date: new Date(),
-      description: emergency.description,
-      status: 'PENDING',
-    };
-    await this.callModel.create(newEmergency);
-    return {
-      message: "L'urgence a bien été enregistrée.",
-    };
-  }
-
-  async modifyEmergency(emergency: modifyEmergencyDto, id: string) {
-    await this.callModel.findByIdAndUpdate(id, emergency);
-    return {
-      message: "L'urgence a bien été modifiée.",
-    };
-  }
-
-  async deleteEmergency(id: string) {
-    await this.callModel.findByIdAndDelete(id);
-    return {
-      message: "L'urgence a bien été supprimée.",
-    };
-  }
-
-  async getAllEmergencyOfRescuer(id: string) {
-    const rescuer = await this.rescuerModel.findById(id);
-    // if (!rescuer) {
-    //   throw new HttpException('Rescuer not found', 404);
-    // }
-    const calls = await this.callModel.find({ for: id });
-    if (calls.length === 0) {
-      throw new HttpException('No emergency found', 404);
-    }
-    return calls;
-  }
-
-  async getActualEmergencyOfRescuer(id: string) {
-    const rescuer = await this.rescuerModel.findById(id);
-    // if (!rescuer) {
-    //   throw new HttpException('Rescuer not found', 404);
-    // }
-    const currents = await this.callModel.find({ for: id, status: 'CURRENT' });
-    if (currents.length === 0) {
-      throw new HttpException('No current emergency', 404);
-    }
-  }
-
-  async cancelEmergencyofRescuer(id: string, rescuer: string) {
-    const rescuerModel = await this.rescuerModel.findById(rescuer);
-    // if (!rescuer) {
-    //   throw new HttpException('Rescuer not found', 404);
-    // }
-    const calls = await this.callModel.find({ _id: id, status: 'CURRENT' });
-    if (calls.length === 0) {
-      throw new HttpException('No current emergency', 404);
-    }
-    const call = calls[0];
-    call.status = 'CANCELLED';
-    await call.save();
-    return {
-      message: "L'urgence a bien été annulée.",
-    };
-  }
-
-  async assignEmergency(id: string, rescuer: string) {
-    const rescuerModel = await this.rescuerModel.findById(rescuer);
-    // if (!rescuerModel) {
-    //   throw new HttpException('Rescuer not found', 404);
-    // }
-    const calls = await this.callModel.find({ _id: id, status: 'PENDING' });
-    if (calls.length === 0) {
-      throw new HttpException('No current emergency', 404);
-    }
-    const call = calls[0];
-    call.status = 'CURRENT';
-    await call.save();
-    return {
-      message: "L'urgence a bien été assignée.",
-    };
-  }
-   */
 }
