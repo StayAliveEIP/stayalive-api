@@ -131,6 +131,54 @@ describe('AuthController', () => {
         expect(response.phone.phone).toBe('0102030405');
       });
 
+      describe('Change the email', () => {
+        it('should pass the change email and get the message', async () => {
+          const randomNumberEmail: number = Math.floor(
+            Math.random() * 10000000,
+          );
+          expect(accessToken).toBeDefined();
+          const objectId: Types.ObjectId | null = verifyToken(
+            accessToken.split(' ')[1],
+          );
+          expect(objectId).not.toBeNull();
+          const body = {
+            email: 'test+' + randomNumberEmail + '@test.net',
+            password: 'password123!',
+          };
+          const response = await accountController.changeEmail(
+            new Types.ObjectId(objectId),
+            body,
+          );
+          expect(response.message).toBe(
+            'Votre adresse email a bien été changée, un email de vérification vous a été envoyé.',
+          );
+        });
+      });
+
+      describe('Change the phone', () => {
+        it('should pass the change phone and get the message', async () => {
+          const randomNumberPhone: number = Math.floor(
+            Math.random() * 10000000,
+          );
+          expect(accessToken).toBeDefined();
+          const objectId: Types.ObjectId | null = verifyToken(
+            accessToken.split(' ')[1],
+          );
+          expect(objectId).not.toBeNull();
+          const body = {
+            phone: randomNumberPhone.toString(),
+            password: 'password123!',
+          };
+          const response = await accountController.changePhone(
+            new Types.ObjectId(objectId),
+            body,
+          );
+          expect(response.message).toBe(
+            'Votre numéro de téléphone a bien été changé, un SMS de vérification vous a été envoyé.',
+          );
+        });
+      });
+
       describe('Delete the account', () => {
         it('should pass the delete account and get the message', async () => {
           expect(accessToken).toBeDefined();
