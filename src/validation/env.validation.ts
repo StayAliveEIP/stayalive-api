@@ -1,6 +1,7 @@
 import * as Joi from 'joi';
 
 export const envValidation: Joi.ObjectSchema = Joi.object({
+  PORT: Joi.number(),
   MONGODB_URI: Joi.string().required(),
   MONGODB_DATABASE: Joi.string().required(),
   FRONTEND_URL: Joi.string().required(),
