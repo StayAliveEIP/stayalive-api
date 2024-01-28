@@ -22,9 +22,12 @@ export class RedisService {
   private readonly client: RedisClientType;
 
   constructor() {
+    const port = process.env.REDIS_PORT
+      ? parseInt(process.env.REDIS_PORT)
+      : undefined;
     const redisOptions: RedisOptions = {
       host: process.env.REDIS_URL,
-      port: parseInt(process.env.REDIS_PORT),
+      port: port,
       username: process.env.REDIS_USERNAME,
       password: process.env.REDIS_PASSWORD,
     };

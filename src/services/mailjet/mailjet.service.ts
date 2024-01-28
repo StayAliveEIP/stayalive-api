@@ -1,6 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import * as Mailjet from 'node-mailjet';
+import { LibraryResponse } from 'node-mailjet';
 import { ClientParams } from 'node-mailjet/declarations/client/Client';
+import { RequestData } from 'node-mailjet/declarations/request/Request';
 
 export interface ISendEmailParam {
   from: {
@@ -29,38 +31,27 @@ export class MailJetService {
     this.mailjet = new Mailjet.Client(mailJetClientParam);
   }
 
-  sendEmailAsync = (param: ISendEmailParam): void => {
-    this.mailjet
-      .post('send', { version: 'v3.1' })
-      .request({
-        Messages: [
-          {
-            From: {
-              Email: param.from.email,
-              Name: param.from.name,
-            },
-            To: [
-              {
-                Email: param.to.email,
-                Name: param.to.name,
-              },
-            ],
-            Subject: param.subject,
-            TextPart: param.isHtml ? undefined : param.rawBody,
-            HTMLPart: param.isHtml ? param.rawBody : undefined,
+  async sendEmail(
+    param: ISendEmailParam,
+  ): Promise<LibraryResponse<RequestData>> {
+    return await this.mailjet.post('send', { version: 'v3.1' }).request({
+      Messages: [
+        {
+          From: {
+            Email: param.from.email,
+            Name: param.from.name,
           },
-        ],
-      })
-      .then((r) => {
-        this.logger.log(
-          'Email was sent to ' +
-            param.to.email +
-            ' with status ' +
-            r.response.status,
-        );
-      })
-      .catch((e) => {
-        this.logger.error('Error while sending email to {}', param.to.email, e);
-      });
-  };
+          To: [
+            {
+              Email: param.to.email,
+              Name: param.to.name,
+            },
+          ],
+          Subject: param.subject,
+          TextPart: param.isHtml ? undefined : param.rawBody,
+          HTMLPart: param.isHtml ? param.rawBody : undefined,
+        },
+      ],
+    });
+  }
 }
