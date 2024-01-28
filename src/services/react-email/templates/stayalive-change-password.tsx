@@ -1,16 +1,12 @@
 import {
   Body,
   Button,
-  Column,
   Container,
   Head,
   Heading,
-  Hr,
   Html,
   Img,
-  Link,
   Preview,
-  Row,
   Section,
   Tailwind,
   Text,
@@ -24,13 +20,8 @@ interface VercelInviteUserEmailProps {
   inviteLink?: string;
 }
 
-const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : '';
-
 export const MailChangePassword = ({
   username = 'Bastos',
-  validationCode = '144833',
   inviteLink = 'https://vercel.com/teams/invite/foo',
 }: VercelInviteUserEmailProps) => {
   const previewText = `Test`;
@@ -72,20 +63,6 @@ export const MailChangePassword = ({
       </Tailwind>
     </Html>
   );
-};
-
-const ButtonStyle = {
-  background: '#000',
-  borderRadius: '4px',
-  color: '#fff',
-  display: 'inline-block',
-  fontSize: '14px',
-  fontWeight: 'bold',
-  lineHeight: '24px',
-  padding: '8px 16px',
-  textDecoration: 'none',
-  verticalAlign: 'middle',
-  width: '100%',
 };
 
 const codeContainer = {

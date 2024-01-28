@@ -5,29 +5,20 @@ import {
   Logger,
   NotFoundException,
   StreamableFile,
-  UnprocessableEntityException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Admin } from '../../../database/admin.schema';
 import { Model, Types } from 'mongoose';
-import {
-  Document,
-  DocumentStatus,
-  DocumentType,
-} from '../../../database/document.schema';
+import { Document, DocumentType } from '../../../database/document.schema';
 import {
   DocumentRescuerAdminChangeStatusRequest,
   DocumentRescuerAdminInfoDataResponse,
   DocumentRescuerAdminInfoResponse,
 } from './document.admin.dto';
 import { SuccessMessage } from '../../../dto.dto';
-import {
-  verifyDocumentStatus,
-  verifyDocumentType,
-} from '../../../utils/document.utils';
+import { verifyDocumentStatus } from '../../../utils/document.utils';
 import { Response } from 'express';
 import { Rescuer } from '../../../database/rescuer.schema';
-import { async } from 'rxjs';
 
 @Injectable()
 export class DocumentAdminService {

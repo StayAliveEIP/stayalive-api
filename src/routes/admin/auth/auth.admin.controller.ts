@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ReactEmailService } from '../../../services/react-email/react-email.service';
 import { LoginAdminRequest, LoginAdminResponse } from './auth.admin.dto';

@@ -1,16 +1,11 @@
 import {
   Body,
-  Button,
-  Column,
   Container,
   Head,
   Heading,
-  Hr,
   Html,
   Img,
-  Link,
   Preview,
-  Row,
   Section,
   Tailwind,
   Text,
@@ -22,15 +17,11 @@ interface VercelInviteUserEmailProps {
   password?: string;
 }
 
-const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : '';
-
 export const AccountCreatedMailPassword = ({
   username = 'Bastos',
   password = '144833',
 }: VercelInviteUserEmailProps) => {
-  const previewText = `Test`
+  const previewText = `Test`;
 
   return (
     <Html>
@@ -51,11 +42,10 @@ export const AccountCreatedMailPassword = ({
             <Heading className="text-black text-[24px] font-normal text-center p-0 my-[30px] mx-0">
               Compte créé avec succès
             </Heading>
-            <Text className="text-black text-[14px] leading-[24px]">
-
-            </Text>
+            <Text className="text-black text-[14px] leading-[24px]"></Text>
             <Text className="text-black text-[14px] text-center leading-[24px]">
-              Bonjour {username}, votre compte a été créé avec succès, voici votre mot de passe :
+              Bonjour {username}, votre compte a été créé avec succès, voici
+              votre mot de passe :
             </Text>
             <Section style={codeContainer}>
               <Text style={code}>{password}</Text>
@@ -66,7 +56,6 @@ export const AccountCreatedMailPassword = ({
     </Html>
   );
 };
-
 
 const code = {
   color: '#000',

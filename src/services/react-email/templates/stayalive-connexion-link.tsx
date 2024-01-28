@@ -19,8 +19,6 @@ interface MagicLinkEmailProps {
   authLink?: string;
 }
 
-const baseUrl = 'api.stayalive.fr:3000';
-
 export const MagicLinkMail = ({
   username = 'Erreur',
   authLink = 'https://stayalive.fr',

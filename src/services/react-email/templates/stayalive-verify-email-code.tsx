@@ -19,10 +19,6 @@ interface VercelInviteUserEmailProps {
   inviteLink?: string;
 }
 
-const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : '';
-
 export const MailVerifyEmailCode = ({
   username = 'Monsieur',
   validationCode = '144833',
@@ -50,7 +46,8 @@ export const MailVerifyEmailCode = ({
             </Heading>
             <Text className="text-black text-[14px] leading-[24px]"></Text>
             <Text className="text-black text-[14px] text-center leading-[24px]">
-              Bonjour {username}, voici votre code de validation d'adresse email.
+              Bonjour {username}, voici votre code de validation d'adresse
+              email.
             </Text>
             <Section style={codeContainer}>
               <Text style={code}>{validationCode}</Text>

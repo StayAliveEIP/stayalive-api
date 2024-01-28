@@ -12,6 +12,7 @@ export interface RescuerWsData {
       longitude: number;
     };
     status: string;
+    address: string;
   };
   callCenter: {
     id: string;
