@@ -4,6 +4,7 @@ import Redis from 'ioredis';
 import type RedisClientType from 'ioredis';
 import * as process from 'process';
 import { Status } from '../../routes/rescuer/status/status.dto';
+import { RedisOptions } from 'ioredis/built/redis/RedisOptions';
 
 export interface RescuerPosition {
   lat: number;
@@ -21,7 +22,16 @@ export class RedisService {
   private readonly client: RedisClientType;
 
   constructor() {
-    this.client = new Redis(process.env.REDIS_URL);
+    const redisOptions: RedisOptions = {
+      host: process.env.REDIS_URL,
+      port: parseInt(process.env.REDIS_PORT),
+      username: process.env.REDIS_USERNAME,
+      password: process.env.REDIS_PASSWORD,
+    };
+    this.client = new Redis(redisOptions);
+    this.client.on('connect', () => {
+      this.logger.log('Redis connected successfully');
+    });
   }
 
   public disconnect() {
