@@ -157,6 +157,7 @@ export class RescuerWebsocket
           longitude: event.emergency.position.long,
         },
         status: event.emergency.status,
+        address: event.emergency.address,
       },
     };
     const rescuerEvent = new RescuerWsResponse(eventData);
@@ -183,6 +184,7 @@ export class RescuerWebsocket
           longitude: event.emergency.position.long,
         },
         status: event.emergency.status,
+        address: event.emergency.address,
       },
     };
     const rescuerEvent = new RescuerWsResponse(eventData);
