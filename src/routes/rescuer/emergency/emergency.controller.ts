@@ -50,7 +50,7 @@ export class EmergencyController {
   @Get('/emergency/terminate')
   async terminateEmergency(
     @UserId() userId: Types.ObjectId,
-    @Query('id') emergency: EmergencyAcceptDto,
+    @Query() emergency: EmergencyAcceptDto,
   ): Promise<SuccessMessage> {
     return await this.service.terminateEmergency(userId, emergency.id);
   }
@@ -59,7 +59,7 @@ export class EmergencyController {
   @Get('/emergency/refuse')
   async refuseEmergency(
     @UserId() userId: Types.ObjectId,
-    @Query('id') emergency: EmergencyAcceptDto,
+    @Query() emergency: EmergencyAcceptDto,
   ): Promise<SuccessMessage> {
     return await this.service.refuseEmergency(userId, emergency.id);
   }
