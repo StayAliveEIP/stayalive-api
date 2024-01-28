@@ -42,7 +42,7 @@ export class EmergencyController {
   })
   async acceptEmergency(
     @UserId() userId: Types.ObjectId,
-    @Query('id') emergency: EmergencyAcceptDto,
+    @Query() emergency: EmergencyAcceptDto,
   ): Promise<SuccessMessage> {
     return await this.service.acceptEmergency(userId, emergency.id);
   }
