@@ -25,23 +25,14 @@ export class ReactEmailService {
   }
 
   sendVerifyAccountEmail(email: string, username: string, link: string) {
+    const subject = 'Vérification de votre compte StayAlive';
     const html = render(
       VerifyAccountEmail({
         username: username,
         inviteLink: link,
       }),
     );
-    const mailOptions = {
-      from: 'noreply@stayalive.fr',
-      to: email,
-      subject: 'Vérification de votre compte StayAlive',
-      html: html,
-    };
-    this.transporter.sendMail(mailOptions, (error) => {
-      if (error) {
-        console.log(error);
-      }
-    });
+    this.sendEmail(email, subject, html);
   }
 
   sendMagicLinkEmail(email: string, username: string, link: string) {
@@ -51,17 +42,8 @@ export class ReactEmailService {
         authLink: link,
       }),
     );
-    const mailOptions = {
-      from: 'noreply@stayalive.fr',
-      to: email,
-      subject: 'Connecter vous avec le lien',
-      html: html,
-    };
-    this.transporter.sendMail(mailOptions, (error) => {
-      if (error) {
-        console.log(error);
-      }
-    });
+    const subject = 'Connecter vous avec le lien';
+    this.sendEmail(email, subject, html);
   }
 
   sendMailCreatedAccountPassword(
@@ -70,63 +52,55 @@ export class ReactEmailService {
     password: string,
   ) {
     this.logger.debug('Send a mail to ' + email + ' with password ' + password);
+    const subject = "Votre compte StayAlive Centre d'appel a été créé";
     const html = render(
       AccountCreatedMailPassword({
         username: username,
         password: password,
       }),
     );
-    const mailOptions = {
-      from: 'noreply@stayalive.fr',
-      to: email,
-      subject: "Votre compte StayAlive Centre d'appel a été créé",
-      html: html,
-    };
-    this.transporter.sendMail(mailOptions, (error) => {
-      console.log('sendMailCreatedAccountPassword');
-      if (error) {
-        console.log(error);
-      }
-    });
+    this.sendEmail(email, subject, html);
   }
 
   sendMailForgotPasswordCode(email: string, username: string, code: string) {
+    const subject = 'Réinitialisation de votre mot de passe StayAlive';
     const html = render(
       MailForgotPasswordCode({
         username: username,
         validationCode: code,
       }),
     );
-    const mailOptions = {
-      from: 'noreply@stayalive.fr',
-      to: email,
-      subject: 'Réinitialisation de votre mot de passe StayAlive',
-      html: html,
-    };
-    this.transporter.sendMail(mailOptions, (error) => {
-      if (error) {
-        console.log(error);
-      }
-    });
+    this.sendEmail(email, subject, html);
   }
 
   sendMailVerifyEmailCode(email: string, username: string, code: string) {
+    const subject = 'Confirmation de votre adresse email StayAlive';
     const html = render(
       MailVerifyEmailCode({
         username: username,
         validationCode: code,
       }),
     );
-    const mailOptions = {
-      from: 'noreply@stayalive.fr',
-      to: email,
-      subject: 'Réinitialisation de votre mot de passe StayAlive',
-      html: html,
-    };
-    this.transporter.sendMail(mailOptions, (error) => {
-      if (error) {
-        console.log(error);
-      }
-    });
+    this.sendEmail(email, subject, html);
+  }
+
+  private sendEmail(email: string, subject: string, html: string) {
+    try {
+      const mailOptions = {
+        from: process.env.MAILJET_SENDER_EMAIL,
+        to: email,
+        subject: subject,
+        html: html,
+      };
+      this.transporter.sendMail(mailOptions, (error) => {
+        if (error) {
+          this.logger.error(error);
+        } else {
+          this.logger.debug('Email sent to ' + email);
+        }
+      });
+    } catch (error) {
+      this.logger.error(error);
+    }
   }
 }
