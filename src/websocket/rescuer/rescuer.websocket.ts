@@ -87,13 +87,15 @@ export class RescuerWebsocket
         return false;
       }
       // Verify if the user is not already connected
-      const connected = this.clients.get(new Types.ObjectId(decoded.id));
-      if (connected) {
+      const objectId = new Types.ObjectId(decoded.id);
+      const isConnected: boolean = this.clients.has(objectId);
+      if (isConnected) {
         client.emit('message', { error: 'You are already connected.' });
-        connected.disconnect();
+        client.disconnect();
         return false;
       }
-      this.clients.set(new Types.ObjectId(decoded.id), client);
+      this.clients.set(objectId, client);
+      this.logger.log('Rescuer ' + objectId + ' connected.');
       return true;
     } catch (err) {
       this.logger.error(err);
