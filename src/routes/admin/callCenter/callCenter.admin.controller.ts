@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -13,6 +21,7 @@ import {
   NewCallCenterRequest,
 } from './callCenter.admin.dto';
 import { SuccessMessage } from '../../../dto.dto';
+import { AdminAuthGuard } from 'src/guards/auth.route.guard';
 
 @Controller('/admin/call-center')
 @ApiTags('Call Center')
@@ -33,6 +42,7 @@ export class CallCenterAdminController {
     description: 'The call center account has been created.',
     type: SuccessMessage,
   })
+  @UseGuards(AdminAuthGuard)
   async new(@Body() body: NewCallCenterRequest): Promise<SuccessMessage> {
     return this.service.new(body);
   }
@@ -48,6 +58,7 @@ export class CallCenterAdminController {
     description: 'The call center account',
     type: CallCenterInfoDto,
   })
+  @UseGuards(AdminAuthGuard)
   async info(@Query('id') id: string): Promise<CallCenterInfoDto> {
     return this.service.info(id);
   }
@@ -63,6 +74,7 @@ export class CallCenterAdminController {
     description: 'All the call center accounts',
     type: [CallCenterInfoDto],
   })
+  @UseGuards(AdminAuthGuard)
   async all(): Promise<Array<CallCenterInfoDto>> {
     return this.service.all();
   }
@@ -78,6 +90,7 @@ export class CallCenterAdminController {
     description: 'The call center account has been deleted.',
     type: SuccessMessage,
   })
+  @UseGuards(AdminAuthGuard)
   async delete(@Body() body: DeleteCallCenterRequest): Promise<SuccessMessage> {
     return this.service.delete(body);
   }

@@ -48,6 +48,7 @@ export class AccountAdminController {
     description: 'All the admin accounts',
     type: [InfoResponse],
   })
+  @UseGuards(AdminAuthGuard)
   async all(): Promise<InfoResponse[]> {
     return this.service.all();
   }
@@ -64,6 +65,7 @@ export class AccountAdminController {
     description: 'The account was created with the success message',
     type: SuccessMessage,
   })
+  @UseGuards(AdminAuthGuard)
   async new(@Body() body: NewRequest): Promise<SuccessMessage> {
     return this.service.new(body);
   }
@@ -78,6 +80,7 @@ export class AccountAdminController {
     description: 'The account was deleted with the success message',
     type: SuccessMessage,
   })
+  @UseGuards(AdminAuthGuard)
   async delete(@Body() body: DeleteAdminRequest): Promise<SuccessMessage> {
     return this.service.delete(body);
   }
@@ -93,6 +96,7 @@ export class AccountAdminController {
     description: 'The account was deleted with the success message',
     type: SuccessMessage,
   })
+  @UseGuards(AdminAuthGuard)
   async deleteMyAccount(
     @UserId() userId: Types.ObjectId,
     @Body() body: DeleteMyAccountRequest,

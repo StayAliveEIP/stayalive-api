@@ -6,6 +6,7 @@ import {
   Query,
   Res,
   StreamableFile,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -21,6 +22,7 @@ import {
   DocumentRescuerAdminInfoResponse,
 } from './document.admin.dto';
 import { Response } from 'express';
+import { AdminAuthGuard } from 'src/guards/auth.route.guard';
 
 @Controller('/admin/rescuer/document')
 @ApiTags('Rescuer Document')
@@ -41,6 +43,7 @@ export class DocumentAdminController {
     description: 'All the documents for a rescuer.',
     type: [DocumentRescuerAdminInfoResponse],
   })
+  @UseGuards(AdminAuthGuard)
   async all(
     @Query('rescuerId') rescuerId: string,
   ): Promise<Array<DocumentRescuerAdminInfoResponse>> {
@@ -57,6 +60,7 @@ export class DocumentAdminController {
     description: 'The document has been validated.',
     type: SuccessMessage,
   })
+  @UseGuards(AdminAuthGuard)
   async status(
     @Body() body: DocumentRescuerAdminChangeStatusRequest,
   ): Promise<SuccessMessage> {
@@ -68,6 +72,7 @@ export class DocumentAdminController {
     summary: 'Download a document',
     description: 'Download a document.',
   })
+  @UseGuards(AdminAuthGuard)
   async download(
     @Res({ passthrough: true }) res: Response,
     @Query('id') id: string,
