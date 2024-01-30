@@ -86,6 +86,7 @@ export class RescuerWebsocket
    */
   handleConnection(@ConnectedSocket() client: Socket): any {
     this.logger.log('Client connected to server: ' + client.id);
+    console.log(client);
     const token = client.handshake.query.token as string;
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET) as {

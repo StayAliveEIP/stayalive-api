@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -19,6 +20,7 @@ import { CallCenter } from '../../../database/callCenter.schema';
 
 @Injectable()
 export class EmergencyService {
+  private readonly logger: Logger = new Logger(EmergencyService.name);
   constructor(
     private eventEmitter: EventEmitter2,
     @InjectModel(Emergency.name) private emergencyModel: Model<Emergency>,
@@ -30,6 +32,8 @@ export class EmergencyService {
     userId: Types.ObjectId,
     id: string,
   ): Promise<SuccessMessage> {
+    this.logger.log(`Accepting emergency ${id} by ${userId}`);
+
     // Get the emergency from the database
     const emergency = await this.emergencyModel.findById(
       new Types.ObjectId(id),
@@ -77,6 +81,7 @@ export class EmergencyService {
       rescuer: rescuer,
     };
     this.eventEmitter.emit(EventType.EMERGENCY_ASSIGNED, emergencyAccepted);
+    this.logger.log(`Emergency ${id} accepted by ${userId}`);
     return {
       message: "Vous avez bien accepté l'urgence.",
     };
@@ -138,6 +143,7 @@ export class EmergencyService {
     userId: Types.ObjectId,
     id: string,
   ): Promise<SuccessMessage> {
+    this.logger.log(`Refusing emergency ${id} by ${userId}`);
     const emergency = await this.emergencyModel.findById(
       new Types.ObjectId(id),
     );
@@ -163,6 +169,7 @@ export class EmergencyService {
       callCenter: await this.callCenterModel.findById(emergency.callCenterId),
     };
     this.eventEmitter.emit(EventType.EMERGENCY_CREATED, eventCreatedTemplate);
+    this.logger.log(`Emergency ${id} refused by ${userId}`);
     return {
       message: "Vous avez bien refusé l'urgence",
     };

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Emergency, EmergencyStatus } from '../../../database/emergency.schema';
@@ -15,6 +15,7 @@ import { CallCenter } from '../../../database/callCenter.schema';
 
 @Injectable()
 export class EmergencyCallCenterService {
+  private readonly logger: Logger = new Logger(EmergencyCallCenterService.name);
   constructor(
     private eventEmitter: EventEmitter2,
     @InjectModel(Emergency.name) private emergencyModel: Model<Emergency>,
@@ -99,6 +100,7 @@ export class EmergencyCallCenterService {
     };
 
     this.eventEmitter.emit(EventType.EMERGENCY_CREATED, emergencyCreated);
+    this.logger.log(`Emergency created: ${result._id}`);
     return {
       id: result._id,
     };
