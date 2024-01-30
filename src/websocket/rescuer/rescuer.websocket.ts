@@ -50,6 +50,17 @@ export class RescuerWebsocket
     this.sendWithUserId(event.rescuer._id, object);
   }
 
+  private isConnected(id: Types.ObjectId): boolean {
+    let result: boolean = false;
+    for (const [key, _] of this.clients) {
+      if (key.toString().equals(id.toString())) {
+        result = true;
+        break;
+      }
+    }
+    return result;
+  }
+
   private sendWithUserId(id: Types.ObjectId, data: any) {
     const clients = this.getSocketWithId(id);
     this.logger.log(`Found ${clients.length} client for rescuer ` + id + '.');
@@ -88,14 +99,14 @@ export class RescuerWebsocket
       }
       // Verify if the user is not already connected
       const objectId = new Types.ObjectId(decoded.id);
-      const isConnected: boolean = this.clients.has(objectId);
+      const isConnected: boolean = this.isConnected(objectId);
       if (isConnected) {
         client.emit('message', { error: 'You are already connected.' });
         client.disconnect();
         return false;
       }
       this.clients.set(objectId, client);
-      this.logger.log('Rescuer ' + objectId + ' connected.');
+      this.logger.log('Rescuer ' + objectId.toString() + ' connected.');
       return true;
     } catch (err) {
       this.logger.error(err);
