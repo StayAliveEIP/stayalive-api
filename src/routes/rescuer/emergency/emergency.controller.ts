@@ -47,6 +47,7 @@ export class EmergencyController {
     return await this.service.acceptEmergency(userId, emergency.id);
   }
 
+  @UseGuards(RescuerAuthGuard)
   @Get('/emergency/terminate')
   async terminateEmergency(
     @UserId() userId: Types.ObjectId,
