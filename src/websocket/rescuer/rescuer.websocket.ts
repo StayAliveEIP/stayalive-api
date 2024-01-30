@@ -40,13 +40,6 @@ export class RescuerWebsocket
   @OnEvent(EventType.EMERGENCY_ASK_ASSIGN)
   onEmergencyAskAssign(event: EmergencyAskAssignEvent) {
     this.logger.debug('Connected sockets: ' + this.clients.size);
-    const client = this.getSocketWithId(event.rescuer._id);
-    if (!client) {
-      this.logger.log('No client found for rescuer ' + event.rescuer._id + '.');
-      return;
-    }
-    this.logger.log('Found client for rescuer ' + event.rescuer._id + '.');
-
     const object = {
       type: EventType.EMERGENCY_ASK_ASSIGN,
       emergencyId: event.emergency._id,
@@ -54,17 +47,25 @@ export class RescuerWebsocket
       info: event.emergency.info,
       position: event.emergency.position,
     };
-
-    client.emit(RescuerWsResponse.channel, object);
+    this.sendWithUserId(event.rescuer._id, object);
   }
 
-  private getSocketWithId(id: Types.ObjectId): Socket | null {
+  private sendWithUserId(id: Types.ObjectId, data: any) {
+    const clients = this.getSocketWithId(id);
+    this.logger.log(`Found ${clients.length} client for rescuer ` + id + '.');
+    for (const cl of clients) {
+      cl.emit(RescuerWsResponse.channel, data);
+    }
+  }
+
+  private getSocketWithId(id: Types.ObjectId): Array<Socket> {
+    const sockets: Array<Socket> = [];
     for (const [key, value] of this.clients) {
       if (key.equals(id)) {
-        return value;
+        sockets.push(value);
       }
     }
-    return null;
+    return sockets;
   }
 
   /**
@@ -81,7 +82,15 @@ export class RescuerWebsocket
         account: string;
       };
       if (decoded.account !== 'rescuer') {
+        client.emit('message', { error: "You're not a rescuer." });
         client.disconnect();
+        return false;
+      }
+      // Verify if the user is not already connected
+      const connected = this.clients.get(new Types.ObjectId(decoded.id));
+      if (connected) {
+        client.emit('message', { error: 'You are already connected.' });
+        connected.disconnect();
         return false;
       }
       this.clients.set(new Types.ObjectId(decoded.id), client);
@@ -112,10 +121,6 @@ export class RescuerWebsocket
 
   @OnEvent(EventType.EMERGENCY_ASK_ASSIGN)
   handleEmergencyAskAssign(event: EmergencyAskAssignEvent) {
-    const socket = this.getSocketWithId(event.rescuer._id);
-    if (!socket) {
-      return;
-    }
     const eventData: RescuerWsData = {
       eventType: RescuerEventType.ASK,
       callCenter: {
@@ -134,15 +139,11 @@ export class RescuerWebsocket
       },
     };
     const rescuerEvent = new RescuerWsResponse(eventData);
-    socket.emit(RescuerWsResponse.channel, rescuerEvent);
+    this.sendWithUserId(event.rescuer._id, rescuerEvent);
   }
 
   @OnEvent(EventType.EMERGENCY_TIMEOUT)
   handleEmergencyTimeout(event: EmergencyTimeoutEvent) {
-    const socket = this.getSocketWithId(event.callCenter._id);
-    if (!socket) {
-      return;
-    }
     const eventData: RescuerWsData = {
       eventType: RescuerEventType.TIMEOUT,
       callCenter: {
@@ -161,15 +162,11 @@ export class RescuerWebsocket
       },
     };
     const rescuerEvent = new RescuerWsResponse(eventData);
-    socket.emit(RescuerWsResponse.channel, rescuerEvent);
+    this.sendWithUserId(event.rescuer._id, rescuerEvent);
   }
 
   @OnEvent(EventType.EMERGENCY_TERMINATED)
   handleEmergencyTerminated(event: EmergencyTerminatedEvent) {
-    const socket = this.getSocketWithId(event.callCenter._id);
-    if (!socket) {
-      return;
-    }
     const eventData: RescuerWsData = {
       eventType: RescuerEventType.TERMINATED,
       callCenter: {
@@ -188,6 +185,6 @@ export class RescuerWebsocket
       },
     };
     const rescuerEvent = new RescuerWsResponse(eventData);
-    socket.emit(RescuerWsResponse.channel, rescuerEvent);
+    this.sendWithUserId(event.rescuer._id, rescuerEvent);
   }
 }
