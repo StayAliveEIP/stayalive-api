@@ -44,6 +44,7 @@ export class CallCenterAdminController {
   })
   @UseGuards(AdminAuthGuard)
   async new(@Body() body: NewCallCenterRequest): Promise<SuccessMessage> {
+    console.log(body);
     return this.service.new(body);
   }
 
