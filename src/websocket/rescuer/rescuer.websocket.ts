@@ -97,6 +97,9 @@ export class RescuerWebsocket
       return true;
     } catch (err) {
       this.logger.error(err);
+      client.emit('message', {
+        error: 'Invalid token or internal server error.',
+      });
       client.disconnect();
     }
   }
