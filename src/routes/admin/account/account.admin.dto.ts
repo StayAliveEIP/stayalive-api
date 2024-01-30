@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export class NewRequest {
   @ApiProperty({
@@ -6,6 +7,7 @@ export class NewRequest {
     description: 'The firstname of the admin.',
     example: 'John',
   })
+  @IsNotEmpty()
   firstname: string;
 
   @ApiProperty({
@@ -13,6 +15,7 @@ export class NewRequest {
     description: 'The lastname of the admin.',
     example: 'Doe',
   })
+  @IsNotEmpty()
   lastname: string;
 
   @ApiProperty({
@@ -20,6 +23,8 @@ export class NewRequest {
     description: 'The email of the admin.',
     example: 'example@email.net',
   })
+  @IsEmail()
+  @IsNotEmpty()
   email: string;
 }
 
@@ -66,6 +71,7 @@ export class DeleteAdminRequest {
     description: 'The id of the admin to delete.',
     example: '60e6f7b3f5b6f0b3f4f9f6e0',
   })
+  @IsNotEmpty()
   id: string;
 }
 
@@ -75,5 +81,6 @@ export class DeleteMyAccountRequest {
     description: 'The password of the admin.',
     example: 'password',
   })
+  @IsNotEmpty()
   password: string;
 }
