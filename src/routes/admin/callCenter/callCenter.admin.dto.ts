@@ -167,3 +167,48 @@ export class CallCenterInfoDto {
   })
   address: CallCenterAddressDto;
 }
+
+export class PatchCallCenterRequest {
+  @ApiProperty({
+    type: String,
+    description: 'The id of the call center.',
+    example: '60e6f7b3f5b6f0b3f4f9f6e0',
+  })
+  @IsString()
+  id: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'The name of the call center.',
+    example: 'My Call Center 123',
+  })
+  @IsString()
+  name: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'The email of the call center.',
+    example: 'call@center.net',
+  })
+  @IsEmail()
+  email: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'The phone of the call center.',
+    example: '1234567890',
+  })
+  @IsString()
+  phone: string;
+
+  @ApiProperty({
+    type: Object,
+    description: 'The street of the call center.',
+    example: {
+      street: 'My Street',
+      city: 'My City',
+      zip: '12345',
+    },
+  })
+  address: NewCallCenterAddressRequest;
+}
