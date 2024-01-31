@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Patch,
   Post,
   Query,
   UseGuards,
@@ -19,6 +20,7 @@ import {
   CallCenterInfoDto,
   DeleteCallCenterRequest,
   NewCallCenterRequest,
+  PatchCallCenterRequest,
 } from './callCenter.admin.dto';
 import { SuccessMessage } from '../../../dto.dto';
 import { AdminAuthGuard } from 'src/guards/auth.route.guard';
@@ -48,7 +50,7 @@ export class CallCenterAdminController {
     return this.service.new(body);
   }
 
-  @Get('/info/:id')
+  @Get('/info')
   @ApiOperation({
     summary: 'Get the information about a call center account',
     description: 'Return all the information about a call center account.',
@@ -60,8 +62,10 @@ export class CallCenterAdminController {
     type: CallCenterInfoDto,
   })
   @UseGuards(AdminAuthGuard)
-  async info(@Query('id') id: string): Promise<CallCenterInfoDto> {
-    return this.service.info(id);
+  async info(
+    @Query() body: DeleteCallCenterRequest,
+  ): Promise<CallCenterInfoDto> {
+    return this.service.info(body.id);
   }
 
   @Get('/all')
@@ -84,7 +88,6 @@ export class CallCenterAdminController {
   @ApiOperation({
     summary: 'Delete a call center account',
     description: 'Delete a call center account.',
-    deprecated: true,
   })
   @ApiResponse({
     status: 200,
@@ -92,7 +95,24 @@ export class CallCenterAdminController {
     type: SuccessMessage,
   })
   @UseGuards(AdminAuthGuard)
-  async delete(@Body() body: DeleteCallCenterRequest): Promise<SuccessMessage> {
+  async delete(
+    @Query() body: DeleteCallCenterRequest,
+  ): Promise<SuccessMessage> {
     return this.service.delete(body);
+  }
+
+  @Patch('/update')
+  @ApiOperation({
+    summary: 'Update a call center account',
+    description: 'Update a call center account.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'The call center account has been updated.',
+    type: SuccessMessage,
+  })
+  @UseGuards(AdminAuthGuard)
+  async update(@Body() body: PatchCallCenterRequest): Promise<SuccessMessage> {
+    return this.service.updateCallCenterInfo(body);
   }
 }

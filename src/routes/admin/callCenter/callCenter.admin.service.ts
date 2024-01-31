@@ -14,6 +14,7 @@ import {
   CallCenterInfoDto,
   DeleteCallCenterRequest,
   NewCallCenterRequest,
+  PatchCallCenterRequest,
 } from './callCenter.admin.dto';
 import { SuccessMessage } from '../../../dto.dto';
 import { hashPassword, randomPassword } from '../../../utils/crypt.utils';
@@ -102,16 +103,20 @@ export class CallCenterAdminService {
     const id = body.id;
     // Check if the id is a valid object id
     if (!Types.ObjectId.isValid(id)) {
-      throw new NotFoundException("Le centre d'appel n'a pas pu être trouvé.");
+      throw new NotFoundException("Mauvais format d'id.");
     }
     // Check if the call center exists
-    const callCenter = await this.callCenterModel.findById(id);
+    const callCenter = await this.callCenterModel.findById(
+      new Types.ObjectId(id),
+    );
     if (!callCenter) {
       throw new NotFoundException("Le centre d'appel n'a pas pu être trouvé.");
     }
     // Delete the call center
-    const result = await this.callCenterModel.deleteOne({ _id: id });
-    if (!result) {
+    const result = await this.callCenterModel.deleteOne({
+      _id: new Types.ObjectId(id),
+    });
+    if (result.deletedCount === 0) {
       throw new InternalServerErrorException(
         "Une erreur est survenue lors de la suppression du centre d'appel.",
       );
@@ -129,7 +134,9 @@ export class CallCenterAdminService {
       );
     }
     // Find the call center in the database
-    const callCenter = await this.callCenterModel.findById(id);
+    const callCenter = await this.callCenterModel.findById(
+      new Types.ObjectId(id),
+    );
     if (!callCenter) {
       throw new NotFoundException("Le centre d'appel n'a pas pu être trouvé.");
     }
@@ -147,6 +154,72 @@ export class CallCenterAdminService {
         city: callCenter.address.city,
         street: callCenter.address.street,
       },
+    };
+  }
+
+  async updateCallCenterInfo(
+    body: PatchCallCenterRequest,
+  ): Promise<SuccessMessage> {
+    const { id, ...updateData } = body;
+
+    // Check if the id is a valid object id
+    if (!Types.ObjectId.isValid(id)) {
+      throw new UnprocessableEntityException(
+        "Le format de l'id n'est pas valide.",
+      );
+    }
+
+    // Check if the call center exists
+    const callCenter = await this.callCenterModel.findById(
+      new Types.ObjectId(id),
+    );
+    if (!callCenter) {
+      throw new NotFoundException("Le centre d'appel n'a pas pu être trouvé.");
+    }
+
+    const email = {
+      email: updateData.email,
+      verified: false,
+      lastCodeSent: null,
+      code: null,
+    };
+
+    const modifiedCallCenter = {
+      ...callCenter,
+      name: updateData.name,
+      phone: updateData.phone,
+      email: email,
+      address: {
+        zip: updateData.address.zip,
+        city: updateData.address.city,
+        street: updateData.address.street,
+      },
+    };
+
+    // Update the call center
+    const updated = await this.callCenterModel.updateOne(
+      { _id: new Types.ObjectId(id) },
+      {
+        name: modifiedCallCenter.name,
+        phone: modifiedCallCenter.phone,
+        email: modifiedCallCenter.email,
+        address: {
+          zip: modifiedCallCenter.address.zip,
+          city: modifiedCallCenter.address.city,
+          street: modifiedCallCenter.address.street,
+        },
+      },
+    );
+
+    if (!updated) {
+      throw new InternalServerErrorException(
+        "Une erreur est survenue lors de la mise à jour des informations du centre d'appel.",
+      );
+    }
+
+    return {
+      message:
+        "Les informations du centre d'appel ont été mises à jour avec succès.",
     };
   }
 }
