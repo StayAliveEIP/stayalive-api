@@ -102,16 +102,20 @@ export class CallCenterAdminService {
     const id = body.id;
     // Check if the id is a valid object id
     if (!Types.ObjectId.isValid(id)) {
-      throw new NotFoundException("Le centre d'appel n'a pas pu être trouvé.");
+      throw new NotFoundException("Mauvais format d'id.");
     }
     // Check if the call center exists
-    const callCenter = await this.callCenterModel.findById(id);
+    const callCenter = await this.callCenterModel.findById(
+      new Types.ObjectId(id),
+    );
     if (!callCenter) {
       throw new NotFoundException("Le centre d'appel n'a pas pu être trouvé.");
     }
     // Delete the call center
-    const result = await this.callCenterModel.deleteOne({ _id: id });
-    if (!result) {
+    const result = await this.callCenterModel.deleteOne({
+      _id: new Types.ObjectId(id),
+    });
+    if (result.deletedCount === 0) {
       throw new InternalServerErrorException(
         "Une erreur est survenue lors de la suppression du centre d'appel.",
       );
