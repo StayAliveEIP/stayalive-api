@@ -4,6 +4,8 @@ import { Types } from 'mongoose';
 
 @Schema({ versionKey: false, collection: 'defibrillators' })
 export class Defibrillator {
+  @Prop({ type: Types.ObjectId, required: true })
+  proposedBy: Types.ObjectId;
   @Prop({ required: false })
   name: string;
   @Prop({ required: false })
