@@ -40,12 +40,13 @@ export class AmazonS3Service {
     return response.Contents;
   }
 
-  public async uploadFile(key: string, body: any) {
+  public async uploadFile(key: string, body: any, contentType?: string) {
     const command = new PutObjectCommand({
       Bucket: this.bucketName,
       Key: key,
       Body: body,
       ACL: 'public-read',
+      ContentType: contentType,
     });
     const response = await this.client.send(command);
     return {

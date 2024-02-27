@@ -11,6 +11,9 @@ export class DefibrillatorProposalDto {
     x: string;
     y: string;
   };
+  @IsString()
+  @IsNotEmpty()
+  imageSrc: string;
 }
 
 export class DefibrillatorProposalResponse {
