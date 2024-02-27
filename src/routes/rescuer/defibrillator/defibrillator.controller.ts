@@ -4,11 +4,12 @@ import {
   DefibrillatorProposalDto,
   DefibrillatorProposalResponse,
 } from './defibrillator.dto';
+import { DefibrillatorService } from './defibrillator.service';
 
 @Controller('/rescuer/defibrillator')
 @ApiTags('Defibrillator')
 export class DefibrillatorController {
-  constructor(private readonly defibrillatorService: DefibrillatorController) {}
+  constructor(private readonly defibrillatorService: DefibrillatorService) {}
 
   @Post('/propose')
   @ApiBody({ type: DefibrillatorProposalDto })

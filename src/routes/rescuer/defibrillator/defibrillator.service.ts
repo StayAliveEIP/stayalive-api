@@ -1,7 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { DefibrillatorProposalDto } from './defibrillator.dto';
+import {
+  DefibrillatorProposalDto,
+  DefibrillatorProposalResponse,
+} from './defibrillator.dto';
 
 @Injectable()
 export class DefibrillatorService {
-  async proposa(body: DefibrillatorProposalDto) {}
+  async propose(
+    body: DefibrillatorProposalDto,
+  ): Promise<DefibrillatorProposalResponse> {}
 }
