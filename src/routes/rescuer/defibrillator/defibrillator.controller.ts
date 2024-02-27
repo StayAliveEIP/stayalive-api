@@ -1,7 +1,9 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { AuthService } from '../auth/auth.service';
-import { RegisterDTO, RegisterResponse } from '../auth/auth.dto';
+import {
+  DefibrillatorProposalDto,
+  DefibrillatorProposalResponse,
+} from './defibrillator.dto';
 
 @Controller('/rescuer/defibrillator')
 @ApiTags('Defibrillator')
@@ -9,13 +11,15 @@ export class DefibrillatorController {
   constructor(private readonly defibrillatorService: DefibrillatorController) {}
 
   @Post('/propose')
-  @ApiBody({ type: RegisterDTO })
+  @ApiBody({ type: DefibrillatorProposalDto })
   @ApiResponse({
     status: 200,
     description: 'The account was created.',
-    type: RegisterResponse,
+    type: DefibrillatorProposalResponse,
   })
-  async register(@Body() body: RegisterDTO): Promise<RegisterResponse> {
-    return this.service.register(body);
+  async propose(
+    @Body() body: DefibrillatorProposalDto,
+  ): Promise<DefibrillatorProposalResponse> {
+    return this.defibrillatorService.propose(body);
   }
 }
