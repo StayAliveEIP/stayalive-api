@@ -15,4 +15,12 @@ export class ChatRescuerService {
     @InjectModel(Message.name) private messageModel: Model<Message>,
     private readonly reactEmailService: ReactEmailService,
   ) {}
+
+  async getConversations(userId: string): Promise<Conversation[]> {
+    return this.conversationModel.find({ rescuerId: userId });
+  }
+
+  async getMessages(conversationId: string): Promise<Message[]> {
+    return this.messageModel.find({ conversationId });
+  }
 }
