@@ -38,4 +38,14 @@ export class DefibrillatorController {
   async getUserDefibrillators(@UserId() userId: Types.ObjectId) {
     return this.defibrillatorService.getUserDefibrillators(userId);
   }
+
+  @UseGuards(RescuerAuthGuard)
+  @Get('/')
+  @ApiResponse({
+    status: 200,
+    description: 'list of defibrillators validated by all the users.',
+  })
+  async getDefibrillators() {
+    return this.defibrillatorService.getDefibrillators();
+  }
 }

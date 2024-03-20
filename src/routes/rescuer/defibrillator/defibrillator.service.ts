@@ -40,4 +40,12 @@ export class DefibrillatorService {
       return rest;
     });
   }
+
+  async getDefibrillators() {
+    const def = await this.defibrillatorModel.find({ status: 'validated' });
+    return def.map((d) => {
+      const { proposedBy, ...rest } = d.toObject();
+      return rest;
+    });
+  }
 }
