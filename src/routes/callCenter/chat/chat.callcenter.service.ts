@@ -5,11 +5,12 @@ import { Model, Types } from 'mongoose';
 import { ReactEmailService } from '../../../services/react-email/react-email.service';
 import { Conversation } from '../../../database/conversation.schema';
 import { Message } from '../../../database/message.schema';
+import { CallCenter } from '../../../database/callCenter.schema';
 
 @Injectable()
-export class ChatRescuerService {
+export class ChatCallCenterService {
   constructor(
-    @InjectModel(Rescuer.name) private rescuerModel: Model<Rescuer>,
+    @InjectModel(CallCenter.name) private rescuerModel: Model<CallCenter>,
     @InjectModel(Conversation.name)
     private conversationModel: Model<Conversation>,
     @InjectModel(Message.name) private messageModel: Model<Message>,
@@ -17,7 +18,7 @@ export class ChatRescuerService {
   ) {}
 
   async getConversations(userId: Types.ObjectId): Promise<Conversation[]> {
-    return this.conversationModel.find({ rescuerId: userId });
+    return this.conversationModel.find({ callCenterId: userId });
   }
 
   async getMessages(conversationId: Types.ObjectId): Promise<Message[]> {

@@ -1,15 +1,15 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { Conversation } from '../../../database/conversation.schema';
 import { Types } from 'mongoose';
-import { RescuerAuthGuard } from '../../../guards/auth.route.guard';
+import { CallCenterAuthGuard } from '../../../guards/auth.route.guard';
 import { ApiResponse } from '@nestjs/swagger';
-import { ChatRescuerService } from './chat.rescuer.service';
+import { ChatCallCenterService } from './chat.callcenter.service';
 
-@Controller('rescuer/chat')
-export class ChatRescuerController {
-  constructor(private readonly chatService: ChatRescuerService) {}
+@Controller('call-center/chat')
+export class ChatCallcenterController {
+  constructor(private readonly chatService: ChatCallCenterService) {}
 
-  @UseGuards(RescuerAuthGuard)
+  @UseGuards(CallCenterAuthGuard)
   @Get('/conversations')
   @ApiResponse({
     status: 200,
@@ -19,13 +19,13 @@ export class ChatRescuerController {
     return this.chatService.getConversations(userId);
   }
 
-  @UseGuards(RescuerAuthGuard)
+  @UseGuards(CallCenterAuthGuard)
   @Get('/messages')
   @ApiResponse({
     status: 200,
     description: 'list of messages of the conversation.',
   })
   async getMessages(conversationId: Types.ObjectId): Promise<Conversation[]> {
-    return this.chatService.getMessages(conversationId.);
+    return this.chatService.getMessages(conversationId);
   }
 }
