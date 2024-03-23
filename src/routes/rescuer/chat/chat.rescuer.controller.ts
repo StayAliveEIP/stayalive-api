@@ -4,6 +4,7 @@ import { Types } from 'mongoose';
 import { RescuerAuthGuard } from '../../../guards/auth.route.guard';
 import { ApiResponse } from '@nestjs/swagger';
 import { ChatRescuerService } from './chat.rescuer.service';
+import { Message } from '../../../database/message.schema';
 
 @Controller('rescuer/chat')
 export class ChatRescuerController {
@@ -25,7 +26,7 @@ export class ChatRescuerController {
     status: 200,
     description: 'list of messages of the conversation.',
   })
-  async getMessages(conversationId: Types.ObjectId): Promise<Conversation[]> {
-    return this.chatService.getMessages(conversationId.);
+  async getMessages(conversationId: Types.ObjectId): Promise<Message[]> {
+    return this.chatService.getMessages(conversationId);
   }
 }

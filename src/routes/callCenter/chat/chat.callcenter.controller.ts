@@ -4,6 +4,7 @@ import { Types } from 'mongoose';
 import { CallCenterAuthGuard } from '../../../guards/auth.route.guard';
 import { ApiResponse } from '@nestjs/swagger';
 import { ChatCallCenterService } from './chat.callcenter.service';
+import { Message } from '../../../database/message.schema';
 
 @Controller('call-center/chat')
 export class ChatCallcenterController {
@@ -25,7 +26,7 @@ export class ChatCallcenterController {
     status: 200,
     description: 'list of messages of the conversation.',
   })
-  async getMessages(conversationId: Types.ObjectId): Promise<Conversation[]> {
+  async getMessages(conversationId: Types.ObjectId): Promise<Message[]> {
     return this.chatService.getMessages(conversationId);
   }
 }
