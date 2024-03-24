@@ -9,11 +9,9 @@ import { Message } from '../../../database/message.schema';
 @Injectable()
 export class ChatRescuerService {
   constructor(
-    @InjectModel(Rescuer.name) private rescuerModel: Model<Rescuer>,
     @InjectModel(Conversation.name)
     private conversationModel: Model<Conversation>,
     @InjectModel(Message.name) private messageModel: Model<Message>,
-    private readonly reactEmailService: ReactEmailService,
   ) {}
 
   async getConversations(userId: Types.ObjectId): Promise<Conversation[]> {

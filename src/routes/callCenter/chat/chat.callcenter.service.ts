@@ -10,11 +10,9 @@ import { CallCenter } from '../../../database/callCenter.schema';
 @Injectable()
 export class ChatCallCenterService {
   constructor(
-    @InjectModel(CallCenter.name) private rescuerModel: Model<CallCenter>,
     @InjectModel(Conversation.name)
     private conversationModel: Model<Conversation>,
     @InjectModel(Message.name) private messageModel: Model<Message>,
-    private readonly reactEmailService: ReactEmailService,
   ) {}
 
   async getConversations(userId: Types.ObjectId): Promise<Conversation[]> {
