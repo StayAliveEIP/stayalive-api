@@ -1,8 +1,10 @@
 import {
   ConnectedSocket,
+  MessageBody,
   OnGatewayConnection,
   OnGatewayDisconnect,
   OnGatewayInit,
+  SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
@@ -11,6 +13,11 @@ import { Types } from 'mongoose';
 import { Socket } from 'socket.io';
 import { Server } from 'ws';
 import * as jwt from 'jsonwebtoken';
+
+type ChatReceive = {
+  conversationId: string;
+  message: string;
+};
 
 @WebSocketGateway({ namespace: '/chat/ws' })
 export class ChatWebsocket
@@ -70,5 +77,26 @@ export class ChatWebsocket
 
   afterInit() {
     this.logger.log('Chat websocket initialized.');
+  }
+
+  @SubscribeMessage('messageRescuer')
+  handleMessageRescuer(
+    @MessageBody() data: any,
+    @ConnectedSocket() client: Socket,
+  ): void {
+    // Implement your message handling logic here
+    this.logger.log(`Received message: ${JSON.stringify(data)} from client.`);
+    //when receive message, send it to the other client and create a message object in the database
+  }
+
+  @SubscribeMessage('messageCallCenter')
+  handleMessageCallCenter(
+    @MessageBody() data: any,
+    @ConnectedSocket() client: Socket,
+  ): void {
+    // Implement your message handling logic here
+    this.logger.log(`Received message: ${JSON.stringify(data)} from client.`);
+
+    //when receive message, send it to the other client and create a message object in the database
   }
 }

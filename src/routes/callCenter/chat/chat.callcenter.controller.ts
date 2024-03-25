@@ -5,6 +5,7 @@ import { CallCenterAuthGuard } from '../../../guards/auth.route.guard';
 import { ApiResponse } from '@nestjs/swagger';
 import { ChatCallCenterService } from './chat.callcenter.service';
 import { Message } from '../../../database/message.schema';
+import { UserId } from '../../../decorator/userid.decorator';
 
 @Controller('call-center/chat')
 export class ChatCallcenterController {
@@ -16,7 +17,9 @@ export class ChatCallcenterController {
     status: 200,
     description: 'list of conversations of the user.',
   })
-  async getConversations(userId: Types.ObjectId): Promise<Conversation[]> {
+  async getConversations(
+    @UserId() userId: Types.ObjectId,
+  ): Promise<Conversation[]> {
     return this.chatService.getConversations(userId);
   }
 
