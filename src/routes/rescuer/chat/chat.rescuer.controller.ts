@@ -5,6 +5,7 @@ import { RescuerAuthGuard } from '../../../guards/auth.route.guard';
 import { ApiResponse } from '@nestjs/swagger';
 import { ChatRescuerService } from './chat.rescuer.service';
 import { Message } from '../../../database/message.schema';
+import { UserId } from '../../../decorator/userid.decorator';
 
 @Controller('rescuer/chat')
 export class ChatRescuerController {
@@ -16,7 +17,9 @@ export class ChatRescuerController {
     status: 200,
     description: 'list of conversations of the user.',
   })
-  async getConversations(userId: Types.ObjectId): Promise<Conversation[]> {
+  async getConversations(
+    @UserId() userId: Types.ObjectId,
+  ): Promise<Conversation[]> {
     return this.chatService.getConversations(userId);
   }
 

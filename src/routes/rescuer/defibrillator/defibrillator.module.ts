@@ -4,7 +4,6 @@ import {
   Defibrillator,
   DefibrillatorSchema,
 } from '../../../database/defibrillator.schema';
-import { AmazonS3Module } from '../../../services/s3/s3.module';
 import { AmazonS3Service } from '../../../services/s3/s3.service';
 import { DefibrillatorController } from './defibrillator.controller';
 import { DefibrillatorService } from './defibrillator.service';

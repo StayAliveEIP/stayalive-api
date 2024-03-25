@@ -8,6 +8,10 @@ import {
   CallCenter,
   CallCenterSchema,
 } from '../../../database/callCenter.schema';
+import {
+  Conversation,
+  ConversationSchema,
+} from '../../../database/conversation.schema';
 
 @Module({
   imports: [
@@ -15,6 +19,7 @@ import {
       { name: Emergency.name, schema: EmergencySchema },
       { name: Rescuer.name, schema: RescuerSchema },
       { name: CallCenter.name, schema: CallCenterSchema },
+      { name: Conversation.name, schema: ConversationSchema },
     ]),
   ],
   controllers: [EmergencyController],

@@ -17,6 +17,10 @@ import {
 } from '../../../services/emergency-manager/emergencyManager.dto';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { CallCenter } from '../../../database/callCenter.schema';
+import {
+  Conversation,
+  ConversationStatus,
+} from '../../../database/conversation.schema';
 
 @Injectable()
 export class EmergencyService {
@@ -26,6 +30,8 @@ export class EmergencyService {
     @InjectModel(Emergency.name) private emergencyModel: Model<Emergency>,
     @InjectModel(Rescuer.name) private rescuerModel: Model<Rescuer>,
     @InjectModel(CallCenter.name) private callCenterModel: Model<CallCenter>,
+    @InjectModel(Conversation.name)
+    private conversationModel: Model<Conversation>,
   ) {}
 
   async acceptEmergency(
@@ -81,6 +87,16 @@ export class EmergencyService {
       rescuer: rescuer,
     };
     this.eventEmitter.emit(EventType.EMERGENCY_ASSIGNED, emergencyAccepted);
+
+    //create a conversation for the emergency
+    const conversation = new this.conversationModel({
+      callCenterId: emergency.callCenterId,
+      rescuerId: userId,
+      emergencyId: emergency._id,
+      status: ConversationStatus.ACTIVE,
+    });
+    await conversation.save();
+
     this.logger.log(`Emergency ${id} accepted by ${userId}`);
     return {
       message: "Vous avez bien accepté l'urgence.",

@@ -15,6 +15,8 @@ export class ChatRescuerService {
   ) {}
 
   async getConversations(userId: Types.ObjectId): Promise<Conversation[]> {
+    console.log('getConversations');
+    console.log(userId);
     return this.conversationModel.find({ rescuerId: userId });
   }
 
