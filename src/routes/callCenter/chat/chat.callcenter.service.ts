@@ -20,6 +20,8 @@ export class ChatCallCenterService {
   }
 
   async getMessages(conversationId: Types.ObjectId): Promise<Message[]> {
-    return this.messageModel.find({ conversationId });
+    return this.messageModel.find({
+      conversationId: new Types.ObjectId(conversationId),
+    });
   }
 }

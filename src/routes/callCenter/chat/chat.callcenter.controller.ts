@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { Conversation } from '../../../database/conversation.schema';
 import { Types } from 'mongoose';
 import { CallCenterAuthGuard } from '../../../guards/auth.route.guard';
@@ -29,7 +29,9 @@ export class ChatCallcenterController {
     status: 200,
     description: 'list of messages of the conversation.',
   })
-  async getMessages(conversationId: Types.ObjectId): Promise<Message[]> {
+  async getMessages(
+    @Query('id') conversationId: Types.ObjectId,
+  ): Promise<Message[]> {
     return this.chatService.getMessages(conversationId);
   }
 }

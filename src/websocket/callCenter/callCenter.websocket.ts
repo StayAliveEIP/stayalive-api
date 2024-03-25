@@ -10,7 +10,7 @@ import {
 import { Server } from 'ws';
 import { Socket } from 'socket.io';
 import { Logger } from '@nestjs/common';
-import { Types } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import {
   CallCenterWsResponse,
   CallCenterWsData,
@@ -27,6 +27,9 @@ import {
   EmergencyTerminatedEvent,
   EventType,
 } from '../../services/emergency-manager/emergencyManager.dto';
+import { Message } from '../../database/message.schema';
+import { InjectModel } from '@nestjs/mongoose';
+import { Conversation } from '../../database/conversation.schema';
 
 @WebSocketGateway({ namespace: '/call-center/ws' })
 export class CallCenterWebsocket
