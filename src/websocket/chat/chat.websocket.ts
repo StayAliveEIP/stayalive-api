@@ -118,32 +118,68 @@ export class ChatWebsocket
     message.save();
 
     //get the call center associated with the conversation
-    // const conversation = await this.conversationModel.findById(
-    //   chatReceive.conversationId,
-    // );
-    // if (!conversation) {
-    //   return;
-    // }
-    // const callCenterId = conversation.callCenterId;
-    // //send the message to the call center
-    // this.callCenterClients.forEach((value, key) => {
-    //   if (key.equals(callCenterId)) {
-    //     value.emit('message', {
-    //       conversationId: chatReceive.conversationId,
-    //       message: chatReceive.message,
-    //     });
-    //   }
-    // });
+    const conversation = await this.conversationModel.findById(
+      chatReceive.conversationId,
+    );
+    if (!conversation) {
+      return;
+    }
+    const callCenterId = conversation.callCenterId;
+    //send the message to the call center
+    this.callCenterClients.forEach((value, key) => {
+      if (key.equals(callCenterId)) {
+        value.emit('messageRescuer', {
+          conversationId: chatReceive.conversationId,
+          message: chatReceive.message,
+        });
+      }
+    });
   }
 
   @SubscribeMessage('messageCallCenter')
-  handleMessageCallCenter(
+  async handleMessageCallCenter(
     @MessageBody() data: any,
     @ConnectedSocket() client: Socket,
-  ): void {
+  ): Promise<void> {
     // Implement your message handling logic here
     this.logger.log(`Received message: ${JSON.stringify(data)} from client.`);
 
-    //when receive message, send it to the other client and create a message object in the database
+    const chatReceive: ChatReceive = data;
+    if (!chatReceive.conversationId || !chatReceive.message) {
+      return;
+    }
+    //get the ObjectId of the client
+    let clientId = new Types.ObjectId();
+    this.callCenterClients.forEach((value, key) => {
+      if (value === client) {
+        clientId = key;
+      }
+    });
+
+    //create a message object in the database
+    const message = new this.messageModel({
+      conversationId: new Types.ObjectId(chatReceive.conversationId),
+      senderId: clientId,
+      content: chatReceive.message,
+      timestamp: new Date(),
+    });
+    message.save();
+
+    const conversation = await this.conversationModel.findById(
+      chatReceive.conversationId,
+    );
+    if (!conversation) {
+      return;
+    }
+    const rescuerId = conversation.rescuerId;
+    //send the message to the call center
+    this.rescuerClients.forEach((value, key) => {
+      if (key.equals(rescuerId)) {
+        value.emit('messageCallCenter', {
+          conversationId: chatReceive.conversationId,
+          message: chatReceive.message,
+        });
+      }
+    });
   }
 }
