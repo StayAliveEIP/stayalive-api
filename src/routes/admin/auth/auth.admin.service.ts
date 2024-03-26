@@ -12,7 +12,6 @@ import { AccountType } from '../../../guards/auth.route.guard';
 import { SendMagicLinkRequest } from '../../rescuer/auth/auth.dto';
 import { SuccessMessage } from '../../../dto.dto';
 import { Rescuer } from '../../../database/rescuer.schema';
-import process from 'process';
 import { ReactEmailService } from '../../../services/react-email/react-email.service';
 
 @Injectable()

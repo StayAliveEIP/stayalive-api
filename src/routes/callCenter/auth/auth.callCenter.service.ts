@@ -14,7 +14,6 @@ import {
 import { AccountType } from '../../../guards/auth.route.guard';
 import { SendMagicLinkRequest } from '../../rescuer/auth/auth.dto';
 import { SuccessMessage } from '../../../dto.dto';
-import process from 'process';
 import { ReactEmailService } from '../../../services/react-email/react-email.service';
 
 @Injectable()
@@ -62,6 +61,7 @@ export class AuthCallCenterService {
     }
     const token = generateToken(user._id, AccountType.CALL_CENTER);
     const frontUrl = process.env.FRONTEND_URL;
+    console.log(frontUrl);
     const _finalUrl = `${frontUrl}/auth/magiclogin?token=${token}`;
     this.reactEmailService.sendMagicLinkEmail(body.email, user.name, _finalUrl);
     return {
