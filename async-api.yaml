@@ -13,7 +13,9 @@ info:
 
     - All messages sent and received via WebSockets are encoded in JSON format.
     
-    - All message are sent in the socket.io channel name: message.
+    - All message are sent in the socket.io channel name: message (Except for the chat channel).
+    
+    - For chat messages, the rescuer and call center will have their own channel name: messageCallCenter and messageRescuer.
 defaultContentType: application/json
 servers:
   stayalive:
@@ -29,6 +31,11 @@ channels:
         $ref: '#/components/messages/CallCenterEvent'
   rescuer:
     address: /rescuer/ws
+    messages:
+      receive.message:
+        $ref: '#/components/messages/RescuerEvent'
+  chat:
+    address: /chat/ws
     messages:
       receive.message:
         $ref: '#/components/messages/RescuerEvent'
@@ -49,6 +56,15 @@ operations:
     description: Receive emergency events for your rescuer.
     messages:
       - $ref: '#/channels/rescuer/messages/receive.message'
+  /chat/ws:
+    action: receive
+    channel:
+      $ref: '#/channels/rescuer'
+    summary: Please use this channel to receive chat events for your rescuer or call center.
+    description: Receive chat messages for your rescuer or call center.
+    messages:
+      - $ref: '#/channels/chat/messages/receive.messageCallCenter'
+      - $ref: '#/channels/chat/messages/receive.messageRescuer'
 components:
   messages:
     CallCenterEvent:
@@ -233,3 +249,24 @@ components:
               description: Name of the call center.
               examples:
                 - SAMU Center of Paris
+
+    ChatMessage:
+      title: Chat Message
+      name: message
+      description: |
+        This is the object representing a chat message sent or received.
+      type: object
+      properties:
+        conversationId:
+          type: string
+          description: Unique identifier for the conversation.
+          examples:
+            - 6600d614b85f3990a8d209ea
+        message:
+          type: string
+          description: The message content.
+          examples:
+            - Hello, how can I help you?
+
+
+
