@@ -74,7 +74,7 @@ components:
         $ref: '#/components/schemas/callCenterEvent'
     RescuerEvent:
       title: Emergency Event
-      description: 'This event is sent when a new emergency is created or updated.'
+      description: 'This event t is sent when a new emergency is created or updated.'
       payload:
         $ref: '#/components/schemas/rescuerEvent'
   schemas:
