@@ -38,7 +38,7 @@ channels:
     address: /chat/ws
     messages:
       receive.message:
-        $ref: '#/components/messages/RescuerEvent'
+        $ref: '#/components/messages/ChatMessage'
 operations:
   /call-center/ws:
     action: receive
@@ -74,7 +74,6 @@ components:
         $ref: '#/components/schemas/callCenterEvent'
     RescuerEvent:
       title: Emergency Event
-      description: 'This event is sent when a new emergency is created or updated.'
       payload:
         $ref: '#/components/schemas/rescuerEvent'
   schemas:
