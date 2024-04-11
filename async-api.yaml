@@ -34,7 +34,7 @@ channels:
     messages:
       receive.message:
         $ref: '#/components/messages/RescuerEvent'
-  chat:
+  'chat':
     address: /chat/ws
     messages:
       receive.message:
@@ -76,6 +76,10 @@ components:
       title: Emergency Event
       payload:
         $ref: '#/components/schemas/rescuerEvent'
+    ChatMessage:
+      title: ChatMessage
+      payload:
+        $ref: '#/components/schemas/ChatMessage'
   schemas:
     callCenterEvent:
       title: Call Center Emergency Event
