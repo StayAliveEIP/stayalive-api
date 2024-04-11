@@ -13,9 +13,7 @@ info:
 
     - All messages sent and received via WebSockets are encoded in JSON format.
     
-    - All message are sent in the socket.io channel name: message (Except for the chat channel).
-    
-    - For chat messages, the rescuer and call center will have their own channel name: messageCallCenter and messageRescuer.
+    - All message are sent in the socket.io channel name: message.
 defaultContentType: application/json
 servers:
   stayalive:
@@ -59,7 +57,7 @@ operations:
   /chat/ws:
     action: receive
     channel:
-      $ref: '#/channels/rescuer'
+      $ref: '#/channels/chat'
     summary: Please use this channel to receive chat events for your rescuer or call center.
     description: Receive chat messages for your rescuer or call center.
     messages:
@@ -74,6 +72,8 @@ components:
         $ref: '#/components/schemas/callCenterEvent'
     RescuerEvent:
       title: Emergency Event
+      description: |
+        This event is sent when a new emergency is created or updated.
       payload:
         $ref: '#/components/schemas/rescuerEvent'
     ChatMessage:
@@ -250,7 +250,6 @@ components:
               description: Name of the call center.
               examples:
                 - SAMU Center of Paris
-
     ChatMessage:
       title: Chat Message
       name: message
@@ -268,6 +267,3 @@ components:
           description: The message content.
           examples:
             - Hello, how can I help you?
-
-
-
