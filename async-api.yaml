@@ -35,7 +35,9 @@ channels:
   'chat':
     address: /chat/ws
     messages:
-      receive.message:
+      messageCallCenter:
+        $ref: '#/components/messages/ChatMessage'
+      messageRescuer:
         $ref: '#/components/messages/ChatMessage'
 operations:
   /call-center/ws:
@@ -55,13 +57,14 @@ operations:
     messages:
       - $ref: '#/channels/rescuer/messages/receive.message'
   /chat/ws:
-    action: receive
+    action: send
     channel:
       $ref: '#/channels/chat'
-    summary: Please use this channel to receive chat events for your rescuer or call center.
-    description: Receive chat messages for your rescuer or call center.
+    summary: Please use this channel to send and receive chat events for your rescuer or call center.
+    description: Receive and send chat messages for your rescuer or call center.
     messages:
-      - $ref: '#/channels/chat/messages/receive.message'
+      - $ref: '#/channels/chat/messages/messageCallCenter'
+      - $ref: '#/channels/chat/messages/messageRescuer'
 components:
   messages:
     CallCenterEvent:
@@ -78,6 +81,7 @@ components:
         $ref: '#/components/schemas/rescuerEvent'
     ChatMessage:
       title: ChatMessage
+      description: 'Object that use to send and receive chat messages from messageCallCenter or messageRescuer'
       payload:
         $ref: '#/components/schemas/ChatMessage'
   schemas:
