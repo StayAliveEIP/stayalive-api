@@ -63,8 +63,7 @@ operations:
     summary: Please use this channel to receive chat events for your rescuer or call center.
     description: Receive chat messages for your rescuer or call center.
     messages:
-      - $ref: '#/channels/chat/messages/receive.messageCallCenter'
-      - $ref: '#/channels/chat/messages/receive.messageRescuer'
+      - $ref: '#/channels/chat/messages/receive.message'
 components:
   messages:
     CallCenterEvent:
