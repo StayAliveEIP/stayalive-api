@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail } from 'class-validator';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export class LoginAdminRequest {
   @ApiProperty({
@@ -8,6 +8,7 @@ export class LoginAdminRequest {
     example: 'jophn@doe.net',
   })
   @IsEmail()
+  @IsNotEmpty()
   email: string;
 
   @ApiProperty({
@@ -15,6 +16,7 @@ export class LoginAdminRequest {
     description: 'The password of the admin.',
     example: 'myPassword123',
   })
+  @IsNotEmpty()
   password: string;
 }
 
