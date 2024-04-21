@@ -24,6 +24,7 @@ import {
 } from './callCenter.admin.dto';
 import { SuccessMessage } from '../../../dto.dto';
 import { AdminAuthGuard } from 'src/guards/auth.route.guard';
+import { SendMagicLinkRequest } from '../../rescuer/auth/auth.dto';
 
 @Controller('/admin/call-center')
 @ApiTags('Call Center')

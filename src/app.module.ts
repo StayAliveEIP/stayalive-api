@@ -24,6 +24,9 @@ import { EmergencyCallCenterModule } from './routes/callCenter/emergency/emergen
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { EmergencyManagerModule } from './services/emergency-manager/emergencyManager.module';
 import { ReactEmailModule } from './services/react-email/react-email.module';
+import { DefibrillatorModule } from './routes/rescuer/defibrillator/defibrillator.module';
+import { ChatRescuerModule } from './routes/rescuer/chat/chat.rescuer.module';
+import { ChatCallcenterModule } from './routes/callCenter/chat/chat.callcenter.module';
 
 @Module({
   imports: [
@@ -62,6 +65,9 @@ import { ReactEmailModule } from './services/react-email/react-email.module';
     EmergencyCallCenterModule,
     // Websocket module
     WebsocketModule,
+    DefibrillatorModule,
+    ChatRescuerModule,
+    ChatCallcenterModule,
   ],
   controllers: [AppController],
   providers: [AppService],

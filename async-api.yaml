@@ -32,6 +32,13 @@ channels:
     messages:
       receive.message:
         $ref: '#/components/messages/RescuerEvent'
+  'chat':
+    address: /chat/ws
+    messages:
+      messageCallCenter:
+        $ref: '#/components/messages/ChatMessage'
+      messageRescuer:
+        $ref: '#/components/messages/ChatMessage'
 operations:
   /call-center/ws:
     action: receive
@@ -49,6 +56,15 @@ operations:
     description: Receive emergency events for your rescuer.
     messages:
       - $ref: '#/channels/rescuer/messages/receive.message'
+  /chat/ws:
+    action: send
+    channel:
+      $ref: '#/channels/chat'
+    summary: Please use this channel to send and receive chat events for your rescuer or call center.
+    description: Receive and send chat messages for your rescuer or call center.
+    messages:
+      - $ref: '#/channels/chat/messages/messageCallCenter'
+      - $ref: '#/channels/chat/messages/messageRescuer'
 components:
   messages:
     CallCenterEvent:
@@ -63,6 +79,11 @@ components:
         This event is sent when a new emergency is created or updated.
       payload:
         $ref: '#/components/schemas/rescuerEvent'
+    ChatMessage:
+      title: ChatMessage
+      description: 'Object that use to send and receive chat messages from messageCallCenter or messageRescuer'
+      payload:
+        $ref: '#/components/schemas/ChatMessage'
   schemas:
     callCenterEvent:
       title: Call Center Emergency Event
@@ -233,3 +254,20 @@ components:
               description: Name of the call center.
               examples:
                 - SAMU Center of Paris
+    ChatMessage:
+      title: Chat Message
+      name: message
+      description: |
+        This is the object representing a chat message sent or received.
+      type: object
+      properties:
+        conversationId:
+          type: string
+          description: Unique identifier for the conversation.
+          examples:
+            - 6600d614b85f3990a8d209ea
+        message:
+          type: string
+          description: The message content.
+          examples:
+            - Hello, how can I help you?
