@@ -4,7 +4,10 @@ import { EmergencyService } from './emergency.service';
 import { UserId } from '../../../decorator/userid.decorator';
 import { Types } from 'mongoose';
 import { SuccessMessage } from '../../../dto.dto';
-import { RescuerAuthGuard } from '../../../guards/auth.route.guard';
+import {
+  RescuerAuthGuard,
+  RescuerDocumentGuard,
+} from '../../../guards/auth.route.guard';
 import { EmergencyAcceptDto, EmergencyHistoryResponse } from './emergency.dto';
 
 @Controller('/rescuer')
@@ -13,6 +16,7 @@ export class EmergencyController {
   constructor(private readonly service: EmergencyService) {}
 
   @UseGuards(RescuerAuthGuard)
+  @UseGuards(RescuerDocumentGuard)
   @Get('/emergency/history')
   @ApiOperation({
     summary: 'Get the history of all your emergencies.',
@@ -30,6 +34,7 @@ export class EmergencyController {
   }
 
   @UseGuards(RescuerAuthGuard)
+  @UseGuards(RescuerDocumentGuard)
   @Get('/emergency/accept')
   @ApiOperation({
     summary: 'Accept an emergency.',
@@ -48,6 +53,7 @@ export class EmergencyController {
   }
 
   @UseGuards(RescuerAuthGuard)
+  @UseGuards(RescuerDocumentGuard)
   @Get('/emergency/terminate')
   async terminateEmergency(
     @UserId() userId: Types.ObjectId,
@@ -57,6 +63,7 @@ export class EmergencyController {
   }
 
   @UseGuards(RescuerAuthGuard)
+  @UseGuards(RescuerDocumentGuard)
   @Get('/emergency/refuse')
   async refuseEmergency(
     @UserId() userId: Types.ObjectId,

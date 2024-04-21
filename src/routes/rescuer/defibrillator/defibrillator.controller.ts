@@ -7,7 +7,10 @@ import {
 import { DefibrillatorService } from './defibrillator.service';
 import { UserId } from '../../../decorator/userid.decorator';
 import { Types } from 'mongoose';
-import { RescuerAuthGuard } from '../../../guards/auth.route.guard';
+import {
+  RescuerAuthGuard,
+  RescuerDocumentGuard,
+} from '../../../guards/auth.route.guard';
 
 @Controller('/rescuer/defibrillator')
 @ApiTags('Defibrillator')
@@ -15,6 +18,7 @@ export class DefibrillatorController {
   constructor(private readonly defibrillatorService: DefibrillatorService) {}
 
   @UseGuards(RescuerAuthGuard)
+  @UseGuards(RescuerDocumentGuard)
   @Post('/propose')
   @ApiBody({ type: DefibrillatorProposalDto })
   @ApiResponse({
@@ -30,6 +34,7 @@ export class DefibrillatorController {
   }
 
   @UseGuards(RescuerAuthGuard)
+  @UseGuards(RescuerDocumentGuard)
   @Get('/propose')
   @ApiResponse({
     status: 200,
@@ -40,6 +45,7 @@ export class DefibrillatorController {
   }
 
   @UseGuards(RescuerAuthGuard)
+  @UseGuards(RescuerDocumentGuard)
   @Get('/')
   @ApiResponse({
     status: 200,

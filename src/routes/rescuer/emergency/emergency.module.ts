@@ -12,6 +12,7 @@ import {
   Conversation,
   ConversationSchema,
 } from '../../../database/conversation.schema';
+import { Document, DocumentSchema } from '../../../database/document.schema';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import {
       { name: Rescuer.name, schema: RescuerSchema },
       { name: CallCenter.name, schema: CallCenterSchema },
       { name: Conversation.name, schema: ConversationSchema },
+      { name: Document.name, schema: DocumentSchema },
     ]),
   ],
   controllers: [EmergencyController],

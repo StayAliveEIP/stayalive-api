@@ -1,7 +1,10 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { Conversation } from '../../../database/conversation.schema';
 import { Types } from 'mongoose';
-import { RescuerAuthGuard } from '../../../guards/auth.route.guard';
+import {
+  RescuerAuthGuard,
+  RescuerDocumentGuard,
+} from '../../../guards/auth.route.guard';
 import { ApiResponse } from '@nestjs/swagger';
 import { ChatRescuerService } from './chat.rescuer.service';
 import { Message } from '../../../database/message.schema';
@@ -12,6 +15,7 @@ export class ChatRescuerController {
   constructor(private readonly chatService: ChatRescuerService) {}
 
   @UseGuards(RescuerAuthGuard)
+  @UseGuards(RescuerDocumentGuard)
   @Get('/conversations')
   @ApiResponse({
     status: 200,
@@ -24,6 +28,7 @@ export class ChatRescuerController {
   }
 
   @UseGuards(RescuerAuthGuard)
+  @UseGuards(RescuerDocumentGuard)
   @Get('/messages')
   @ApiResponse({
     status: 200,

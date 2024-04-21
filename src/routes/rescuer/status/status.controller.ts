@@ -7,7 +7,10 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { StatusService } from './status.service';
-import { RescuerAuthGuard } from '../../../guards/auth.route.guard';
+import {
+  RescuerAuthGuard,
+  RescuerDocumentGuard,
+} from '../../../guards/auth.route.guard';
 import { StatusDto } from './status.dto';
 import { UserId } from '../../../decorator/userid.decorator';
 import { Types } from 'mongoose';
@@ -19,6 +22,7 @@ export class StatusController {
   constructor(private readonly status: StatusService) {}
 
   @UseGuards(RescuerAuthGuard)
+  @UseGuards(RescuerDocumentGuard)
   @Get('/status')
   @ApiResponse({
     status: 200,
@@ -33,6 +37,7 @@ export class StatusController {
   }
 
   @UseGuards(RescuerAuthGuard)
+  @UseGuards(RescuerDocumentGuard)
   @ApiResponse({
     status: 200,
     description: 'The status was changed.',
