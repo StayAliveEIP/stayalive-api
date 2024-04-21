@@ -65,6 +65,12 @@ export class Rescuer {
   email: Email;
 
   @Prop({
+    required: false,
+    type: String,
+  })
+  profilePictureUrl: string | undefined | null;
+
+  @Prop({
     _id: false,
     required: false,
     type: Phone,

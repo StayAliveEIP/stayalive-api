@@ -169,7 +169,7 @@ describe('CallCenterAdminController', () => {
         },
       };
 
-      const result = await controller.info(id);
+      const result = await controller.info({ id: id });
       expect(result).toEqual(expectedResponse);
     });
   });

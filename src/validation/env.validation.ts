@@ -16,4 +16,8 @@ export const envValidation: Joi.ObjectSchema = Joi.object({
   MAILJET_SENDER_EMAIL: Joi.string().required(),
   ADMIN_DEFAULT_PASSWORD: Joi.string().required(),
   ADMIN_DEFAULT_EMAIL: Joi.string().required(),
+  AWS_ACCESS_KEY: Joi.string().required(),
+  AWS_SECRET_KEY: Joi.string().required(),
+  AWS_BUCKET_NAME: Joi.string().required(),
+  AWS_REGION: Joi.string().required(),
 });

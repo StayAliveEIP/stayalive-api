@@ -21,6 +21,7 @@ import { hashPassword, verifyPassword } from '../../../utils/crypt.utils';
 import { Document, DocumentStatus } from '../../../database/document.schema';
 import { RedisService } from '../../../services/redis/redis.service';
 import { ReactEmailService } from '../../../services/react-email/react-email.service';
+import { AmazonS3Service } from '../../../services/s3/s3.service';
 
 @Injectable()
 export class AccountService {
@@ -60,6 +61,7 @@ export class AccountService {
       _id: user._id,
       firstname: user.firstname,
       lastname: user.lastname,
+      profilePictureUrl: user.profilePictureUrl,
       email: {
         email: user.email.email,
         verified: user.email.verified,
@@ -241,6 +243,46 @@ export class AccountService {
     return {
       message:
         'Votre numéro de téléphone a bien été changé, un SMS de vérification vous a été envoyé.',
+    };
+  }
+
+  async uploadProfilePicture(
+    userId: Types.ObjectId,
+    files: Array<Express.Multer.File>,
+  ): Promise<SuccessMessage> {
+    const file: Express.Multer.File = files[0];
+    const user = await this.rescuerModel.findById(new Types.ObjectId(userId));
+    if (!user) {
+      throw new NotFoundException('Utilisateur introuvable.');
+    }
+    const s3 = AmazonS3Service.getInstance();
+    const contentType: string = file.mimetype;
+    const key: string = `profile-picture/${userId.toString()}`;
+    const response = await s3.uploadFile(key, file.buffer, contentType);
+
+    this.logger.log('Uploaded profile picture file to S3: ' + response.url);
+    user.profilePictureUrl = response.url;
+    await user.save();
+
+    return {
+      message: 'Votre photo de profil a bien été mise à jour.',
+    };
+  }
+
+  async deleteProfilePicture(userId: Types.ObjectId): Promise<SuccessMessage> {
+    const user = await this.rescuerModel.findById(new Types.ObjectId(userId));
+    if (!user) {
+      throw new NotFoundException('Utilisateur introuvable.');
+    }
+    const s3 = AmazonS3Service.getInstance();
+    const key: string = `profile-picture/${userId.toString()}`;
+    await s3.deleteFile(key);
+
+    this.logger.log('Deleted profile picture file from S3: ' + key);
+    user.profilePictureUrl = null;
+    await user.save();
+    return {
+      message: 'Votre photo de profil a bien été supprimée.',
     };
   }
 }

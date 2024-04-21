@@ -40,6 +40,7 @@ export class AuthService {
       _id: new Types.ObjectId(),
       firstname: body.firstname,
       lastname: body.lastname.toUpperCase(),
+      profilePictureUrl: null,
       email: {
         email: body.email,
         verified: false,

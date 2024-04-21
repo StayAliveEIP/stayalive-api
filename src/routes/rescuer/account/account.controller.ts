@@ -3,9 +3,13 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
+  ParseFilePipeBuilder,
   Post,
   Request,
+  UploadedFiles,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AccountService } from './account.service';
 import { RescuerAuthGuard } from '../../../guards/auth.route.guard';
@@ -28,6 +32,8 @@ import { ReactEmailService } from '../../../services/react-email/react-email.ser
 import { SuccessMessage } from '../../../dto.dto';
 import { UserId } from '../../../decorator/userid.decorator';
 import { Types } from 'mongoose';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { async } from 'rxjs';
 
 @Controller('/rescuer')
 @ApiTags('Account')
@@ -47,6 +53,63 @@ export class AccountController {
   })
   async index(@Request() req: Request): Promise<AccountIndexResponse> {
     return this.service.index(req);
+  }
+
+  @UseGuards(RescuerAuthGuard)
+  @Post('/account/profile-picture/upload')
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: SuccessMessage,
+    description: 'When you file was successfully uploaded or replaced.',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'If your type of profile picture is not valid',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNPROCESSABLE_ENTITY,
+    description:
+      'If the file not respect the following format: pdf, jpg, jpeg or png or are bigger than 10 Mo.',
+  })
+  @ApiOperation({
+    summary: 'Upload your profile picture',
+    description: 'Upload your profile picture.',
+  })
+  @UseInterceptors(FilesInterceptor('file', 1))
+  async uploadProfilePicture(
+    @UploadedFiles(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType: '(jpg|jpeg|png)$', // Regex to valid only pdf, jpeg, jpg or png
+        })
+        .addMaxSizeValidator({
+          maxSize: 1010000000, // 1OMo
+        })
+        .build({
+          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+        }),
+    )
+    file: Array<Express.Multer.File>,
+    @UserId() userId: Types.ObjectId,
+  ): Promise<SuccessMessage> {
+    return this.service.uploadProfilePicture(userId, file);
+  }
+
+  @UseGuards(RescuerAuthGuard)
+  @Delete('/account/profile-picture/delete')
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: SuccessMessage,
+    description: 'When you file was successfully deleted.',
+  })
+  @ApiOperation({
+    summary: 'Delete your profile picture',
+    description: 'Delete your profile picture.',
+  })
+  async deleteProfilePicture(
+    @UserId() userId: Types.ObjectId,
+  ): Promise<SuccessMessage> {
+    return this.service.deleteProfilePicture(userId);
   }
 
   @UseGuards(RescuerAuthGuard)

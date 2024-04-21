@@ -24,6 +24,7 @@ const RESCUER_MOCK: Rescuer = {
     lastCodeSent: null,
     verified: true,
   },
+  profilePictureUrl: null,
   firstname: 'Test',
   lastname: 'Test',
   password: {

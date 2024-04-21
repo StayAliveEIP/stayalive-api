@@ -25,6 +25,14 @@ export class AccountIndexResponse {
   lastname: string;
 
   @ApiProperty({
+    type: String,
+    description: 'The url of the profile picture of the rescuer.',
+    example: 'https://mybucket.s3.amazonaws.com/myimage.jpg',
+    nullable: true,
+  })
+  profilePictureUrl: string | null;
+
+  @ApiProperty({
     type: {
       email: { type: String, required: true, example: 'john@doe.net' },
       verified: {

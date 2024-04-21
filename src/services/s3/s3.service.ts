@@ -10,16 +10,20 @@ import {
 export class AmazonS3Service {
   private static instance: AmazonS3Service;
   private client: S3Client;
-  private accessKey: string;
-  private secretKey: string;
-  private bucketName: string;
+
+  private readonly accessKey: string;
+  private readonly secretKey: string;
+  private readonly bucketName: string;
+  private readonly region: string;
+
   constructor() {
     this.accessKey = process.env.AWS_ACCESS_KEY;
     this.secretKey = process.env.AWS_SECRET_KEY;
     this.bucketName = process.env.AWS_BUCKET_NAME;
+    this.region = process.env.AWS_REGION;
 
     this.client = new S3Client({
-      region: 'us-east-2',
+      region: this.region,
       credentials: {
         accessKeyId: this.accessKey,
         secretAccessKey: this.secretKey,
