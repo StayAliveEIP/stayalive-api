@@ -81,38 +81,36 @@ export class RescuerDocumentGuard implements CanActivate {
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const authHeader = context.switchToHttp().getRequest()
-      .headers.authorization;
-    if (!authHeader) {
-      throw new UnauthorizedException(
-        'Veuillez vous connecter pour accéder à cette ressource.',
-      );
-    }
-    const token = authHeader.split(' ')[1];
-    if (!token) {
-      throw new UnauthorizedException(
-        "Token non trouvé dans l'en-tête de la requête.",
-      );
-    }
-    // Decode the second part of baerer token to get the user id
-    const secondPart = token.split('.')[1];
-    const jwtPayload = Buffer.from(secondPart, 'base64').toString();
-    const userIdStr = JSON.parse(jwtPayload).id;
-
-    if (!userIdStr) {
-      throw new UnauthorizedException(
-        "L'id de l'utilisateur n'a pas pu être trouvé dans le token.",
-      );
-    }
-    const userId = new Types.ObjectId(userIdStr);
-
-    const documentsValidated = await this.hasDocumentValidated(userId);
-    if (!documentsValidated) {
-      throw new HttpException(
-        'Veuillez valider tous vos documents avant de continuer.',
-        HttpStatus.UNAUTHORIZED,
-      );
-    }
+    // const authHeader = context.switchToHttp().getRequest()
+    //   .headers.authorization;
+    // if (!authHeader) {
+    //   throw new UnauthorizedException(
+    //     'Veuillez vous connecter pour accéder à cette ressource.',
+    //   );
+    // }
+    // const token = authHeader.split(' ')[1];
+    // if (!token) {
+    //   throw new UnauthorizedException(
+    //     "Token non trouvé dans l'en-tête de la requête.",
+    //   );
+    // }
+    // // Decode the second part of baerer token to get the user id
+    // const secondPart = token.split('.')[1];
+    // const jwtPayload = Buffer.from(secondPart, 'base64').toString();
+    // const userIdStr = JSON.parse(jwtPayload).id;
+    // if (!userIdStr) {
+    //   throw new UnauthorizedException(
+    //     "L'id de l'utilisateur n'a pas pu être trouvé dans le token.",
+    //   );
+    // }
+    // const userId = new Types.ObjectId(userIdStr);
+    // const documentsValidated = await this.hasDocumentValidated(userId);
+    // if (!documentsValidated) {
+    //   throw new HttpException(
+    //     'Veuillez valider tous vos documents avant de continuer.',
+    //     HttpStatus.UNAUTHORIZED,
+    //   );
+    // }
     return true;
   }
 
