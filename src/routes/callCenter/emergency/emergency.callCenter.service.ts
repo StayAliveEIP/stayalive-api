@@ -83,8 +83,8 @@ export class EmergencyCallCenterService {
       callCenterId: userId,
       info: body.info ? body.info : '',
       position: {
-        lat: 123,
-        long: 123,
+        lat: 80,
+        long: 80,
       },
       address: body.address,
       status: EmergencyStatus.PENDING,
