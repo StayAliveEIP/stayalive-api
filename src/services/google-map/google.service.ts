@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class GoogleApi {
+export class GoogleApiService {
   private apiKey: string;
 
   constructor() {
