@@ -48,4 +48,17 @@ export class GoogleApiService {
         return data;
       });
   }
+
+  public async calculateFootDistanceLatLong(
+    originLat: number,
+    originLong: number,
+    destinationPlaceId: string,
+  ) {
+    const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${originLat},${originLong}&destinations=place_id:${destinationPlaceId}&mode=walking&key=${this.apiKey}`;
+    return await fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        return data;
+      });
+  }
 }

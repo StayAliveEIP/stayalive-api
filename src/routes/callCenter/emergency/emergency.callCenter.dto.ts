@@ -83,7 +83,7 @@ export class CreateNewEmergencyRequest {
   @ApiProperty({
     type: String,
     required: true,
-    description: 'The position of the emergency (There is no specfic length)',
+    description: 'The position of the emergency (There is no specific length)',
     example: 'GhIJQWDl0CIeQUARxks3icF8U8A',
   })
   placeId: string;

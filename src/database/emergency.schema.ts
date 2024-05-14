@@ -28,7 +28,10 @@ export class Emergency {
   @Prop({ required: true })
   position: Position;
 
-  @Prop({ required: true })
+  @Prop({ required: false })
+  placeId: string;
+
+  @Prop({ required: false })
   address: string;
 
   @Prop({ required: true })
