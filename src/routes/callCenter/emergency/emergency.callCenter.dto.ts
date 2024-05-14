@@ -79,26 +79,12 @@ export class CreateNewEmergencyRequest {
   @Length(1, 100)
   info: string;
 
-  // @ApiProperty({
-  //   type: String,
-  //   required: true,
-  //   description:
-  //     'The position of the emergency, this information will be shown to the rescuer',
-  //   example: {
-  //     lat: '123.123',
-  //     long: '123.123',
-  //   },
-  // })
-  // position: CreateNewEmergencyRequestPosition;
-
   @IsNotEmpty()
-  @IsString()
   @ApiProperty({
     type: String,
     required: true,
-    description:
-      'The address of the emergency, this information will be shown to the rescuer',
-    example: '13 rue de la paix, Paris',
+    description: 'The position of the emergency (There is no specfic length)',
+    example: 'GhIJQWDl0CIeQUARxks3icF8U8A',
   })
-  address: string;
+  placeId: string;
 }
