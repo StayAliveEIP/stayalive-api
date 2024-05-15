@@ -8,6 +8,10 @@ import {
 import { AuthCallCenterService } from './auth.callCenter.service';
 import { SuccessMessage } from '../../../dto.dto';
 import { SendMagicLinkRequest } from '../../rescuer/auth/auth.dto';
+import {
+  ForgotPasswordRequest,
+  ResetPasswordRequest,
+} from '../forgotPassword/forgotPassword.callCenter.dto';
 
 @Controller('/call-center')
 @ApiTags('Auth')

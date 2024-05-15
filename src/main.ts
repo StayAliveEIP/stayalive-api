@@ -18,6 +18,7 @@ import { AuthCallCenterModule } from './routes/callCenter/auth/auth.callCenter.m
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { EmergencyCallCenterModule } from './routes/callCenter/emergency/emergency.callCenter.module';
 import { DefibrillatorModule } from './routes/rescuer/defibrillator/defibrillator.module';
+import { ForgotPasswordCallCenterModule } from './routes/callCenter/forgotPassword/forgotPassword.callCenter.module';
 
 const createSwaggerForApi = (
   app: INestApplication,
@@ -87,7 +88,11 @@ async function main() {
     'StayAlive API (Call Center)',
     'StayAlive API description for call center',
     '1.0',
-    [AuthCallCenterModule, EmergencyCallCenterModule],
+    [
+      AuthCallCenterModule,
+      ForgotPasswordCallCenterModule,
+      EmergencyCallCenterModule,
+    ],
   );
   const port = process.env.PORT || 3000;
   await app.listen(port, '0.0.0.0');
