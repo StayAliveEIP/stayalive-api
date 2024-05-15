@@ -1,5 +1,4 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Admin } from './admin.schema';
 import { Types } from 'mongoose';
 
 @Schema({ versionKey: false, collection: 'defibrillators' })
