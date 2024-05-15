@@ -12,10 +12,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { AccountService } from './account.service';
-import {
-  RescuerAuthGuard,
-  RescuerDocumentGuard,
-} from '../../../guards/auth.route.guard';
+import { RescuerAuthGuard } from '../../../guards/auth.route.guard';
 import {
   ApiBearerAuth,
   ApiOperation,
