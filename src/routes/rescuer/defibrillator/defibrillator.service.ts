@@ -5,7 +5,10 @@ import {
 } from './defibrillator.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { Defibrillator } from '../../../database/defibrillator.schema';
+import {
+  Defibrillator,
+  DefibrillatorStatus,
+} from '../../../database/defibrillator.schema';
 import { AmazonS3Service } from '../../../services/s3/s3.service';
 
 @Injectable()
@@ -27,6 +30,7 @@ export class DefibrillatorService {
       proposedBy: id,
       ...body,
       pictureUrl: url.url,
+      status: DefibrillatorStatus.PENDING,
     });
     return {
       message: 'Votre proposition a bien été enregistrée.',
@@ -42,7 +46,9 @@ export class DefibrillatorService {
   }
 
   async getDefibrillators() {
-    const def = await this.defibrillatorModel.find({ status: 'validated' });
+    const def = await this.defibrillatorModel.find({
+      status: DefibrillatorStatus.VALIDATED,
+    });
     return def.map((d) => {
       const { proposedBy, ...rest } = d.toObject();
       return rest;
