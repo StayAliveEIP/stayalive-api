@@ -171,7 +171,7 @@ describe('EmergencyCallCenterController', () => {
       const userId = new Types.ObjectId();
       const emergencyRequest: CreateNewEmergencyRequest = {
         info: 'Urgent help needed',
-        address: '123 Main St',
+        placeId: 'ChIJW6AI',
       };
       const result = await controller.createEmergency(userId, emergencyRequest);
       expect(result).toEqual({

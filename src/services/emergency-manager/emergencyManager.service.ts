@@ -6,7 +6,11 @@ import {
   EmergencyTimeoutEvent,
   EventType,
 } from './emergencyManager.dto';
-import { RedisService, RescuerPositionWithId } from '../redis/redis.service';
+import {
+  RedisService,
+  RescuerPosition,
+  RescuerPositionWithId,
+} from '../redis/redis.service';
 import {
   GeoCoordinates,
   getDistanceInKilometers,
@@ -17,6 +21,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Emergency, EmergencyStatus } from '../../database/emergency.schema';
 import { Rescuer } from '../../database/rescuer.schema';
 import { CallCenter } from '../../database/callCenter.schema';
+import { GoogleApiService } from '../google-map/google.service';
 
 @Injectable()
 export class EmergencyManagerService {
@@ -24,6 +29,7 @@ export class EmergencyManagerService {
 
   constructor(
     private readonly redis: RedisService,
+    private readonly google: GoogleApiService,
     private readonly event: EventEmitter2,
     private readonly websocketRescuer: RescuerWebsocket,
     @InjectModel(Emergency.name) private emergencyModel: Model<Emergency>,
@@ -174,6 +180,36 @@ export class EmergencyManagerService {
       );
       return prevDistance < currDistance ? prev : curr;
     });
+  }
+
+  public async getNearestPositionGoogle(
+    allPositions: RescuerPositionWithId[],
+    placeId: string,
+  ): Promise<RescuerPositionWithId | null> {
+    if (allPositions.length === 0) return null;
+    //for all positions, calculate the distance between the emergency and the rescuer using google service
+    //return the rescuer with the shortest distance
+    let nearestPosition: {
+      id: Types.ObjectId;
+      position: RescuerPosition;
+      distance: { value: number; text: string };
+    };
+    for (const rescuer of allPositions) {
+      const googleObject = await this.google.calculateFootDistanceLatLong(
+        rescuer.position.lat,
+        rescuer.position.lng,
+        placeId,
+      );
+      const distance = googleObject.distance;
+      if (!nearestPosition || distance.value < nearestPosition.distance.value) {
+        nearestPosition = {
+          id: rescuer.id,
+          position: rescuer.position,
+          distance: distance,
+        };
+      }
+    }
+    return nearestPosition;
   }
 
   @OnEvent(EventType.EMERGENCY_TIMEOUT)

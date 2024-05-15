@@ -104,6 +104,7 @@ const EMERGENCY: Emergency = {
     lat: 0.0,
     long: 0.0,
   },
+  placeId: 'PlaceId',
   rescuerAssigned: null,
   status: EmergencyStatus.PENDING,
   rescuerHidden: [],
