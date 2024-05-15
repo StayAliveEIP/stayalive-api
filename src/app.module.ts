@@ -27,6 +27,7 @@ import { ReactEmailModule } from './services/react-email/react-email.module';
 import { DefibrillatorModule } from './routes/rescuer/defibrillator/defibrillator.module';
 import { ChatRescuerModule } from './routes/rescuer/chat/chat.rescuer.module';
 import { ChatCallcenterModule } from './routes/callCenter/chat/chat.callcenter.module';
+import { ForgotPasswordCallCenterModule } from './routes/callCenter/forgotPassword/forgotPassword.callCenter.module';
 
 @Module({
   imports: [
@@ -62,6 +63,7 @@ import { ChatCallcenterModule } from './routes/callCenter/chat/chat.callcenter.m
     DocumentAdminModule,
     // Call center module
     AuthCallCenterModule,
+    ForgotPasswordCallCenterModule,
     EmergencyCallCenterModule,
     // Websocket module
     WebsocketModule,

@@ -84,3 +84,21 @@ export class DeleteMyAccountRequest {
   @IsNotEmpty()
   password: string;
 }
+
+export class ChangePasswordRequest {
+  @ApiProperty({
+    type: String,
+    description: 'The old password of the admin.',
+    example: 'password',
+  })
+  @IsNotEmpty()
+  oldPassword: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'The new password of the admin.',
+    example: 'password',
+  })
+  @IsNotEmpty()
+  newPassword: string;
+}

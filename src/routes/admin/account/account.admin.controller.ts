@@ -9,6 +9,7 @@ import { ReactEmailService } from '../../../services/react-email/react-email.ser
 import { AccountAdminService } from './account.admin.service';
 import { SuccessMessage } from '../../../dto.dto';
 import {
+  ChangePasswordRequest,
   DeleteAdminRequest,
   DeleteMyAccountRequest,
   InfoResponse,
@@ -102,5 +103,23 @@ export class AccountAdminController {
     @Body() body: DeleteMyAccountRequest,
   ): Promise<SuccessMessage> {
     return this.service.deleteMyAccount(userId, body);
+  }
+
+  @Post('/account/password/change-password')
+  @ApiOperation({
+    summary: 'Change the password of the account',
+    description: 'Change the password of the account logged in.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'The password was changed with the success message',
+    type: SuccessMessage,
+  })
+  @UseGuards(AdminAuthGuard)
+  async changePassword(
+    @UserId() userId: Types.ObjectId,
+    @Body() body: ChangePasswordRequest,
+  ): Promise<SuccessMessage> {
+    return this.service.changePassword(userId, body);
   }
 }

@@ -12,6 +12,7 @@ import { Model, Types } from 'mongoose';
 import { Admin } from '../../../database/admin.schema';
 import { SuccessMessage } from '../../../dto.dto';
 import {
+  ChangePasswordRequest,
   DeleteAdminRequest,
   DeleteMyAccountRequest,
   InfoResponse,
@@ -214,5 +215,32 @@ export class AccountAdminService {
     this.logger.log(
       'The default admin account was created, please check the environment variables.',
     );
+  }
+
+  async changePassword(
+    userId: Types.ObjectId,
+    body: ChangePasswordRequest,
+  ): Promise<SuccessMessage> {
+    // Find the admin
+    const admin = await this.adminModel.findById(userId);
+    if (!admin) {
+      throw new NotFoundException("L'administrateur n'a pas pu être trouvé.");
+    }
+    // Verify the password
+    const validPassword = verifyPassword(
+      admin.password.password,
+      body.oldPassword,
+    );
+    if (!validPassword) {
+      throw new ForbiddenException(
+        'Mot de passe actuel incorrect, impossible de changer le mot de passe.',
+      );
+    }
+    // Change the password
+    admin.password.password = hashPassword(body.newPassword);
+    await admin.save();
+    return {
+      message: 'Votre mot de passe a bien été changé.',
+    };
   }
 }

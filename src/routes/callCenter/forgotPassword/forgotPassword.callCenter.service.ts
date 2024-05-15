@@ -4,36 +4,34 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { CallCenter } from '../../../database/callCenter.schema';
 import { Model } from 'mongoose';
-import {
-  ForgotPasswordLinkDTO,
-  ForgotPasswordLinkResponse,
-  ForgotPasswordResetDTO,
-  ForgotPasswordResetResponse,
-} from './forgotPassword.dto';
-import { hashPassword } from '../../../utils/crypt.utils';
-import { Rescuer } from '../../../database/rescuer.schema';
 import { ReactEmailService } from '../../../services/react-email/react-email.service';
+import { SuccessMessage } from '../../../dto.dto';
+import { hashPassword } from '../../../utils/crypt.utils';
+import {
+  ForgotPasswordRequest,
+  ResetPasswordRequest,
+} from './forgotPassword.callCenter.dto';
 
 @Injectable()
-export class ForgotPasswordService {
+export class ForgotPasswordCallCenterService {
   constructor(
-    @InjectModel(Rescuer.name) private rescuerModel: Model<Rescuer>,
+    @InjectModel(CallCenter.name) private callCenterModel: Model<CallCenter>,
     private readonly reactEmailService: ReactEmailService,
   ) {}
 
-  async index(
-    body: ForgotPasswordLinkDTO,
-  ): Promise<ForgotPasswordLinkResponse> {
-    // Verify if a code was not already sent in the last 5 minutes
-    const rescuer: Rescuer = await this.rescuerModel.findOne({
+  async forgotPassword(body: ForgotPasswordRequest): Promise<SuccessMessage> {
+    const user = await this.callCenterModel.findOne({
       'email.email': body.email,
     });
-    if (!rescuer)
-      throw new NotFoundException("Aucun compte n'existe avec cet email.");
-    const lastCodeSent: Date = new Date(rescuer.password.lastTokenSent);
-    const now: Date = new Date();
-    const diff: number = now.getTime() - lastCodeSent.getTime();
+    if (!user) {
+      throw new NotFoundException(
+        "Le centre d'appel est introuvable avec cet email",
+      );
+    }
+    const lastCodeSent: Date = new Date(user.password.lastTokenSent);
+    const diff: number = new Date().getTime() - lastCodeSent.getTime();
     const diffMinutes: number = Math.floor(diff / 1000 / 60);
     if (diffMinutes < 5)
       throw new ForbiddenException(
@@ -44,17 +42,13 @@ export class ForgotPasswordService {
       Math.random().toString(36).substring(2, 15) +
       Math.random().toString(36).substring(2, 15);
     // Insert the code into the database
-    await this.rescuerModel.updateOne(
-      { 'email.email': body.email },
-      {
-        'password.token': token,
-        'password.lastTokenSent': new Date(),
-      },
-    );
+    user.password.lastTokenSent = new Date();
+    user.password.token = token;
+    await user.save();
     // Send the email
     this.reactEmailService.sendMailForgotPasswordCode(
-      body.email,
-      rescuer.firstname,
+      user.email.email,
+      user.name,
       token,
     );
     return {
@@ -62,20 +56,18 @@ export class ForgotPasswordService {
     };
   }
 
-  async reset(
-    body: ForgotPasswordResetDTO,
-  ): Promise<ForgotPasswordResetResponse> {
+  async resetPassword(body: ResetPasswordRequest): Promise<SuccessMessage> {
     // Check if a user exist with this code.
     const token: string = body.token;
-    const rescuer: Rescuer = await this.rescuerModel.findOne({
+    const user = await this.callCenterModel.findOne({
       'password.token': token,
     });
-    if (!rescuer)
+    if (!user)
       throw new NotFoundException(
         "Aucun compte n'existe avec ce code de réinitialisation.",
       );
     // Check if the code is not expired
-    const lastCodeSent: Date = new Date(rescuer.password.lastTokenSent);
+    const lastCodeSent: Date = new Date(user.password.lastTokenSent);
     const now: Date = new Date();
     const diff: number = now.getTime() - lastCodeSent.getTime();
     const diffHours: number = Math.floor(diff / 1000 / 60 / 60);
@@ -85,16 +77,11 @@ export class ForgotPasswordService {
       );
     }
     const password: string = body.password;
-    const encryptedPassword: string = hashPassword(password);
-    await this.rescuerModel.updateOne(
-      { 'password.token': token },
-      {
-        'password.password': encryptedPassword,
-        'password.token': null,
-        'password.lastTokenSent': null,
-        'password.lastChange': new Date(),
-      },
-    );
+    user.password.password = hashPassword(password);
+    user.password.token = null;
+    user.password.lastTokenSent = null;
+    user.password.lastChange = new Date();
+    await user.save();
     return {
       message: 'Votre mot de passe a bien été réinitialisé.',
     };

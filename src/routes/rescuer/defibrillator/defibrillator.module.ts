@@ -8,7 +8,6 @@ import { AmazonS3Service } from '../../../services/s3/s3.service';
 import { DefibrillatorController } from './defibrillator.controller';
 import { DefibrillatorService } from './defibrillator.service';
 import { Document, DocumentSchema } from '../../../database/document.schema';
-import { Rescuer, RescuerSchema } from '../../../database/rescuer.schema';
 
 @Module({
   imports: [
