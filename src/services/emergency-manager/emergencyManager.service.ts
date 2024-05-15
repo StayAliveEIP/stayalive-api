@@ -209,7 +209,10 @@ export class EmergencyManagerService {
         };
       }
     }
-    return nearestPosition;
+    return {
+      id: nearestPosition.id,
+      position: nearestPosition.position,
+    };
   }
 
   @OnEvent(EventType.EMERGENCY_TIMEOUT)
