@@ -10,7 +10,7 @@ import {
 import { Server } from 'ws';
 import { Socket } from 'socket.io';
 import { Logger } from '@nestjs/common';
-import { Model, Types } from 'mongoose';
+import { Types } from 'mongoose';
 import {
   CallCenterWsResponse,
   CallCenterWsData,
@@ -27,9 +27,6 @@ import {
   EmergencyTerminatedEvent,
   EventType,
 } from '../../services/emergency-manager/emergencyManager.dto';
-import { Message } from '../../database/message.schema';
-import { InjectModel } from '@nestjs/mongoose';
-import { Conversation } from '../../database/conversation.schema';
 
 @WebSocketGateway({ namespace: '/call-center/ws' })
 export class CallCenterWebsocket
@@ -105,6 +102,7 @@ export class CallCenterWebsocket
       emergency: {
         id: event.emergency._id.toHexString(),
         info: event.emergency.info,
+        placeId: event.emergency.placeId,
         position: {
           latitude: event.emergency.position.lat,
           longitude: event.emergency.position.long,
@@ -138,6 +136,7 @@ export class CallCenterWebsocket
       emergency: {
         id: event.emergency._id.toHexString(),
         info: event.emergency.info,
+        placeId: event.emergency.placeId,
         position: {
           latitude: event.emergency.position.lat,
           longitude: event.emergency.position.long,
@@ -171,6 +170,7 @@ export class CallCenterWebsocket
       emergency: {
         id: event.emergency._id.toHexString(),
         info: event.emergency.info,
+        placeId: event.emergency.placeId,
         position: {
           latitude: event.emergency.position.lat,
           longitude: event.emergency.position.long,
@@ -204,6 +204,7 @@ export class CallCenterWebsocket
       emergency: {
         id: event.emergency._id.toHexString(),
         info: event.emergency.info,
+        placeId: event.emergency.placeId,
         position: {
           latitude: event.emergency.position.lat,
           longitude: event.emergency.position.long,
@@ -237,6 +238,7 @@ export class CallCenterWebsocket
       emergency: {
         id: event.emergency._id.toHexString(),
         info: event.emergency.info,
+        placeId: event.emergency.placeId,
         position: {
           latitude: event.emergency.position.lat,
           longitude: event.emergency.position.long,
@@ -270,6 +272,7 @@ export class CallCenterWebsocket
       emergency: {
         id: event.emergency._id.toHexString(),
         info: event.emergency.info,
+        placeId: event.emergency.placeId,
         position: {
           latitude: event.emergency.position.lat,
           longitude: event.emergency.position.long,
@@ -297,6 +300,7 @@ export class CallCenterWebsocket
       emergency: {
         id: event.emergency._id.toHexString(),
         info: event.emergency.info,
+        placeId: event.emergency.placeId,
         position: {
           latitude: event.emergency.position.lat,
           longitude: event.emergency.position.long,

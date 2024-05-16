@@ -44,6 +44,7 @@ export class EmergencyManagerService {
   @OnEvent(EventType.EMERGENCY_CREATED)
   public async onEmergencyCreated(event: EmergencyCreatedEvent) {
     const emergencyId = event.emergency._id;
+    const placeId = event.emergency.placeId;
     const allPositions: RescuerPositionWithId[] =
       await this.getAllPositions(event);
     if (allPositions.length === 0) {
@@ -52,7 +53,10 @@ export class EmergencyManagerService {
       );
       return;
     }
-    const nearestPosition = await this.getNearestPosition(allPositions);
+    const nearestPosition = await this.getNearestPositionGoogle(
+      allPositions,
+      placeId,
+    );
     if (!nearestPosition) {
       this.logger.warn(
         'No nearest position found for emergency ' + emergencyId + '.',
