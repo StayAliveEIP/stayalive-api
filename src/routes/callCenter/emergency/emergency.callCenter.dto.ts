@@ -102,3 +102,12 @@ export class CreateNewEmergencyRequest {
   })
   address: string;
 }
+
+export class CloseEmergencyRequest {
+  @ApiProperty({
+    type: String,
+    required: true,
+    example: '5f9e1d3b3d5b3e1b7c9b4b3e',
+  })
+  emergencyId: string;
+}
