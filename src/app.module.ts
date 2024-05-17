@@ -28,6 +28,7 @@ import { DefibrillatorModule } from './routes/rescuer/defibrillator/defibrillato
 import { ChatRescuerModule } from './routes/rescuer/chat/chat.rescuer.module';
 import { ChatCallcenterModule } from './routes/callCenter/chat/chat.callcenter.module';
 import { ForgotPasswordCallCenterModule } from './routes/callCenter/forgotPassword/forgotPassword.callCenter.module';
+import { DefibrillatorAdminModule } from './routes/admin/defibrillator/defibrillator.admin.module';
 
 @Module({
   imports: [
@@ -61,6 +62,7 @@ import { ForgotPasswordCallCenterModule } from './routes/callCenter/forgotPasswo
     AccountAdminModule,
     CallCenterAdminModule,
     DocumentAdminModule,
+    DefibrillatorAdminModule,
     // Call center module
     AuthCallCenterModule,
     ForgotPasswordCallCenterModule,

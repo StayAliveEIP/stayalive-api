@@ -31,6 +31,9 @@ export class RedisService {
       username: process.env.REDIS_USERNAME,
       password: process.env.REDIS_PASSWORD,
     };
+    this.logger.log(
+      'Connecting to Redis with options: ' + JSON.stringify(redisOptions),
+    );
     this.client = new Redis(redisOptions);
     this.client.on('connect', () => {
       this.logger.log('Redis connected successfully');
