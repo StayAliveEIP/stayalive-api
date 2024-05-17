@@ -30,7 +30,7 @@ export class DefibrillatorProposalDto {
   @IsNotEmpty()
   @ApiProperty({
     example: 'data:image/jpeg;base64,/9j/2w....',
-    description: 'The image link of the defibrillator',
+    description: 'The image source of the defibrillator',
   })
   imageSrc: string;
 }
