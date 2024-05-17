@@ -3,6 +3,7 @@ import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   DefibrillatorProposalDto,
   DefibrillatorProposalResponse,
+  DefibrillatorResponse,
 } from './defibrillator.dto';
 import { DefibrillatorService } from './defibrillator.service';
 import { UserId } from '../../../decorator/userid.decorator';
@@ -39,6 +40,7 @@ export class DefibrillatorController {
   @ApiResponse({
     status: 200,
     description: 'list of defibrillators proposed by the user.',
+    type: [DefibrillatorResponse],
   })
   async getUserDefibrillators(@UserId() userId: Types.ObjectId) {
     return this.defibrillatorService.getUserDefibrillators(userId);
@@ -50,6 +52,7 @@ export class DefibrillatorController {
   @ApiResponse({
     status: 200,
     description: 'list of defibrillators validated by all the users.',
+    type: [DefibrillatorResponse],
   })
   async getDefibrillators() {
     return this.defibrillatorService.getDefibrillators();

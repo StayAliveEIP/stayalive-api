@@ -1,5 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
+import { DocumentStatus } from './document.schema';
+
+export enum DefibrillatorStatus {
+  PENDING = 'PENDING',
+  VALIDATED = 'VALIDATED',
+  REFUSED = 'REFUSED',
+}
 
 @Schema({ versionKey: false, collection: 'defibrillators' })
 export class Defibrillator {
@@ -22,7 +29,7 @@ export class Defibrillator {
     x: string;
     y: string;
   };
-  @Prop({ required: false })
-  status: string;
+  @Prop({ required: false, default: DocumentStatus.PENDING })
+  status: DefibrillatorStatus;
 }
 export const DefibrillatorSchema = SchemaFactory.createForClass(Defibrillator);
