@@ -20,6 +20,7 @@ import { EmergencyCallCenterModule } from './routes/callCenter/emergency/emergen
 import { DefibrillatorModule } from './routes/rescuer/defibrillator/defibrillator.module';
 import { ForgotPasswordCallCenterModule } from './routes/callCenter/forgotPassword/forgotPassword.callCenter.module';
 import { DefibrillatorAdminModule } from './routes/admin/defibrillator/defibrillator.admin.module';
+import { StatisticsRescuerModule } from './routes/rescuer/statistics/statistics.rescuer.module';
 
 const createSwaggerForApi = (
   app: INestApplication,
@@ -66,6 +67,7 @@ async function main() {
       EmergencyModuleRescuer,
       DocumentModuleRescuer,
       PositionModuleRescuer,
+      StatisticsRescuerModule,
     ],
   );
 

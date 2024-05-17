@@ -14,6 +14,7 @@ import {
 import { StatusDto } from './status.dto';
 import { UserId } from '../../../decorator/userid.decorator';
 import { Types } from 'mongoose';
+import { SuccessMessage } from '../../../dto.dto';
 
 @Controller('/rescuer')
 @ApiTags('Status')
@@ -40,6 +41,7 @@ export class StatusController {
   @UseGuards(RescuerDocumentGuard)
   @ApiResponse({
     status: 200,
+    type: SuccessMessage,
     description: 'The status was changed.',
   })
   @ApiBody({
@@ -52,7 +54,7 @@ export class StatusController {
   async setStatus(
     @UserId() userId: Types.ObjectId,
     @Body() body: StatusDto,
-  ): Promise<StatusDto> {
+  ): Promise<SuccessMessage> {
     return this.status.setStatus(userId, body.status);
   }
 }

@@ -71,8 +71,16 @@ export class RedisService implements OnModuleDestroy {
    * @param status The status of the rescuer.
    */
   public async setStatusOfRescuer(rescuerId: Types.ObjectId, status: Status) {
+    // Update status key
     const statusKey: string = this.getStatusKey(rescuerId);
     await this.client.set(statusKey, status);
+    // Update active from key
+    const activeFromKey: string = this.getAvailableSinceKey(statusKey);
+    if (status === Status.AVAILABLE) {
+      await this.client.set(activeFromKey, new Date().toISOString());
+      return;
+    }
+    await this.client.del(activeFromKey);
   }
 
   /**
@@ -88,13 +96,31 @@ export class RedisService implements OnModuleDestroy {
     return status as Status;
   }
 
+  public async getAvailableSinceOfRescuer(
+    rescuerId: Types.ObjectId,
+  ): Promise<Date | null> {
+    const statusKey: string = this.getStatusKey(rescuerId);
+    const activeFromKey: string = this.getAvailableSinceKey(statusKey);
+    const activeFrom: string = await this.client.get(activeFromKey);
+    if (!activeFrom) return null;
+    return new Date(activeFrom);
+  }
+
   public async deleteStatusOfRescuer(rescuerId: Types.ObjectId) {
+    // Update status key
     const statusKey: string = this.getStatusKey(rescuerId);
     await this.client.del(statusKey);
+    // Update active from key
+    const activeFromKey: string = this.getAvailableSinceKey(statusKey);
+    await this.client.del(activeFromKey);
   }
 
   public getStatusKey(rescuerId: Types.ObjectId): string {
     return 'stayAlive:status:' + rescuerId.toString();
+  }
+
+  public getAvailableSinceKey(key: string): string {
+    return 'stayAlive:availableSince:' + key;
   }
 
   // Position
