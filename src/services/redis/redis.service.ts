@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, OnModuleDestroy } from '@nestjs/common';
 import { Types } from 'mongoose';
 import Redis from 'ioredis';
 import type RedisClientType from 'ioredis';
@@ -17,7 +17,7 @@ export interface RescuerPositionWithId {
 }
 
 @Injectable()
-export class RedisService {
+export class RedisService implements OnModuleDestroy {
   private readonly logger: Logger = new Logger(RedisService.name);
   private readonly client: RedisClientType;
 
@@ -38,6 +38,12 @@ export class RedisService {
     this.client.on('connect', () => {
       this.logger.log('Redis connected successfully');
     });
+  }
+
+  onModuleDestroy() {
+    this.logger.log('Disconnecting from Redis...');
+    this.disconnect();
+    this.logger.log('Disconnected from Redis');
   }
 
   public disconnect() {
