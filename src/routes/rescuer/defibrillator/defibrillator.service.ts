@@ -10,12 +10,14 @@ import {
   DefibrillatorStatus,
 } from '../../../database/defibrillator.schema';
 import { AmazonS3Service } from '../../../services/s3/s3.service';
+import { GoogleApiService } from '../../../services/google-map/google.service';
 
 @Injectable()
 export class DefibrillatorService {
   constructor(
     @InjectModel(Defibrillator.name)
     private defibrillatorModel: Model<Defibrillator>,
+    private googleService: GoogleApiService,
   ) {}
   async propose(
     body: DefibrillatorProposalDto,
@@ -26,9 +28,20 @@ export class DefibrillatorService {
     const key = `defibrillator/${randomkey}`;
     const contentType = body.imageSrc.split(';')[0].split(':')[1];
     const url = await s3.uploadFile(key, body.imageSrc, contentType);
+
+    const details = await this.googleService.placeIdToLatLongAndAddress(
+      body.placeId,
+    );
+
     await this.defibrillatorModel.create({
       proposedBy: id,
-      ...body,
+      placeId: body.placeId,
+      address: details.address,
+      location: {
+        lat: details.latLong.lat,
+        lng: details.latLong.lng,
+      },
+      name: body.name,
       pictureUrl: url.url,
       status: DefibrillatorStatus.PENDING,
     });

@@ -8,24 +8,15 @@ export class DefibrillatorProposalDto {
     description: 'The name of the defibrillator',
   })
   name: string;
+
   @IsString()
   @IsNotEmpty()
   @ApiProperty({
-    example: '12 rue de la rue, 75000 Paris',
-    description: 'The address of the defibrillator',
+    example: 'ChIJd8BlQ2Bx5kcR7JQ0G1nQv5M',
+    description: 'The placeId of the defibrillator',
   })
-  address: string;
-  @ApiProperty({
-    type: {
-      x: { type: String, required: true, example: '48.8566' },
-      y: { type: String, required: true, example: '2.3522' },
-    },
-    description: 'The location of the defibrillator',
-  })
-  location: {
-    x: string;
-    y: string;
-  };
+  placeId: string;
+
   @IsString()
   @IsNotEmpty()
   @ApiProperty({
@@ -59,6 +50,24 @@ export class DefibrillatorResponse {
     description: 'The address of the defibrillator',
   })
   address: string;
+  @ApiProperty({
+    example: {
+      lat: '48.8566',
+      lng: '2.3522',
+    },
+    description: 'The location of the defibrillator',
+  })
+  location: {
+    lat: string;
+    lng: string;
+  };
+
+  @ApiProperty({
+    example: 'ChIJd8BlQ2Bx5kcR7JQ0G1nQv5M',
+    description: 'The placeId of the defibrillator',
+  })
+  placeId: string;
+
   @ApiProperty({
     example: 'https://www.google.com/image.png',
     description: 'The image link of the defibrillator',
