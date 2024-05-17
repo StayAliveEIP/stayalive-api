@@ -12,6 +12,7 @@ import {
   EventType,
 } from '../../../services/emergency-manager/emergencyManager.dto';
 import { CallCenter } from '../../../database/callCenter.schema';
+import { GoogleApiService } from '../../../services/google-map/google.service';
 
 @Injectable()
 export class EmergencyCallCenterService {
@@ -20,6 +21,7 @@ export class EmergencyCallCenterService {
     private eventEmitter: EventEmitter2,
     @InjectModel(Emergency.name) private emergencyModel: Model<Emergency>,
     @InjectModel(CallCenter.name) private callCenterModel: Model<CallCenter>,
+    private googleService: GoogleApiService,
   ) {}
 
   async getEmergency(
@@ -78,15 +80,20 @@ export class EmergencyCallCenterService {
     body: CreateNewEmergencyRequest,
   ): Promise<any> {
     // Create a new emergency
+
+    const details = await this.googleService.placeIdToLatLongAndAddress(
+      body.placeId,
+    );
+
     const emergency: Emergency = {
       _id: new Types.ObjectId(),
       callCenterId: userId,
       info: body.info ? body.info : '',
       position: {
-        lat: 80,
-        long: 80,
+        lat: details.latLong.lat,
+        long: details.latLong.lng,
       },
-      address: 'Address',
+      address: details.address,
       placeId: body.placeId,
       status: EmergencyStatus.PENDING,
       rescuerAssigned: null,

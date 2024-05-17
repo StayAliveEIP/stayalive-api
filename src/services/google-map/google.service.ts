@@ -61,4 +61,30 @@ export class GoogleApiService {
         return data;
       });
   }
+
+  public async placeIdToLatLongAndAddress(placeId: string) {
+    const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=${this.apiKey}`;
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data.result) {
+      const latLong = data.result.geometry && data.result.geometry.location;
+      const address = data.result.formatted_address;
+
+      if (!latLong) {
+        throw new Error('Could not get location from place ID');
+      }
+
+      if (!address) {
+        throw new Error('Could not get address from place ID');
+      }
+
+      return {
+        latLong,
+        address,
+      };
+    }
+
+    throw new Error('Invalid place ID');
+  }
 }

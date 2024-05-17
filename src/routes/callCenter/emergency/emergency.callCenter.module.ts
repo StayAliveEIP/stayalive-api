@@ -9,6 +9,7 @@ import {
   CallCenter,
   CallCenterSchema,
 } from '../../../database/callCenter.schema';
+import { GoogleApiModule } from '../../../services/google-map/google.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import {
       { name: Emergency.name, schema: EmergencySchema },
       { name: CallCenter.name, schema: CallCenterSchema },
     ]),
+    GoogleApiModule,
   ],
   controllers: [EmergencyCallCenterController],
   providers: [JwtStrategy, EmergencyCallCenterService, ReactEmailService],
