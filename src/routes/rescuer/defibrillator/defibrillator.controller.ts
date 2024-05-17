@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   DefibrillatorProposalDto,
   DefibrillatorProposalResponse,
@@ -17,7 +17,6 @@ import {
 @ApiTags('Defibrillator')
 export class DefibrillatorController {
   constructor(private readonly defibrillatorService: DefibrillatorService) {}
-
   @UseGuards(RescuerAuthGuard)
   @UseGuards(RescuerDocumentGuard)
   @Post('/propose')
@@ -27,6 +26,7 @@ export class DefibrillatorController {
     description: 'The account was created.',
     type: DefibrillatorProposalResponse,
   })
+  @ApiBearerAuth()
   async propose(
     @UserId() userId: Types.ObjectId,
     @Body() body: DefibrillatorProposalDto,
@@ -36,6 +36,7 @@ export class DefibrillatorController {
 
   @UseGuards(RescuerAuthGuard)
   @UseGuards(RescuerDocumentGuard)
+  @ApiBearerAuth()
   @Get('/propose')
   @ApiResponse({
     status: 200,
@@ -48,6 +49,7 @@ export class DefibrillatorController {
 
   @UseGuards(RescuerAuthGuard)
   @UseGuards(RescuerDocumentGuard)
+  @ApiBearerAuth()
   @Get('/')
   @ApiResponse({
     status: 200,

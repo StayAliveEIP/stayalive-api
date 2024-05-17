@@ -66,8 +66,9 @@ export class DefibrillatorResponse {
   })
   pictureUrl: string;
   @ApiProperty({
+    enum: ['PENDING', 'VALIDATED', 'REFUSED'],
     example: 'VALIDATED',
     description: 'The status of the defibrillator',
   })
-  status: string;
+  status: DefibrillatorResponse;
 }
