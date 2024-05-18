@@ -1,4 +1,9 @@
-import { Injectable, Logger } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Emergency, EmergencyStatus } from '../../../database/emergency.schema';
@@ -8,11 +13,14 @@ import {
 } from './emergency.callCenter.dto';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import {
+  EmergencyCanceledEvent,
   EmergencyCreatedEvent,
   EventType,
 } from '../../../services/emergency-manager/emergencyManager.dto';
 import { CallCenter } from '../../../database/callCenter.schema';
 import { GoogleApiService } from '../../../services/google-map/google.service';
+import { SuccessMessage } from '../../../dto.dto';
+import { Rescuer } from '../../../database/rescuer.schema';
 
 @Injectable()
 export class EmergencyCallCenterService {
@@ -21,6 +29,7 @@ export class EmergencyCallCenterService {
     private eventEmitter: EventEmitter2,
     @InjectModel(Emergency.name) private emergencyModel: Model<Emergency>,
     @InjectModel(CallCenter.name) private callCenterModel: Model<CallCenter>,
+    @InjectModel(Rescuer.name) private rescuerModel: Model<Rescuer>,
     private googleService: GoogleApiService,
   ) {}
 
@@ -111,6 +120,44 @@ export class EmergencyCallCenterService {
     this.logger.log(`Emergency created: ${result._id}`);
     return {
       id: result._id,
+    };
+  }
+
+  async closeEmergency(
+    userId: Types.ObjectId,
+    emergencyId: string,
+  ): Promise<SuccessMessage> {
+    const emergency = await this.emergencyModel.findOne({
+      _id: emergencyId,
+      callCenterId: userId,
+    });
+    if (!emergency) {
+      throw new NotFoundException('Emergency not found');
+    }
+    const callCenter = await this.callCenterModel.findById(userId);
+    if (!callCenter) {
+      throw new NotFoundException('You are not a call center');
+    }
+    const rescuer = await this.rescuerModel.findById(emergency.rescuerAssigned);
+    if (!rescuer) {
+      this.logger.error(
+        'Rescuer in emergency not found with id: ' + emergency.rescuerAssigned,
+      );
+      throw new InternalServerErrorException('Rescuer in emergency not found');
+    }
+
+    emergency.status = EmergencyStatus.CANCELED;
+    await emergency.save();
+
+    const event: EmergencyCanceledEvent = {
+      emergency: emergency,
+      callCenter: callCenter,
+      rescuer: rescuer,
+    };
+
+    this.eventEmitter.emit(EventType.EMERGENCY_CANCELED, event);
+    return {
+      message: 'Emergency closed',
     };
   }
 }

@@ -20,8 +20,8 @@ export class DefibrillatorProposalDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty({
-    example: 'https://www.google.com/image.png',
-    description: 'The image link of the defibrillator',
+    example: 'data:image/jpeg;base64,/9j/2w....',
+    description: 'The image source of the defibrillator',
   })
   imageSrc: string;
 }
@@ -69,13 +69,15 @@ export class DefibrillatorResponse {
   placeId: string;
 
   @ApiProperty({
-    example: 'https://www.google.com/image.png',
+    example:
+      'https://bastos-poc.s3.us-east-2.amazonaws.com/defibrillator/5qc2p',
     description: 'The image link of the defibrillator',
   })
   pictureUrl: string;
   @ApiProperty({
+    enum: ['PENDING', 'VALIDATED', 'REFUSED'],
     example: 'VALIDATED',
     description: 'The status of the defibrillator',
   })
-  status: string;
+  status: DefibrillatorResponse;
 }

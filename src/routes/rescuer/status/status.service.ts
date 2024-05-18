@@ -1,24 +1,49 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Rescuer } from '../../../database/rescuer.schema';
 import { Model, Types } from 'mongoose';
-import { StatusDto } from './status.dto';
+import { Status, StatusDto } from './status.dto';
 import { RedisService } from '../../../services/redis/redis.service';
-import { Status } from './status.dto';
+import { AvailabilityTime } from '../../../database/availabilityTime.schema';
+import { SuccessMessage } from '../../../dto.dto';
 
 @Injectable()
 export class StatusService {
+  private readonly logger = new Logger(StatusService.name);
+
   constructor(
     private readonly redisService: RedisService,
     @InjectModel(Rescuer.name) private rescuerModel: Model<Rescuer>,
+    @InjectModel(AvailabilityTime.name)
+    private availabilityTimeModel: Model<AvailabilityTime>,
   ) {}
 
-  async setStatus(userId: Types.ObjectId, status: string): Promise<StatusDto> {
-    if (!Object.values(Status).includes(status as Status))
+  async setStatus(
+    userId: Types.ObjectId,
+    newStatus: string,
+  ): Promise<SuccessMessage> {
+    if (!Object.values(Status).includes(newStatus as Status))
       throw new BadRequestException('Le status est invalide.');
-    await this.redisService.setStatusOfRescuer(userId, status as Status);
+    const status = newStatus as Status;
+
+    const availableSince =
+      await this.redisService.getAvailableSinceOfRescuer(userId);
+    if (availableSince && status == Status.NOT_AVAILABLE) {
+      const avSinceDate = new Date(availableSince);
+      const durationSec =
+        new Date().getUTCSeconds() - avSinceDate.getUTCSeconds();
+      await this.availabilityTimeModel.create({
+        day: new Date(),
+        durationInSec: durationSec,
+        rescuerId: userId,
+      });
+      this.logger.log(
+        `Rescuer ${userId} was available for ${durationSec} seconds, and is now not available.`,
+      );
+    }
+    await this.redisService.setStatusOfRescuer(userId, status);
     return {
-      status: status as Status,
+      message: 'Votre status à bien été mis à jour.',
     };
   }
 

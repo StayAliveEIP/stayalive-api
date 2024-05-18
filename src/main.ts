@@ -19,6 +19,8 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { EmergencyCallCenterModule } from './routes/callCenter/emergency/emergency.callCenter.module';
 import { DefibrillatorModule } from './routes/rescuer/defibrillator/defibrillator.module';
 import { ForgotPasswordCallCenterModule } from './routes/callCenter/forgotPassword/forgotPassword.callCenter.module';
+import { DefibrillatorAdminModule } from './routes/admin/defibrillator/defibrillator.admin.module';
+import { StatisticsRescuerModule } from './routes/rescuer/statistics/statistics.rescuer.module';
 
 const createSwaggerForApi = (
   app: INestApplication,
@@ -65,6 +67,7 @@ async function main() {
       EmergencyModuleRescuer,
       DocumentModuleRescuer,
       PositionModuleRescuer,
+      StatisticsRescuerModule,
     ],
   );
 
@@ -79,6 +82,7 @@ async function main() {
       AccountAdminModule,
       CallCenterAdminModule,
       DocumentAdminModule,
+      DefibrillatorAdminModule,
     ],
   );
 
