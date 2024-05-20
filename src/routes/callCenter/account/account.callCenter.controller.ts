@@ -7,10 +7,6 @@ import {
 } from '@nestjs/swagger';
 import { ReactEmailService } from '../../../services/react-email/react-email.service';
 import { AccountCallCenterService } from './account.callCenter.service';
-import {
-  LoginCallCenterRequest,
-  LoginCallCenterResponse,
-} from '../auth/auth.callCenter.dto';
 import { SuccessMessage } from '../../../dto.dto';
 import {
   UpdateAddressRequest,
@@ -18,7 +14,6 @@ import {
 } from './account.callCenter.dto';
 import { Types } from 'mongoose';
 import { UserId } from '../../../decorator/userid.decorator';
-import { async } from 'rxjs';
 import { CallCenterAuthGuard } from '../../../guards/auth.route.guard';
 
 @Controller('/call-center/account')
