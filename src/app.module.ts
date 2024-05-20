@@ -30,6 +30,7 @@ import { ChatCallcenterModule } from './routes/callCenter/chat/chat.callcenter.m
 import { ForgotPasswordCallCenterModule } from './routes/callCenter/forgotPassword/forgotPassword.callCenter.module';
 import { DefibrillatorAdminModule } from './routes/admin/defibrillator/defibrillator.admin.module';
 import { StatisticsRescuerModule } from './routes/rescuer/statistics/statistics.rescuer.module';
+import { AccountCallCenterModule } from './routes/callCenter/account/account.callCenter.module';
 
 @Module({
   imports: [
@@ -67,6 +68,7 @@ import { StatisticsRescuerModule } from './routes/rescuer/statistics/statistics.
     DefibrillatorAdminModule,
     // Call center module
     AuthCallCenterModule,
+    AccountCallCenterModule,
     ForgotPasswordCallCenterModule,
     EmergencyCallCenterModule,
     // Websocket module
