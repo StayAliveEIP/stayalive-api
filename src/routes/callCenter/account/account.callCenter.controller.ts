@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -18,6 +18,8 @@ import {
 } from './account.callCenter.dto';
 import { Types } from 'mongoose';
 import { UserId } from '../../../decorator/userid.decorator';
+import { async } from 'rxjs';
+import { CallCenterAuthGuard } from '../../../guards/auth.route.guard';
 
 @Controller('/call-center/account')
 @ApiTags('Account')
@@ -39,6 +41,7 @@ export class AccountCallCenterController {
     description: 'The call center name was updated.',
     type: SuccessMessage,
   })
+  @UseGuards(CallCenterAuthGuard)
   async updateName(
     @UserId() userId: Types.ObjectId,
     @Body() body: UpdateNameRequest,
@@ -56,6 +59,7 @@ export class AccountCallCenterController {
     description: 'The call center address was updated.',
     type: SuccessMessage,
   })
+  @UseGuards(CallCenterAuthGuard)
   async updateAddress(
     @UserId() userId: Types.ObjectId,
     @Body() body: UpdateAddressRequest,

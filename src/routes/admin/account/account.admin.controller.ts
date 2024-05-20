@@ -146,7 +146,7 @@ export class AccountAdminController {
     return this.service.changePassword(userId, body);
   }
 
-  @UseGuards(RescuerAuthGuard)
+  @UseGuards(AdminAuthGuard)
   @Post('/account/change-email')
   @ApiResponse({
     status: 200,
@@ -163,7 +163,7 @@ export class AccountAdminController {
     return this.service.changeEmail(userId, body);
   }
 
-  @UseGuards(RescuerAuthGuard)
+  @UseGuards(AdminAuthGuard)
   @Post('/account/verify-email')
   @ApiResponse({
     status: 200,
