@@ -18,6 +18,7 @@ import {
   DeleteMyAccountRequest,
   InfoResponse,
   NewRequest,
+  UpdateAdminAccountRequest,
   VerifyEmailRequest,
 } from './account.admin.dto';
 import {
@@ -304,6 +305,20 @@ export class AccountAdminService {
     await user.save();
     return {
       message: 'Votre adresse email a bien été vérifiée.',
+    };
+  }
+
+  async update(body: UpdateAdminAccountRequest): Promise<SuccessMessage> {
+    const id = body.id;
+    const admin = await this.adminModel.findById(id);
+    if (!admin) {
+      throw new NotFoundException('Admin not found');
+    }
+    admin.firstname = body.firstname;
+    admin.lastname = body.lastname;
+    await admin.save();
+    return {
+      message: 'The admin account was updated.',
     };
   }
 }

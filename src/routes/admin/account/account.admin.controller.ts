@@ -15,6 +15,7 @@ import {
   DeleteMyAccountRequest,
   InfoResponse,
   NewRequest,
+  UpdateAdminAccountRequest,
   VerifyEmailRequest,
 } from './account.admin.dto';
 import { UserId } from '../../../decorator/userid.decorator';
@@ -89,6 +90,23 @@ export class AccountAdminController {
   @UseGuards(AdminAuthGuard)
   async delete(@Body() body: DeleteAdminRequest): Promise<SuccessMessage> {
     return this.service.delete(body);
+  }
+
+  @Post('/account/update')
+  @ApiOperation({
+    summary: 'Update the account of an admin',
+    description: 'Update the account of an admin with the id.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'The account was updated with the success message',
+    type: SuccessMessage,
+  })
+  @UseGuards(AdminAuthGuard)
+  async update(
+    @Body() body: UpdateAdminAccountRequest,
+  ): Promise<SuccessMessage> {
+    return this.service.update(body);
   }
 
   @Delete('/account/delete')

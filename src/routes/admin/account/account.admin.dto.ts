@@ -103,6 +103,31 @@ export class ChangePasswordRequest {
   newPassword: string;
 }
 
+export class UpdateAdminAccountRequest {
+  @ApiProperty({
+    type: String,
+    description: 'The id of the admin to update.',
+    example: '60e6f7b3f5b6f0b3f4f9f6e0',
+  })
+  id: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'The firstname of the admin.',
+    example: 'John',
+  })
+  @IsNotEmpty()
+  firstname: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'The lastname of the admin.',
+    example: 'Doe',
+  })
+  @IsNotEmpty()
+  lastname: string;
+}
+
 export class ChangeEmailRequest {
   @ApiProperty({
     type: String,
