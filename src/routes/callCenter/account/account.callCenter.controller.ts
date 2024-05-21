@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -9,6 +9,7 @@ import { ReactEmailService } from '../../../services/react-email/react-email.ser
 import { AccountCallCenterService } from './account.callCenter.service';
 import { SuccessMessage } from '../../../dto.dto';
 import {
+  AccountInformationResponse,
   UpdateAddressRequest,
   UpdateNameRequest,
 } from './account.callCenter.dto';
@@ -24,6 +25,24 @@ export class AccountCallCenterController {
     private readonly service: AccountCallCenterService,
     private mail: ReactEmailService,
   ) {}
+
+  @Get('/')
+  @ApiOperation({
+    summary: 'Get the information about the account',
+    description:
+      'Return all the information about the account, the email is verified only if the call center was logged in before.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'The call center account',
+    type: AccountInformationResponse,
+  })
+  @UseGuards(CallCenterAuthGuard)
+  async info(
+    @UserId() userId: Types.ObjectId,
+  ): Promise<AccountInformationResponse> {
+    return this.service.info(userId);
+  }
 
   @Post('/update/name')
   @ApiOperation({

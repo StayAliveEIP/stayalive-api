@@ -4,6 +4,7 @@ import { CallCenter } from '../../../database/callCenter.schema';
 import { Model, Types } from 'mongoose';
 import { ReactEmailService } from '../../../services/react-email/react-email.service';
 import {
+  AccountInformationResponse,
   UpdateAddressRequest,
   UpdateNameRequest,
 } from './account.callCenter.dto';
@@ -42,6 +43,26 @@ export class AccountCallCenterService {
     user.address.street = body.street;
     return {
       message: 'The call center address was updated.',
+    };
+  }
+
+  async info(userId: Types.ObjectId): Promise<AccountInformationResponse> {
+    const user = await this.callCenterModel.findById(userId);
+    if (!user) {
+      throw new NotFoundException('User not found with your token');
+    }
+    return {
+      name: user.name,
+      phone: user.phone,
+      email: {
+        email: user.email.email,
+        verified: user.email.verified,
+      },
+      address: {
+        city: user.address.city,
+        zip: user.address.zip,
+        street: user.address.street,
+      },
     };
   }
 }
