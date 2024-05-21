@@ -310,7 +310,10 @@ export class AccountAdminService {
 
   async update(body: UpdateAdminAccountRequest): Promise<SuccessMessage> {
     const id = body.id;
-    const admin = await this.adminModel.findById(id);
+    if (!Types.ObjectId.isValid(id)) {
+      throw new UnprocessableEntityException('The id format is not valid.');
+    }
+    const admin = await this.adminModel.findById(new Types.ObjectId(id));
     if (!admin) {
       throw new NotFoundException('Admin not found');
     }

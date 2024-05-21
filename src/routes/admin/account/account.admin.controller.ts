@@ -20,10 +20,7 @@ import {
 } from './account.admin.dto';
 import { UserId } from '../../../decorator/userid.decorator';
 import { Types } from 'mongoose';
-import {
-  AdminAuthGuard,
-  RescuerAuthGuard,
-} from '../../../guards/auth.route.guard';
+import { AdminAuthGuard } from '../../../guards/auth.route.guard';
 
 @Controller('/admin')
 @ApiTags('Account')
