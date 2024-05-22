@@ -165,4 +165,8 @@ export class RedisService {
   private getPositionKey(rescuerId: Types.ObjectId): string {
     return 'stayAlive:position:' + rescuerId.toString();
   }
+
+  public getClient(): RedisClientType {
+    return this.client;
+  }
 }

@@ -9,6 +9,7 @@ import {
   ConversationSchema,
 } from '../database/conversation.schema';
 import { Message, MessageSchema } from '../database/message.schema';
+import { RedisIoAdapter } from './chat/ws-adapter';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { Message, MessageSchema } from '../database/message.schema';
     RescuerWebsocket,
     CallCenterWebsocket,
     ChatWebsocket,
+    RedisIoAdapter,
   ],
 })
 export class WebsocketModule {}

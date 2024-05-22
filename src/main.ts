@@ -19,6 +19,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { EmergencyCallCenterModule } from './routes/callCenter/emergency/emergency.callCenter.module';
 import { DefibrillatorModule } from './routes/rescuer/defibrillator/defibrillator.module';
 import { ForgotPasswordCallCenterModule } from './routes/callCenter/forgotPassword/forgotPassword.callCenter.module';
+import { RedisIoAdapter } from './websocket/chat/ws-adapter';
 
 const createSwaggerForApi = (
   app: INestApplication,
@@ -46,6 +47,9 @@ const createSwaggerForApi = (
 };
 async function main() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const redisIoAdapter = new RedisIoAdapter(app);
+  await redisIoAdapter.connectToRedis();
+  app.useWebSocketAdapter(redisIoAdapter);
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe());
   app.useBodyParser('json', { limit: '100mb' });

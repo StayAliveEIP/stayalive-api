@@ -12,10 +12,13 @@ import { Logger } from '@nestjs/common';
 import { Model, Types } from 'mongoose';
 import { Socket } from 'socket.io';
 import { Server } from 'ws';
+import socketio from 'socket.io';
 import * as jwt from 'jsonwebtoken';
 import { InjectModel } from '@nestjs/mongoose';
 import { Message } from '../../database/message.schema';
 import { Conversation } from '../../database/conversation.schema';
+import { RedisService } from '../../services/redis/redis.service';
+import { RedisIoAdapter } from './ws-adapter';
 
 type ChatReceive = {
   conversationId: string;
@@ -30,6 +33,7 @@ export class ChatWebsocket
     @InjectModel(Message.name) private messageModel: Model<Message>,
     @InjectModel(Conversation.name)
     private conversationModel: Model<Conversation>,
+    private redisIoAdapter: RedisIoAdapter,
   ) {}
 
   private readonly logger: Logger = new Logger(ChatWebsocket.name);
@@ -44,6 +48,10 @@ export class ChatWebsocket
 
   @WebSocketServer()
   public server: Server;
+
+  async afterInit(server: any) {
+    this.logger.log('Chat Initialized!');
+  }
 
   handleConnection(@ConnectedSocket() client: Socket): any {
     const token = client.handshake.query.token as string;
@@ -82,10 +90,6 @@ export class ChatWebsocket
         this.logger.log(`Call center ${key} disconnected.`);
       }
     });
-  }
-
-  afterInit() {
-    this.logger.log('Chat websocket initialized.');
   }
 
   @SubscribeMessage('messageRescuer')
@@ -128,12 +132,34 @@ export class ChatWebsocket
     //send the message to the call center
     this.callCenterClients.forEach((value, key) => {
       if (key.equals(callCenterId)) {
-        value.emit('messageRescuer', {
+        //get the default room of the client
+        console.log(value.rooms);
+        client.to(value.rooms[0]).emit('messageRescuer', {
           conversationId: chatReceive.conversationId,
           message: chatReceive.message,
         });
+        try {
+          client.join('room1');
+          console.log('joined room1');
+          console.log(client.rooms);
+          client.to('room1').emit('messageRescuer', {
+            conversationId: chatReceive.conversationId,
+            message: chatReceive.message,
+          });
+          console.log('emitted');
+        } catch (e) {
+          console.log(e);
+        }
       }
     });
+
+    //broadcast the message to all clients like socket.broadcast.emit
+    // this.server.emit('messageRescuer', {
+    //   conversationId: chatReceive.conversationId,
+    //   message: chatReceive.message,
+    // });
+
+    //use io.to('room').emit to send the message to all clients in a room
   }
 
   @SubscribeMessage('messageCallCenter')
