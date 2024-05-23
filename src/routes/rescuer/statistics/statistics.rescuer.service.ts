@@ -113,8 +113,8 @@ export class StatisticsRescuerService {
       const avTimeCount = availabilities
         .filter(
           (availability) =>
-            availability.day.getDate() >= first.getUTCDate() &&
-            availability.day.getDate() <= now.getUTCDate(),
+            availability.day.getDate() >= first.getDate() &&
+            availability.day.getDate() <= now.getDate(),
         )
         .filter((availability) => availability.durationInSec > 0).length;
       result.push({
