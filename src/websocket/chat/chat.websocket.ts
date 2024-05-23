@@ -134,24 +134,18 @@ export class ChatWebsocket
       if (key.equals(callCenterId)) {
         //get the default room of the client
         console.log(value.rooms);
-        client.to(value.rooms[0]).emit('messageRescuer', {
+        value.emit('messageRescuer', {
           conversationId: chatReceive.conversationId,
           message: chatReceive.message,
         });
-        try {
-          client.join('room1');
-          console.log('joined room1');
-          console.log(client.rooms);
-          client.to('room1').emit('messageRescuer', {
-            conversationId: chatReceive.conversationId,
-            message: chatReceive.message,
-          });
-          console.log('emitted');
-        } catch (e) {
-          console.log(e);
-        }
       }
     });
+
+    //broadcast the message to all clients like socket.broadcast.emit
+    // this.server.emit('messageRescuer', {
+    //   conversationId: chatReceive.conversationId,
+    //   message: chatReceive.message,
+    // });
   }
 
   @SubscribeMessage('messageCallCenter')
