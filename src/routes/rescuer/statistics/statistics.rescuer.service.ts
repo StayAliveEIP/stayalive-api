@@ -44,9 +44,9 @@ export class StatisticsRescuerService {
       const day = new Date(now.getTime() - 1000 * 60 * 60 * 24 * i);
       const dayEmergencies = emergencies.filter(
         (emergency) =>
-          emergency.day.getUTCDay() === day.getUTCDay() &&
-          emergency.day.getUTCMonth() === day.getUTCMonth() &&
-          emergency.day.getUTCFullYear() === day.getUTCFullYear(),
+          emergency.day.getDay() === day.getDay() &&
+          emergency.day.getMonth() === day.getMonth() &&
+          emergency.day.getFullYear() === day.getFullYear(),
       );
       day.setHours(0, 0, 0, 0);
       result.push({
@@ -62,7 +62,7 @@ export class StatisticsRescuerService {
     const avSince = await this.redisService.getAvailableSinceOfRescuer(userId);
     if (avSince) {
       const avSinceDate = new Date(avSince);
-      const durationSec = now.getUTCSeconds() - avSinceDate.getUTCSeconds();
+      const durationSec = now.getSeconds() - avSinceDate.getSeconds();
       result[0].timeInSec += durationSec;
     }
     return result;
