@@ -152,14 +152,6 @@ export class ChatWebsocket
         }
       }
     });
-
-    //broadcast the message to all clients like socket.broadcast.emit
-    // this.server.emit('messageRescuer', {
-    //   conversationId: chatReceive.conversationId,
-    //   message: chatReceive.message,
-    // });
-
-    //use io.to('room').emit to send the message to all clients in a room
   }
 
   @SubscribeMessage('messageCallCenter')
