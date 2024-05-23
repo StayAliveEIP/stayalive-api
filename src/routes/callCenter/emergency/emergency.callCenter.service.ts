@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -127,8 +128,11 @@ export class EmergencyCallCenterService {
     userId: Types.ObjectId,
     emergencyId: string,
   ): Promise<SuccessMessage> {
+    if (!Types.ObjectId.isValid(emergencyId)) {
+      throw new BadRequestException('Invalid emergency id');
+    }
     const emergency = await this.emergencyModel.findOne({
-      _id: emergencyId,
+      _id: new Types.ObjectId(emergencyId),
       callCenterId: userId,
     });
     if (!emergency) {
