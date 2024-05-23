@@ -142,10 +142,10 @@ export class ChatWebsocket
     });
 
     //broadcast the message to all clients like socket.broadcast.emit
-    // this.server.emit('messageRescuer', {
-    //   conversationId: chatReceive.conversationId,
-    //   message: chatReceive.message,
-    // });
+    this.server.emit('messageRescuer', {
+      conversationId: chatReceive.conversationId,
+      message: chatReceive.message,
+    });
   }
 
   @SubscribeMessage('messageCallCenter')
