@@ -12,11 +12,14 @@ import { Model, Types } from 'mongoose';
 import { Admin } from '../../../database/admin.schema';
 import { SuccessMessage } from '../../../dto.dto';
 import {
+  ChangeEmailRequest,
   ChangePasswordRequest,
   DeleteAdminRequest,
   DeleteMyAccountRequest,
   InfoResponse,
   NewRequest,
+  UpdateAdminAccountRequest,
+  VerifyEmailRequest,
 } from './account.admin.dto';
 import {
   hashPassword,
@@ -241,6 +244,84 @@ export class AccountAdminService {
     await admin.save();
     return {
       message: 'Votre mot de passe a bien été changé.',
+    };
+  }
+
+  async changeEmail(
+    userId: Types.ObjectId,
+    body: ChangeEmailRequest,
+  ): Promise<SuccessMessage> {
+    // Find the user in database
+    const user = await this.adminModel.findById(new Types.ObjectId(userId));
+    if (!user) {
+      throw new NotFoundException('Utilisateur introuvable.');
+    }
+    // verify that new email is not already used
+    const emailAlreadyUsed = await this.adminModel.findOne({
+      'email.email': body.email,
+    });
+    if (emailAlreadyUsed) {
+      throw new ForbiddenException(
+        'Cette adresse email est déjà utilisée par un autre utilisateur ou par vous même.',
+      );
+    }
+    const token: string =
+      Math.random().toString(36).substring(2, 15) +
+      Math.random().toString(36).substring(2, 15);
+
+    // Change the email
+    user.email.email = body.email;
+    user.email.verified = false;
+    user.email.code = token;
+    user.email.lastCodeSent = new Date();
+    await user.save();
+    // Send the email
+    this.reactEmailService.sendMailVerifyEmailCode(
+      body.email,
+      user.firstname,
+      token,
+    );
+    return {
+      message:
+        'Votre adresse email a bien été changée, un email de vérification vous a été envoyé.',
+    };
+  }
+
+  async verifyEmail(
+    userId: Types.ObjectId,
+    body: VerifyEmailRequest,
+  ): Promise<SuccessMessage> {
+    // Find the user in database
+    const user = await this.adminModel.findById(new Types.ObjectId(userId));
+    if (!user) {
+      throw new NotFoundException('Utilisateur introuvable.');
+    }
+    const validToken = body.code === user.email.code;
+    if (!validToken) {
+      throw new ForbiddenException('Le code de vérification est incorrect.');
+    }
+    // Verify the email in database
+    user.email.verified = true;
+    await user.save();
+    return {
+      message: 'Votre adresse email a bien été vérifiée.',
+    };
+  }
+
+  async update(body: UpdateAdminAccountRequest): Promise<SuccessMessage> {
+    const id = body.id;
+    if (!Types.ObjectId.isValid(id)) {
+      throw new UnprocessableEntityException('The id format is not valid.');
+    }
+    const admin = await this.adminModel.findById(new Types.ObjectId(id));
+    if (!admin) {
+      throw new NotFoundException('Admin not found');
+    }
+    admin.firstname = body.firstname;
+    admin.lastname = body.lastname;
+    await admin.save();
+    return {
+      message: 'The admin account was updated.',
     };
   }
 }

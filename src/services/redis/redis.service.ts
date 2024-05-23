@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, OnModuleDestroy } from '@nestjs/common';
 import { Types } from 'mongoose';
 import Redis from 'ioredis';
 import type RedisClientType from 'ioredis';
@@ -17,7 +17,7 @@ export interface RescuerPositionWithId {
 }
 
 @Injectable()
-export class RedisService {
+export class RedisService implements OnModuleDestroy {
   private readonly logger: Logger = new Logger(RedisService.name);
   private readonly client: RedisClientType;
 
@@ -31,10 +31,19 @@ export class RedisService {
       username: process.env.REDIS_USERNAME,
       password: process.env.REDIS_PASSWORD,
     };
+    this.logger.log(
+      'Connecting to Redis with options: ' + JSON.stringify(redisOptions),
+    );
     this.client = new Redis(redisOptions);
     this.client.on('connect', () => {
       this.logger.log('Redis connected successfully');
     });
+  }
+
+  onModuleDestroy() {
+    this.logger.log('Disconnecting from Redis...');
+    this.disconnect();
+    this.logger.log('Disconnected from Redis');
   }
 
   public disconnect() {
@@ -62,8 +71,16 @@ export class RedisService {
    * @param status The status of the rescuer.
    */
   public async setStatusOfRescuer(rescuerId: Types.ObjectId, status: Status) {
+    // Update status key
     const statusKey: string = this.getStatusKey(rescuerId);
     await this.client.set(statusKey, status);
+    // Update active from key
+    const activeFromKey: string = this.getAvailableSinceKey(statusKey);
+    if (status === Status.AVAILABLE) {
+      await this.client.set(activeFromKey, new Date().toISOString());
+      return;
+    }
+    await this.client.del(activeFromKey);
   }
 
   /**
@@ -79,13 +96,31 @@ export class RedisService {
     return status as Status;
   }
 
+  public async getAvailableSinceOfRescuer(
+    rescuerId: Types.ObjectId,
+  ): Promise<Date | null> {
+    const statusKey: string = this.getStatusKey(rescuerId);
+    const activeFromKey: string = this.getAvailableSinceKey(statusKey);
+    const activeFrom: string = await this.client.get(activeFromKey);
+    if (!activeFrom) return null;
+    return new Date(activeFrom);
+  }
+
   public async deleteStatusOfRescuer(rescuerId: Types.ObjectId) {
+    // Update status key
     const statusKey: string = this.getStatusKey(rescuerId);
     await this.client.del(statusKey);
+    // Update active from key
+    const activeFromKey: string = this.getAvailableSinceKey(statusKey);
+    await this.client.del(activeFromKey);
   }
 
   public getStatusKey(rescuerId: Types.ObjectId): string {
     return 'stayAlive:status:' + rescuerId.toString();
+  }
+
+  public getAvailableSinceKey(key: string): string {
+    return 'stayAlive:availableSince:' + key;
   }
 
   // Position

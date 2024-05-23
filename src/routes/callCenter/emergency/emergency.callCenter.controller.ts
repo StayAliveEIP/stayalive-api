@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -11,9 +12,11 @@ import { UserId } from '../../../decorator/userid.decorator';
 import { CallCenterAuthGuard } from '../../../guards/auth.route.guard';
 import { Types } from 'mongoose';
 import {
+  CloseEmergencyRequest,
   CreateNewEmergencyRequest,
   EmergencyInfoResponse,
 } from './emergency.callCenter.dto';
+import { SuccessMessage } from '../../../dto.dto';
 
 @Controller('/call-center')
 @ApiTags('Emergency')
@@ -53,5 +56,25 @@ export class EmergencyCallCenterController {
     @Body() body: CreateNewEmergencyRequest,
   ): Promise<EmergencyInfoResponse> {
     return await this.service.createEmergency(userId, body);
+  }
+
+  @Post('/emergency/close')
+  @ApiOperation({ summary: 'Close an emergency' })
+  @ApiResponse({
+    status: 200,
+    description: 'The emergency was closed.',
+    type: SuccessMessage,
+  })
+  @UseGuards(CallCenterAuthGuard)
+  @ApiQuery({
+    name: 'emergencyId',
+    required: true,
+    type: String,
+  })
+  async closeEmergency(
+    @UserId() userId: Types.ObjectId,
+    @Body() body: CloseEmergencyRequest,
+  ): Promise<SuccessMessage> {
+    return await this.service.closeEmergency(userId, body.emergencyId);
   }
 }

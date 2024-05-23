@@ -27,6 +27,7 @@ import type { Response } from 'express';
 import { SuccessMessage } from '../../../dto.dto';
 import { UserId } from '../../../decorator/userid.decorator';
 import { Types } from 'mongoose';
+import { DocumentType } from '../../../database/document.schema';
 
 @Controller('/rescuer')
 @ApiTags('Document')
@@ -56,6 +57,7 @@ export class DocumentController {
     name: 'type',
     type: String,
     required: true,
+    enum: DocumentType,
   })
   async documentInformation(
     @UserId() userId: Types.ObjectId,
@@ -101,6 +103,7 @@ export class DocumentController {
     name: 'type',
     type: String,
     required: true,
+    enum: DocumentType,
   })
   @UseGuards(RescuerAuthGuard)
   @Delete('/document')
@@ -133,6 +136,7 @@ export class DocumentController {
     name: 'type',
     type: String,
     required: true,
+    enum: DocumentType,
   })
   @UseGuards(RescuerAuthGuard)
   @Post('/document/upload')
@@ -178,6 +182,7 @@ export class DocumentController {
     name: 'type',
     type: String,
     required: true,
+    enum: DocumentType,
   })
   @UseGuards(RescuerAuthGuard)
   @Get('/document/download')

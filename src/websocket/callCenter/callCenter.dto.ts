@@ -21,6 +21,7 @@ export interface CallCenterWsData {
       latitude: number;
       longitude: number;
     };
+    placeId: string | null;
     status: string;
   };
   callCenter: {

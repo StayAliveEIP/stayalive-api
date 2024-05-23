@@ -8,29 +8,20 @@ export class DefibrillatorProposalDto {
     description: 'The name of the defibrillator',
   })
   name: string;
+
   @IsString()
   @IsNotEmpty()
   @ApiProperty({
-    example: '12 rue de la rue, 75000 Paris',
-    description: 'The address of the defibrillator',
+    example: 'ChIJd8BlQ2Bx5kcR7JQ0G1nQv5M',
+    description: 'The placeId of the defibrillator',
   })
-  address: string;
-  @ApiProperty({
-    type: {
-      x: { type: String, required: true, example: '48.8566' },
-      y: { type: String, required: true, example: '2.3522' },
-    },
-    description: 'The location of the defibrillator',
-  })
-  location: {
-    x: string;
-    y: string;
-  };
+  placeId: string;
+
   @IsString()
   @IsNotEmpty()
   @ApiProperty({
-    example: 'https://www.google.com/image.png',
-    description: 'The image link of the defibrillator',
+    example: 'data:image/jpeg;base64,/9j/2w....',
+    description: 'The image source of the defibrillator',
   })
   imageSrc: string;
 }
@@ -60,13 +51,33 @@ export class DefibrillatorResponse {
   })
   address: string;
   @ApiProperty({
-    example: 'https://www.google.com/image.png',
+    example: {
+      lat: '48.8566',
+      lng: '2.3522',
+    },
+    description: 'The location of the defibrillator',
+  })
+  location: {
+    lat: string;
+    lng: string;
+  };
+
+  @ApiProperty({
+    example: 'ChIJd8BlQ2Bx5kcR7JQ0G1nQv5M',
+    description: 'The placeId of the defibrillator',
+  })
+  placeId: string;
+
+  @ApiProperty({
+    example:
+      'https://bastos-poc.s3.us-east-2.amazonaws.com/defibrillator/5qc2p',
     description: 'The image link of the defibrillator',
   })
   pictureUrl: string;
   @ApiProperty({
+    enum: ['PENDING', 'VALIDATED', 'REFUSED'],
     example: 'VALIDATED',
     description: 'The status of the defibrillator',
   })
-  status: string;
+  status: DefibrillatorResponse;
 }

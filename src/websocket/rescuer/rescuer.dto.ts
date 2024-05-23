@@ -11,6 +11,7 @@ export interface RescuerWsData {
       latitude: number;
       longitude: number;
     };
+    placeId: string | null;
     status: string;
     address: string;
   };

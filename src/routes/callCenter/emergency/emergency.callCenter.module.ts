@@ -9,13 +9,17 @@ import {
   CallCenter,
   CallCenterSchema,
 } from '../../../database/callCenter.schema';
+import { GoogleApiModule } from '../../../services/google-map/google.module';
+import { Rescuer, RescuerSchema } from '../../../database/rescuer.schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Emergency.name, schema: EmergencySchema },
       { name: CallCenter.name, schema: CallCenterSchema },
+      { name: Rescuer.name, schema: RescuerSchema },
     ]),
+    GoogleApiModule,
   ],
   controllers: [EmergencyCallCenterController],
   providers: [JwtStrategy, EmergencyCallCenterService, ReactEmailService],

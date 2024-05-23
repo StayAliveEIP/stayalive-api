@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export class NewRequest {
   @ApiProperty({
@@ -101,4 +101,50 @@ export class ChangePasswordRequest {
   })
   @IsNotEmpty()
   newPassword: string;
+}
+
+export class UpdateAdminAccountRequest {
+  @ApiProperty({
+    type: String,
+    description: 'The id of the admin to update.',
+    example: '60e6f7b3f5b6f0b3f4f9f6e0',
+  })
+  id: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'The firstname of the admin.',
+    example: 'John',
+  })
+  @IsNotEmpty()
+  firstname: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'The lastname of the admin.',
+    example: 'Doe',
+  })
+  @IsNotEmpty()
+  lastname: string;
+}
+
+export class ChangeEmailRequest {
+  @ApiProperty({
+    type: String,
+    description: 'The new email of the rescuer.',
+    example: 'newemail@email.net',
+  })
+  @IsEmail()
+  email: string;
+}
+
+export class VerifyEmailRequest {
+  @ApiProperty({
+    type: String,
+    description: 'The token to verify the email of the rescuer.',
+    example: 'a1b2c3d4e5f6g7h8i9j0',
+  })
+  @IsString()
+  @IsNotEmpty()
+  code: string;
 }

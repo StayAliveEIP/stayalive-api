@@ -11,6 +11,7 @@ import {
 import {
   ApiBearerAuth,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -24,7 +25,7 @@ import {
 } from './callCenter.admin.dto';
 import { SuccessMessage } from '../../../dto.dto';
 import { AdminAuthGuard } from 'src/guards/auth.route.guard';
-import { SendMagicLinkRequest } from '../../rescuer/auth/auth.dto';
+import { DefibrillatorStatus } from '../../../database/defibrillator.schema';
 
 @Controller('/admin/call-center')
 @ApiTags('Call Center')

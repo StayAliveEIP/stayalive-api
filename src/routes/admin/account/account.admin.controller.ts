@@ -9,11 +9,14 @@ import { ReactEmailService } from '../../../services/react-email/react-email.ser
 import { AccountAdminService } from './account.admin.service';
 import { SuccessMessage } from '../../../dto.dto';
 import {
+  ChangeEmailRequest,
   ChangePasswordRequest,
   DeleteAdminRequest,
   DeleteMyAccountRequest,
   InfoResponse,
   NewRequest,
+  UpdateAdminAccountRequest,
+  VerifyEmailRequest,
 } from './account.admin.dto';
 import { UserId } from '../../../decorator/userid.decorator';
 import { Types } from 'mongoose';
@@ -86,6 +89,23 @@ export class AccountAdminController {
     return this.service.delete(body);
   }
 
+  @Post('/account/update')
+  @ApiOperation({
+    summary: 'Update the account of an admin',
+    description: 'Update the account of an admin with the id.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'The account was updated with the success message',
+    type: SuccessMessage,
+  })
+  @UseGuards(AdminAuthGuard)
+  async update(
+    @Body() body: UpdateAdminAccountRequest,
+  ): Promise<SuccessMessage> {
+    return this.service.update(body);
+  }
+
   @Delete('/account/delete')
   @ApiOperation({
     summary: 'Delete the admin account logged in',
@@ -121,5 +141,39 @@ export class AccountAdminController {
     @Body() body: ChangePasswordRequest,
   ): Promise<SuccessMessage> {
     return this.service.changePassword(userId, body);
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Post('/account/change-email')
+  @ApiResponse({
+    status: 200,
+    description: 'Change your email',
+  })
+  @ApiOperation({
+    summary: 'Change your email',
+    description: 'Change your email.',
+  })
+  async changeEmail(
+    @UserId() userId: Types.ObjectId,
+    @Body() body: ChangeEmailRequest,
+  ): Promise<SuccessMessage> {
+    return this.service.changeEmail(userId, body);
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Post('/account/verify-email')
+  @ApiResponse({
+    status: 200,
+    description: 'Verify your email',
+  })
+  @ApiOperation({
+    summary: 'Verify your email',
+    description: 'Verify your email.',
+  })
+  async verifyEmail(
+    @UserId() userId: Types.ObjectId,
+    @Body() body: VerifyEmailRequest,
+  ): Promise<SuccessMessage> {
+    return this.service.verifyEmail(userId, body);
   }
 }

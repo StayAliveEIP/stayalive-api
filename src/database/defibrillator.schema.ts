@@ -14,6 +14,10 @@ export class Defibrillator {
   proposedBy: Types.ObjectId;
   @Prop({ required: false })
   name: string;
+
+  @Prop({ required: false })
+  placeId: string;
+
   @Prop({ required: false })
   address: string;
   @Prop({ required: false })
@@ -21,13 +25,14 @@ export class Defibrillator {
   @Prop({
     required: false,
     type: {
-      x: { type: String, required: false },
-      y: { type: String, required: false },
+      lat: { type: String, required: false },
+      lng: { type: String, required: false },
     },
+    _id: false,
   })
   location: {
-    x: string;
-    y: string;
+    lat: string;
+    lng: string;
   };
   @Prop({ required: false, default: DocumentStatus.PENDING })
   status: DefibrillatorStatus;

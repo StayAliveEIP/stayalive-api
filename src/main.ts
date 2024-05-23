@@ -20,6 +20,9 @@ import { EmergencyCallCenterModule } from './routes/callCenter/emergency/emergen
 import { DefibrillatorModule } from './routes/rescuer/defibrillator/defibrillator.module';
 import { ForgotPasswordCallCenterModule } from './routes/callCenter/forgotPassword/forgotPassword.callCenter.module';
 import { RedisIoAdapter } from './websocket/chat/ws-adapter';
+import { DefibrillatorAdminModule } from './routes/admin/defibrillator/defibrillator.admin.module';
+import { StatisticsRescuerModule } from './routes/rescuer/statistics/statistics.rescuer.module';
+import { AccountCallCenterModule } from './routes/callCenter/account/account.callCenter.module';
 
 const createSwaggerForApi = (
   app: INestApplication,
@@ -69,6 +72,7 @@ async function main() {
       EmergencyModuleRescuer,
       DocumentModuleRescuer,
       PositionModuleRescuer,
+      StatisticsRescuerModule,
     ],
   );
 
@@ -83,6 +87,7 @@ async function main() {
       AccountAdminModule,
       CallCenterAdminModule,
       DocumentAdminModule,
+      DefibrillatorAdminModule,
     ],
   );
 
@@ -94,6 +99,7 @@ async function main() {
     '1.0',
     [
       AuthCallCenterModule,
+      AccountCallCenterModule,
       ForgotPasswordCallCenterModule,
       EmergencyCallCenterModule,
     ],
