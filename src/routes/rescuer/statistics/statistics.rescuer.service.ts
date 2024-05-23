@@ -79,7 +79,7 @@ export class StatisticsRescuerService {
   ): Promise<Array<SuccessElement>> {
     const count = [1, 10, 25, 50, 100];
     const resolvedByRescuer = await this.emergencyModel
-      .find({ rescuerId: userId, status: EmergencyStatus.RESOLVED })
+      .find({ rescuerAssigned: userId, status: EmergencyStatus.RESOLVED })
       .countDocuments();
     const result: Array<SuccessElement> = [];
     for (const c of count) {
