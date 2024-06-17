@@ -7,11 +7,11 @@ export class FaqSubsection extends Document {
   @ApiProperty({ type: Types.ObjectId, example: '60a8c4a7fa4e05000bde14a0' })
   _id: Types.ObjectId;
 
-  @ApiProperty({ example: 'How to create a new account?' })
+  @ApiProperty({ example: 'Probleme avec la connexion' })
   @Prop({ type: String, required: true })
   title: string;
 
-  @ApiProperty({ example: 'This is a description' })
+  @ApiProperty({ example: 'Description' })
   @Prop({ type: String, required: true })
   description: string;
 
