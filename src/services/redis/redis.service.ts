@@ -31,7 +31,7 @@ export class RedisService implements OnModuleDestroy {
       username: process.env.REDIS_USERNAME,
       password: process.env.REDIS_PASSWORD,
     };
-    this.logger.log(
+    this.logger.debug(
       'Connecting to Redis with options: ' + JSON.stringify(redisOptions),
     );
     this.client = new Redis(redisOptions);

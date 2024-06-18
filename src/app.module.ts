@@ -31,6 +31,8 @@ import { ForgotPasswordCallCenterModule } from './routes/callCenter/forgotPasswo
 import { DefibrillatorAdminModule } from './routes/admin/defibrillator/defibrillator.admin.module';
 import { StatisticsRescuerModule } from './routes/rescuer/statistics/statistics.rescuer.module';
 import { AccountCallCenterModule } from './routes/callCenter/account/account.callCenter.module';
+import { ReportRescuerModule } from './routes/rescuer/report/report.rescuer.module';
+import { ReportAdminModule } from './routes/admin/report/report.admin.module';
 
 @Module({
   imports: [
@@ -60,12 +62,14 @@ import { AccountCallCenterModule } from './routes/callCenter/account/account.cal
     DocumentModule,
     PositionModule,
     StatisticsRescuerModule,
+    ReportRescuerModule,
     // Admin modules.
     AuthAdminModule,
     AccountAdminModule,
     CallCenterAdminModule,
     DocumentAdminModule,
     DefibrillatorAdminModule,
+    ReportAdminModule,
     // Call center module
     AuthCallCenterModule,
     AccountCallCenterModule,
