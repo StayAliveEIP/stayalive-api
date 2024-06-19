@@ -18,4 +18,4 @@ export class FaqQuestion {
   modifiedAt: Date;
 }
 
-export const HelpQuestionSchema = SchemaFactory.createForClass(FaqQuestion);
+export const FaqQuestionSchema = SchemaFactory.createForClass(FaqQuestion);
