@@ -16,4 +16,4 @@ import { Module } from '@nestjs/common';
   controllers: [SectionController],
   providers: [SectionService],
 })
-export class SectionModule {}
+export class FaqRescuerSectionModule {}

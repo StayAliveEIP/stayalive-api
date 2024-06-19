@@ -62,6 +62,6 @@ export class QuestionsController {
   })
   @ApiResponse({ status: 404, description: 'Question introuvable.' })
   async questionId(@Param() param: QuestionDto): Promise<FaqQuestion> {
-    return await this.questionService.questionId(param.id, null);
+    return await this.questionService.questionId(param.id);
   }
 }

@@ -16,4 +16,4 @@ import {
   controllers: [SubsectionController],
   providers: [SubsectionService],
 })
-export class SubsectionModule {}
+export class FaqRescuerSubsectionModule {}

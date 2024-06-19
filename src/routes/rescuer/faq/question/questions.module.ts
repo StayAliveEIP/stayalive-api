@@ -16,4 +16,4 @@ import { Module } from '@nestjs/common';
   controllers: [QuestionsController],
   providers: [QuestionsService],
 })
-export class QuestionsModule {}
+export class FaqRescuerQuestionsModule {}

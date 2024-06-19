@@ -31,6 +31,10 @@ import { ForgotPasswordCallCenterModule } from './routes/callCenter/forgotPasswo
 import { DefibrillatorAdminModule } from './routes/admin/defibrillator/defibrillator.admin.module';
 import { StatisticsRescuerModule } from './routes/rescuer/statistics/statistics.rescuer.module';
 import { AccountCallCenterModule } from './routes/callCenter/account/account.callCenter.module';
+import { FaqAdminModule } from './routes/admin/faq/faq.module';
+import { FaqRescuerQuestionsModule } from './routes/rescuer/faq/question/questions.module';
+import { FaqRescuerSectionModule } from './routes/rescuer/faq/section/section.module';
+import { FaqRescuerSubsectionModule } from './routes/rescuer/faq/subsection/subsection.module';
 
 @Module({
   imports: [
@@ -76,6 +80,10 @@ import { AccountCallCenterModule } from './routes/callCenter/account/account.cal
     DefibrillatorModule,
     ChatRescuerModule,
     ChatCallcenterModule,
+    FaqAdminModule,
+    FaqRescuerQuestionsModule,
+    FaqRescuerSectionModule,
+    FaqRescuerSubsectionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
