@@ -19,7 +19,7 @@ export class HelpIdDto {
 export class SectionDto {
   @IsString()
   @IsNotEmpty({ message: "Le champs : 'id' est obligatoire." })
-  readonly _id: string;
+  readonly id: string;
 
   @IsString()
   @IsNotEmpty({ message: "Le champs : 'title' est obligatoire." })
@@ -31,6 +31,24 @@ export class SectionDto {
 }
 
 export class SubsectionDto {
+  @IsString()
+  @IsNotEmpty({ message: "Le champs : 'section' est obligatoire." })
+  readonly section: string;
+
+  @IsString()
+  @IsNotEmpty({ message: "Le champs : 'title' est obligatoire." })
+  readonly title: string;
+
+  @IsString()
+  @IsNotEmpty({ message: "Le champs : 'description' est obligatoire." })
+  readonly description: string;
+}
+
+export class SubsectionEditDto {
+  @IsString()
+  @IsNotEmpty({ message: "Le champs : 'id' est obligatoire." })
+  readonly id: string;
+
   @IsString()
   @IsNotEmpty({ message: "Le champs : 'section' est obligatoire." })
   readonly section: string;
@@ -56,13 +74,13 @@ export class QuestionDto {
   @IsString()
   @IsNotEmpty({ message: "Le champs : 'answer' est obligatoire." })
   readonly answer: string;
-
-  @IsString()
-  @IsNotEmpty({ message: "Le champs : 'author' est obligatoire." })
-  readonly author: string;
 }
 
 export class QuestionPutDto {
+  @IsString()
+  @IsNotEmpty({ message: "Le champs : 'id' est obligatoire." })
+  readonly id: string;
+
   @IsString()
   @IsNotEmpty({ message: "Le champs : 'subsection' est obligatoire." })
   readonly subsection: string;

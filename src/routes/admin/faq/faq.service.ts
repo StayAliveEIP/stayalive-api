@@ -1,6 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { FaqQuestion } from '../../../database/faq-question.schema';
 import { FaqSection } from '../../../database/faq-section.schema';
 import { FaqSubsection } from '../../../database/faq-subsection.schema';
@@ -59,7 +59,7 @@ export class FaqAdminService {
       throw new HttpException('Section introuvable', 404);
     }
     const newSubsection = new this.subsectionModel({
-      section: id,
+      section: new Types.ObjectId(id),
       title: title,
       description: description,
     });
@@ -80,32 +80,30 @@ export class FaqAdminService {
     return 'Sous-section supprimée avec succès';
   }
 
-  async putSubsection(section: string, title: string, description: string) {
-    const subsection = await this.subsectionModel.findById(section);
+  async putSubsection(
+    id: string,
+    section: string,
+    title: string,
+    description: string,
+  ) {
+    const subsection = await this.subsectionModel.findById(id);
     if (!subsection) {
       throw new HttpException('Sous-section introuvable', 404);
     }
+    subsection.section = new Types.ObjectId(section);
     subsection.title = title;
     subsection.description = description;
     await subsection.save();
     return 'Sous-section modifiée avec succès';
   }
 
-  async postQuestion(
-    id: string,
-    question: string,
-    answer: string,
-    author: string,
-  ) {
-    const section = await this.sectionModel.findById(id);
+  async postQuestion(id: string, question: string, answer: string) {
+    const section = await this.subsectionModel.findById(id);
     if (!section) {
-      throw new HttpException('Section introuvable', 404);
-    }
-    if (!author) {
-      throw new HttpException('Auteur introuvable', 404);
+      throw new HttpException('SubSection introuvable', 404);
     }
     const newQuestion = new this.questionModel({
-      section: id,
+      subsection: new Types.ObjectId(id),
       question: question,
       answer: answer,
       createdAt: new Date(),
@@ -124,13 +122,19 @@ export class FaqAdminService {
     return 'Question supprimée avec succès';
   }
 
-  async putQuestion(id: string, question: string, answer: string) {
+  async putQuestion(
+    id: string,
+    subsection: string,
+    question: string,
+    answer: string,
+  ) {
     const questionObject = await this.questionModel.findById(id);
     if (!questionObject) {
       throw new HttpException('Question introuvable', 404);
     }
     questionObject.question = question;
     questionObject.answer = answer;
+    questionObject.modifiedAt = new Date();
     await questionObject.save();
     return 'Question modifiée avec succès';
   }
@@ -150,10 +154,12 @@ export class FaqAdminService {
           as: 'subsections',
         },
       },
+      {
+        $unset: 'subsections.section',
+      },
+      {
+        $unwind: { path: '$subsections', preserveNullAndEmptyArrays: true },
+      },
     ]);
-  }
-
-  async postSearch(search: string) {
-    return await this.questionModel.find({ $text: { $search: search } });
   }
 }

@@ -12,14 +12,16 @@ import { AdminAuthGuard } from '../../../guards/auth.route.guard';
 import {
   HelpIdDto,
   QuestionDto,
+  QuestionPutDto,
   SearchDto,
   SectionDto,
   SectionPostDto,
   SubsectionDto,
+  SubsectionEditDto,
 } from './faq.dto';
 import { FaqAdminService } from './faq.service';
 
-@Controller('faq')
+@Controller('admin/faq')
 export class FaqAdminController {
   constructor(private readonly helpService: FaqAdminService) {}
 
@@ -39,7 +41,7 @@ export class FaqAdminController {
   @Put('section')
   async putSection(@Body() body: SectionDto) {
     return await this.helpService.putSection(
-      body._id,
+      body.id,
       body.title,
       body.description,
     );
@@ -57,8 +59,9 @@ export class FaqAdminController {
 
   @UseGuards(AdminAuthGuard)
   @Put('subsection')
-  async putSubsection(@Body() body: SubsectionDto) {
+  async putSubsection(@Body() body: SubsectionEditDto) {
     return await this.helpService.putSubsection(
+      body.id,
       body.section,
       body.title,
       body.description,
@@ -67,7 +70,7 @@ export class FaqAdminController {
 
   @UseGuards(AdminAuthGuard)
   @Delete('subsection')
-  async deleteSubsection(@Param() body: HelpIdDto) {
+  async deleteSubsection(@Body() body: HelpIdDto) {
     return await this.helpService.deleteSubsection(body.id);
   }
 
@@ -78,14 +81,14 @@ export class FaqAdminController {
       body.subsection,
       body.question,
       body.answer,
-      body.author,
     );
   }
 
   @UseGuards(AdminAuthGuard)
   @Put('question')
-  async putQuestion(@Body() body: QuestionDto) {
+  async putQuestion(@Body() body: QuestionPutDto) {
     return await this.helpService.putQuestion(
+      body.id,
       body.subsection,
       body.question,
       body.answer,
@@ -94,19 +97,13 @@ export class FaqAdminController {
 
   @UseGuards(AdminAuthGuard)
   @Delete('question')
-  async deleteQuestion(@Param() body: HelpIdDto) {
+  async deleteQuestion(@Body() body: HelpIdDto) {
     return await this.helpService.deleteQuestion(body.id);
   }
 
   @UseGuards(AdminAuthGuard)
-  @Get('details-sections')
+  @Get('details')
   async getDetailsSections() {
     return await this.helpService.getSectionDetails();
-  }
-
-  @UseGuards(AdminAuthGuard)
-  @Post('search')
-  async postDetailsSections(@Body() body: SearchDto) {
-    return await this.helpService.postSearch(body.search);
   }
 }
