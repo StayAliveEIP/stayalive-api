@@ -23,11 +23,14 @@ export class ReportAdminService {
     const reports = await this.reportBugModel.aggregate([
       {
         $lookup: {
-          from: Rescuer.name,
-          localField: 'userId',
+          from: 'rescuers',
+          localField: 'rescuerId',
           foreignField: '_id',
           as: 'user',
         },
+      },
+      {
+        $unwind: '$user',
       },
     ]);
     const result: BugReportAdminResponse[] = [];
@@ -38,12 +41,13 @@ export class ReportAdminService {
         firstname: report.user.firstname,
         lastname: report.user.lastname,
         id: report.user._id,
+        profilePictureUrl: report.user.profilePictureUrl || null,
       };
       const objectId = new Types.ObjectId(report._id);
       const createdAt = objectId.getTimestamp();
       result.push({
         createdAt: createdAt.toISOString(),
-        pictureUrls: report.files,
+        pictureUrls: report.pictureUrls,
         id: report._id,
         message: report.message,
         user: user,
@@ -91,6 +95,27 @@ export class ReportAdminService {
     }
     return {
       message: 'The bug report has been marked as unresolved',
+    };
+  }
+
+  async changeLevel(id: string, level: string): Promise<SuccessMessage> {
+    const report = await this.reportBugModel.findOne({
+      _id: new Types.ObjectId(id),
+    });
+    if (!report) {
+      throw new NotFoundException('The bug report does not exist');
+    }
+    if (isNaN(Number(level))) {
+      throw new NotFoundException('The level must be an integer');
+    }
+    const newLevel = Number.parseInt(level, 10);
+    if (newLevel < 1 || newLevel > 3) {
+      throw new NotFoundException('The level must be between 1 and 3');
+    }
+    report.level = newLevel;
+    await report.save();
+    return {
+      message: 'The level of the bug report has been changed',
     };
   }
 }

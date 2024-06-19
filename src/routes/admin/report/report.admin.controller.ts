@@ -4,11 +4,13 @@ import {
   Get,
   Param,
   Patch,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -39,7 +41,7 @@ export class ReportAdminController {
     return this.service.getBug();
   }
 
-  @Patch('/bug/:id')
+  @Patch('/bug/:id/status')
   @UseGuards(AdminAuthGuard)
   @ApiOperation({
     summary: 'Change status of a bug report',
@@ -52,6 +54,29 @@ export class ReportAdminController {
   })
   async resolveBug(@Param('id') id: string): Promise<SuccessMessage> {
     return this.service.resolveBug(id);
+  }
+
+  @Patch('/bug/:id/level')
+  @UseGuards(AdminAuthGuard)
+  @ApiOperation({
+    summary: 'Change level of a bug report',
+    description: 'Change the level of a bug report.',
+  })
+  @ApiResponse({
+    status: 200,
+    type: SuccessMessage,
+    description: 'The level of the bug report has been changed.',
+  })
+  @ApiQuery({
+    name: 'level',
+    type: Number,
+    description: 'The new level of the bug report, between 1 and 3.',
+  })
+  async changeLevel(
+    @Param('id') id: string,
+    @Query('level') level: string,
+  ): Promise<SuccessMessage> {
+    return this.service.changeLevel(id, level);
   }
 
   @Delete('/bug/:id')

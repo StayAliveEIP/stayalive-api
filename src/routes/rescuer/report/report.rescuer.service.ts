@@ -8,6 +8,7 @@ import {
   ReportBugRequest,
 } from './report.rescuer.dto';
 import { AmazonS3Service } from '../../../services/s3/s3.service';
+import * as url from 'node:url';
 
 @Injectable()
 export class ReportRescuerService {
@@ -22,6 +23,18 @@ export class ReportRescuerService {
     files: Array<Express.Multer.File>,
     body: ReportBugRequest,
   ): Promise<SuccessMessage> {
+    const level = Number.parseInt(body.level, 10);
+    this.log.log(`Level of the bug report: ${level}`);
+    if (isNaN(level)) {
+      throw new BadRequestException(
+        'The level of the bug report must be an integer',
+      );
+    }
+    if (level < 1 || level > 3) {
+      throw new BadRequestException(
+        'The level of the bug report must be between 1 and 3',
+      );
+    }
     if (files.length == 0) {
       throw new BadRequestException('A file is required to send a bug report.');
     }
@@ -33,16 +46,19 @@ export class ReportRescuerService {
       const uuid = new Types.ObjectId();
       const key = `bug-report/${uuid}`;
       const contentType: string = file.mimetype;
-      const url = await s3.uploadFile(key, file.buffer, contentType);
-      fileUrls.push(url);
+      const s3response = await s3.uploadFile(key, file.buffer, contentType);
+      fileUrls.push(s3response.url);
+      this.log.debug(`File uploaded to S3: ${s3response.url}`);
     }
     this.log.debug(
       `${files.length} file(s) uploaded to Amazon S3 for rescuer bug report`,
     );
     const report = new this.reportBugModel({
-      userId: userId,
-      description: body.message,
-      files: fileUrls,
+      rescuerId: userId,
+      message: body.message,
+      pictureUrls: fileUrls,
+      level: level,
+      resolved: false,
     });
     await report.save();
     this.log.debug('Bug report saved in database');

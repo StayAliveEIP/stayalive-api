@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { isArray } from 'class-validator';
 
 export class BugReportUserAdminResponse {
   @ApiProperty({
@@ -29,6 +28,14 @@ export class BugReportUserAdminResponse {
     example: 'john@doe.net',
   })
   email: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'The profile picture url of the user that created the report.',
+    example: 'https://s3.amazonaws.com/...',
+    nullable: true,
+  })
+  profilePictureUrl: string | null;
 }
 
 export class BugReportAdminResponse {

@@ -18,11 +18,7 @@ export class ReportBugRequest {
     description: 'The level of the report, between 1 and 3.',
     example: 1,
   })
-  @IsNotEmpty({ message: 'Vous devez renseigner un niveau' })
-  @IsNumber({}, { message: 'Le niveau doit être un nombre' })
-  @Min(1, { message: 'Le niveau doit être compris entre 1 et 3' })
-  @Min(3, { message: 'Le niveau doit être compris entre 1 et 3' })
-  level: number;
+  level: string;
 }
 
 export class FeedbackQuestionResponse {
