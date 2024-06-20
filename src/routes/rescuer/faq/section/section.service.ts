@@ -22,7 +22,7 @@ export class SectionService {
     const result = await this.helpSectionModel.aggregate([
       {
         $match: {
-          _id: id,
+          _id: new Types.ObjectId(id),
         },
       },
       {

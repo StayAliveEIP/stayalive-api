@@ -1,21 +1,21 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SectionService } from './section.service';
 import { FaqSection } from '../../../../database/faq-section.schema';
 import { SectionDto } from './section.dto';
 
 @ApiTags('Faq')
-@Controller('faq/section')
+@Controller('rescuer/faq/section')
 export class SectionController {
   constructor(private readonly sectionService: SectionService) {}
 
-  @Get()
+  @Get('/all')
   @ApiOkResponse({ type: [FaqSection] })
   async section() {
     return await this.sectionService.section();
   }
 
-  @Get(':id')
+  @Get('/')
   @ApiResponse({ status: 404, description: 'Section introuvable.' })
   @ApiOkResponse({
     schema: {
@@ -37,8 +37,7 @@ export class SectionController {
               title: { type: 'string', example: 'Comment créer un compte ?' },
               description: {
                 type: 'string',
-                example:
-                  'Pour créer un compte, il vous suffit de cliquer sur le bouton "S\'inscrire" en haut à droite de la page.',
+                example: '',
               },
             },
           },
@@ -46,7 +45,7 @@ export class SectionController {
       },
     },
   })
-  async sectionId(@Param() idDto: SectionDto) {
+  async sectionId(@Query() idDto: SectionDto) {
     return await this.sectionService.sectionId(idDto.id);
   }
 }
