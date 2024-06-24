@@ -51,6 +51,9 @@ export class CallCenter {
   @Prop({ required: true })
   name: string;
 
+  @Prop({ required: false, default: null })
+  profilePictureUrl: string | null;
+
   @Prop({ required: true })
   phone: string;
 

@@ -65,6 +65,7 @@ export class CallCenterAdminService {
       _id: new Types.ObjectId(),
       name: body.name,
       phone: body.phone,
+      profilePictureUrl: null,
       email: {
         email: email,
         verified: false,

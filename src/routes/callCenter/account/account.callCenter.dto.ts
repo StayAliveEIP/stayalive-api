@@ -51,6 +51,14 @@ export class AccountInformationResponse {
   @ApiProperty({
     type: String,
     required: true,
+    example: 'https://s3.amazonaws.com/.../profile.jpg',
+    nullable: true,
+  })
+  profilePictureUrl: string | null;
+
+  @ApiProperty({
+    type: String,
+    required: true,
     example: '0123456789',
   })
   phone: string;

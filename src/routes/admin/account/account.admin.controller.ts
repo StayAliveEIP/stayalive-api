@@ -31,10 +31,7 @@ import {
 } from './account.admin.dto';
 import { UserId } from '../../../decorator/userid.decorator';
 import { Types } from 'mongoose';
-import {
-  AdminAuthGuard,
-  RescuerAuthGuard,
-} from '../../../guards/auth.route.guard';
+import { AdminAuthGuard } from '../../../guards/auth.route.guard';
 import { FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('/admin')
@@ -232,7 +229,7 @@ export class AccountAdminController {
     return this.service.uploadProfilePicture(userId, file);
   }
 
-  @UseGuards(RescuerAuthGuard)
+  @UseGuards(AdminAuthGuard)
   @Delete('/account/profile-picture/delete')
   @ApiResponse({
     status: HttpStatus.OK,
