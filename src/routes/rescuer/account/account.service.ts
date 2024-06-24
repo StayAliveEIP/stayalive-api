@@ -257,7 +257,7 @@ export class AccountService {
     }
     const s3 = AmazonS3Service.getInstance();
     const contentType: string = file.mimetype;
-    const key: string = `profile-picture/${userId.toString()}`;
+    const key: string = `profile-picture/rescuer/${userId.toString()}`;
     const response = await s3.uploadFile(key, file.buffer, contentType);
 
     this.logger.log('Uploaded profile picture file to S3: ' + response.url);
@@ -275,7 +275,7 @@ export class AccountService {
       throw new NotFoundException('Utilisateur introuvable.');
     }
     const s3 = AmazonS3Service.getInstance();
-    const key: string = `profile-picture/${userId.toString()}`;
+    const key: string = `profile-picture/rescuer/${userId.toString()}`;
     await s3.deleteFile(key);
 
     this.logger.log('Deleted profile picture file from S3: ' + key);

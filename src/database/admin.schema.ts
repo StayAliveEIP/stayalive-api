@@ -43,6 +43,12 @@ export class Admin {
   lastname: string;
 
   @Prop({
+    required: false,
+    default: null,
+  })
+  profilePictureUrl: string | null;
+
+  @Prop({
     _id: false,
     required: false,
     type: AdminEmail,

@@ -52,6 +52,14 @@ export class InfoResponse {
 
   @ApiProperty({
     type: String,
+    description: 'The url of the profile picture of the admin.',
+    example: 'https://s3.amazonaws.com/...',
+    nullable: true,
+  })
+  profilePictureUrl: string | null;
+
+  @ApiProperty({
+    type: String,
     description: 'The email of the admin.',
     example: 'example@email.net',
   })
