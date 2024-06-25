@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Get,
   HttpStatus,
   ParseFilePipeBuilder,
   Post,
@@ -23,10 +22,7 @@ import { UserId } from '../../../decorator/userid.decorator';
 import { SuccessMessage } from '../../../dto.dto';
 import { Types } from 'mongoose';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import {
-  FeedbackQuestionResponse,
-  ReportBugRequest,
-} from './report.rescuer.dto';
+import { FeedbackAnswerRequest, ReportBugRequest } from './report.rescuer.dto';
 
 @ApiBearerAuth()
 @ApiTags('Report')
@@ -90,19 +86,22 @@ export class ReportRescuerController {
     return this.service.reportBug(userId, file, body);
   }
 
-  @Get('/feedback')
+  @Post('/feedback')
   @UseGuards(RescuerAuthGuard)
   @ApiOperation({
-    summary: 'Get feedback',
-    description: 'Get question of feedback',
+    summary: 'Send feedback',
+    description: 'Send feedback to the developers.',
   })
   @ApiResponse({
     status: 200,
-    description: 'The feedback',
-    type: FeedbackQuestionResponse,
+    description: 'You feedback has been sent',
+    type: SuccessMessage,
     isArray: true,
   })
-  async getFeedbackQuestion(): Promise<FeedbackQuestionResponse[]> {
-    return this.service.getFeedbackQuestion();
+  async sendFeedback(
+    @UserId() userId: Types.ObjectId,
+    @Body() body: FeedbackAnswerRequest,
+  ): Promise<SuccessMessage> {
+    return this.service.sendFeedback(userId, body);
   }
 }

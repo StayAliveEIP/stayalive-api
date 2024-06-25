@@ -3,12 +3,9 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { ReportBug } from '../../../database/reportBug.schema';
 import { SuccessMessage } from '../../../dto.dto';
-import {
-  FeedbackQuestionResponse,
-  ReportBugRequest,
-} from './report.rescuer.dto';
+import { FeedbackAnswerRequest, ReportBugRequest } from './report.rescuer.dto';
 import { AmazonS3Service } from '../../../services/s3/s3.service';
-import * as url from 'node:url';
+import { ReportFeedback } from '../../../database/reportFeedback.schema';
 
 @Injectable()
 export class ReportRescuerService {
@@ -16,6 +13,8 @@ export class ReportRescuerService {
 
   constructor(
     @InjectModel(ReportBug.name) private reportBugModel: Model<ReportBug>,
+    @InjectModel(ReportFeedback.name)
+    private reportFeedbackModel: Model<ReportFeedback>,
   ) {}
 
   async reportBug(
@@ -67,11 +66,20 @@ export class ReportRescuerService {
     };
   }
 
-  async getFeedbackQuestion(): Promise<FeedbackQuestionResponse[]> {
-    return [
-      {
-        question: 'How do you rate the application?',
-      },
-    ];
+  async sendFeedback(
+    userId: Types.ObjectId,
+    body: FeedbackAnswerRequest,
+  ): Promise<SuccessMessage> {
+    const feedback = new this.reportFeedbackModel({
+      rescuerId: userId,
+      rating: body.rating,
+      goodPoints: body.goodPoints,
+      badPoints: body.badPoints,
+      ideaAndSuggestions: body.ideaAndSuggestions,
+    });
+    await feedback.save();
+    return {
+      message: 'The feedback has been sent',
+    };
   }
 }

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, Length, Min } from 'class-validator';
+import { IsNotEmpty, IsNumber, Length, Max, Min } from 'class-validator';
 
 export class ReportBugRequest {
   @ApiProperty({
@@ -21,28 +21,48 @@ export class ReportBugRequest {
   level: string;
 }
 
-export class FeedbackQuestionResponse {
-  @ApiProperty({
-    type: String,
-    description: 'The message of the feedback.',
-    example: 'I have a suggestion...',
-  })
-  @IsNotEmpty({ message: 'Vous devez renseigner un message' })
-  @Length(1, 5000, {
-    message: 'Le message doit contenir entre 1 et 5000 caractères',
-  })
-  question: string;
-}
-
 export class FeedbackAnswerRequest {
   @ApiProperty({
     type: String,
-    description: 'The answer of the feedback.',
-    example: 'I have a answer...',
+    description: 'The rating of the app, between 1 and 5.',
+    example: 4,
+  })
+  @IsNotEmpty({ message: 'Vous devez renseigner un message' })
+  @IsNumber()
+  @Min(1)
+  @Max(5)
+  rating: number;
+
+  @ApiProperty({
+    type: String,
+    description: 'The good points of the app.',
+    example: 'I like the...',
   })
   @IsNotEmpty({ message: 'Vous devez renseigner un message' })
   @Length(1, 5000, {
     message: 'Le message doit contenir entre 1 et 5000 caractères',
   })
-  answer: string;
+  goodPoints: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'The bad points of the app.',
+    example: "I don't like the...",
+  })
+  @IsNotEmpty({ message: 'Vous devez renseigner un message' })
+  @Length(1, 5000, {
+    message: 'Le message doit contenir entre 1 et 5000 caractères',
+  })
+  badPoints: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'The idea and suggestions for the app.',
+    example: 'You should add...',
+  })
+  @IsNotEmpty({ message: 'Vous devez renseigner un message' })
+  @Length(1, 5000, {
+    message: 'Le message doit contenir entre 1 et 5000 caractères',
+  })
+  ideaAndSuggestions: string;
 }
