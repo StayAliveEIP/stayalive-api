@@ -63,6 +63,18 @@ export class EmergencyManagerService {
       );
       return;
     }
+    if (
+      (await this.google.calculateTimeToGo(
+        placeId,
+        nearestPosition.position.lat,
+        nearestPosition.position.lng,
+      )) > 5
+    ) {
+      this.logger.warn(
+        'The neares rescuer is at more than 5 minutes than the emergency',
+      );
+      return;
+    }
     this.logger.log(
       'Found nearest position for emergency ' +
         emergencyId +

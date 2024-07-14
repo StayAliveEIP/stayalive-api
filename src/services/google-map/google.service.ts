@@ -8,6 +8,32 @@ export class GoogleApiService {
     this.apiKey = process.env.GOOGLE_API_KEY;
   }
 
+  public async calculateTimeToGo(
+    placeIdDestination: string,
+    latitudeRescuer: number,
+    longitudeRescuer: number,
+  ): Promise<number> {
+    const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${latitudeRescuer},${longitudeRescuer}&destinations=place_id:${placeIdDestination}&mode=walking&key=${this.apiKey}`;
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (
+      data.rows &&
+      data.rows.length > 0 &&
+      data.rows[0].elements &&
+      data.rows[0].elements.length > 0
+    ) {
+      const element = data.rows[0].elements[0];
+      if (element.status === 'OK') {
+        return element.duration.value; // Duration in seconds
+      } else {
+        throw new Error(`Error in fetching duration: ${element.status}`);
+      }
+    }
+
+    throw new Error('Invalid response from Distance Matrix API');
+  }
+
   public async geocode(address: string) {
     const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${this.apiKey}`;
     return await fetch(url)
