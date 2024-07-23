@@ -15,7 +15,10 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { AdminAuthGuard } from '../../../guards/auth.route.guard';
-import { BugReportAdminResponse } from './report.admin.dto';
+import {
+  BugReportAdminResponse,
+  FeedbackReportAdminResponse,
+} from './report.admin.dto';
 import { ReportAdminService } from './report.admin.service';
 import { SuccessMessage } from '../../../dto.dto';
 
@@ -39,6 +42,21 @@ export class ReportAdminController {
   })
   async reportBug(): Promise<BugReportAdminResponse[]> {
     return this.service.getBug();
+  }
+
+  @Get('/bug/:id')
+  @UseGuards(AdminAuthGuard)
+  @ApiOperation({
+    summary: 'Get bug report',
+    description: 'Get a bug report sent by a user.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'The bug report',
+    type: BugReportAdminResponse,
+  })
+  async getBug(@Param('id') id: string): Promise<BugReportAdminResponse> {
+    return this.service.getBugById(id);
   }
 
   @Patch('/bug/:id/status')
@@ -92,5 +110,38 @@ export class ReportAdminController {
   })
   async deleteBug(@Param('id') id: string): Promise<SuccessMessage> {
     return this.service.deleteBug(id);
+  }
+
+  @Get('/feedback')
+  @UseGuards(AdminAuthGuard)
+  @ApiOperation({
+    summary: 'Get all feedback',
+    description: 'Get all feedback sent by users.',
+  })
+  @ApiResponse({
+    status: 200,
+    type: FeedbackReportAdminResponse,
+    isArray: true,
+    description: 'The feedback has been sent',
+  })
+  async getFeedbacks(): Promise<FeedbackReportAdminResponse[]> {
+    return this.service.getFeedbacks();
+  }
+
+  @Get('/feedback/:id')
+  @UseGuards(AdminAuthGuard)
+  @ApiOperation({
+    summary: 'Get feedback',
+    description: 'Get feedback sent by users.',
+  })
+  @ApiResponse({
+    status: 200,
+    type: FeedbackReportAdminResponse,
+    description: 'The feedback has been sent',
+  })
+  async getFeedback(
+    @Param('id') id: string,
+  ): Promise<FeedbackReportAdminResponse> {
+    return this.service.getFeedback(id);
   }
 }
