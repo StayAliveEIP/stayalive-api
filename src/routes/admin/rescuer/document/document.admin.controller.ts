@@ -14,9 +14,9 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { ReactEmailService } from '../../../services/react-email/react-email.service';
+import { ReactEmailService } from '../../../../services/react-email/react-email.service';
 import { DocumentAdminService } from './document.admin.service';
-import { SuccessMessage } from '../../../dto.dto';
+import { SuccessMessage } from '../../../../dto.dto';
 import {
   DocumentRescuerAdminChangeStatusRequest,
   DocumentRescuerAdminInfoResponse,

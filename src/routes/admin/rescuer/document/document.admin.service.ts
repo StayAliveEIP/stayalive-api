@@ -7,18 +7,18 @@ import {
   StreamableFile,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Admin } from '../../../database/admin.schema';
+import { Admin } from '../../../../database/admin.schema';
 import { Model, Types } from 'mongoose';
-import { Document, DocumentType } from '../../../database/document.schema';
+import { Document, DocumentType } from '../../../../database/document.schema';
 import {
   DocumentRescuerAdminChangeStatusRequest,
   DocumentRescuerAdminInfoDataResponse,
   DocumentRescuerAdminInfoResponse,
 } from './document.admin.dto';
-import { SuccessMessage } from '../../../dto.dto';
-import { verifyDocumentStatus } from '../../../utils/document.utils';
+import { SuccessMessage } from '../../../../dto.dto';
+import { verifyDocumentStatus } from '../../../../utils/document.utils';
 import { Response } from 'express';
-import { Rescuer } from '../../../database/rescuer.schema';
+import { Rescuer } from '../../../../database/rescuer.schema';
 
 @Injectable()
 export class DocumentAdminService {

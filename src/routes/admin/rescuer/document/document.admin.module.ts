@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { JwtStrategy } from '../../../guards/jwt.strategy';
-import { Admin, AdminSchema } from '../../../database/admin.schema';
-import { DocumentSchema, Document } from '../../../database/document.schema';
+import { JwtStrategy } from '../../../../guards/jwt.strategy';
+import { Admin, AdminSchema } from '../../../../database/admin.schema';
+import { DocumentSchema, Document } from '../../../../database/document.schema';
 import { DocumentAdminService } from './document.admin.service';
 import { DocumentAdminController } from './document.admin.controller';
-import { Rescuer, RescuerSchema } from '../../../database/rescuer.schema';
-import { ReactEmailModule } from '../../../services/react-email/react-email.module';
+import { Rescuer, RescuerSchema } from '../../../../database/rescuer.schema';
+import { ReactEmailModule } from '../../../../services/react-email/react-email.module';
 
 @Module({
   imports: [

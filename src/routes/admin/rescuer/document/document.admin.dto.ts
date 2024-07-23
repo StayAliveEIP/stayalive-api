@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   DocumentStatus,
   DocumentType,
-} from '../../../database/document.schema';
+} from '../../../../database/document.schema';
 import { Types } from 'mongoose';
 
 export class DocumentRescuerAdminChangeStatusRequest {

@@ -13,7 +13,7 @@ import { PositionModule as PositionModuleRescuer } from './routes/rescuer/positi
 import { AccountAdminModule } from './routes/admin/account/account.admin.module';
 import { AuthAdminModule } from './routes/admin/auth/auth.admin.module';
 import { CallCenterAdminModule } from './routes/admin/callCenter/callCenter.admin.module';
-import { DocumentAdminModule } from './routes/admin/document/document.admin.module';
+import { DocumentAdminModule } from './routes/admin/rescuer/document/document.admin.module';
 import { AuthCallCenterModule } from './routes/callCenter/auth/auth.callCenter.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { EmergencyCallCenterModule } from './routes/callCenter/emergency/emergency.callCenter.module';
@@ -24,6 +24,7 @@ import { StatisticsRescuerModule } from './routes/rescuer/statistics/statistics.
 import { AccountCallCenterModule } from './routes/callCenter/account/account.callCenter.module';
 import { ReportRescuerModule } from './routes/rescuer/report/report.rescuer.module';
 import { ReportAdminModule } from './routes/admin/report/report.admin.module';
+import { RescuerPositionAdminModule } from './routes/admin/rescuer/position/rescuerPosition.admin.module';
 
 const createSwaggerForApi = (
   app: INestApplication,
@@ -88,6 +89,7 @@ async function main() {
       DocumentAdminModule,
       DefibrillatorAdminModule,
       ReportAdminModule,
+      RescuerPositionAdminModule,
     ],
   );
 
