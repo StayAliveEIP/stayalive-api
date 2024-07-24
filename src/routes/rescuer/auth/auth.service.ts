@@ -18,6 +18,7 @@ import { AccountType } from '../../../guards/auth.route.guard';
 import { SuccessMessage } from '../../../dto.dto';
 import { ReactEmailService } from '../../../services/react-email/react-email.service';
 import * as process from 'process';
+import { async } from 'rxjs';
 
 @Injectable()
 export class AuthService {
@@ -59,6 +60,10 @@ export class AuthService {
         lastTokenSent: null,
         lastChange: null,
       },
+      suspended: {
+        suspended: false,
+        reason: null,
+      },
     };
     await this.rescuerModel.create(rescuer);
     return {
@@ -86,6 +91,12 @@ export class AuthService {
         'Le mot de passe est incorrect pour ce compte.',
       );
     }
+    if (user.suspended.suspended) {
+      throw new NotFoundException(
+        'Votre compte est suspendu pour la raison suivante : ' +
+          user.suspended.reason,
+      );
+    }
     const token = generateToken(user._id, AccountType.RESCUER);
     return {
       accessToken: 'Bearer ' + token,
@@ -99,6 +110,12 @@ export class AuthService {
     if (!user) {
       throw new NotFoundException(
         "L'utilisateur est introuvable avec cet email",
+      );
+    }
+    if (user.suspended.suspended) {
+      throw new NotFoundException(
+        'Votre compte est suspendu pour la raison suivante : ' +
+          user.suspended.reason,
       );
     }
     const token = generateToken(user._id, AccountType.RESCUER);

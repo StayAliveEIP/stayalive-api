@@ -2,6 +2,15 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
 
 @Schema({ versionKey: false })
+export class Suspended {
+  @Prop({ required: false, default: false })
+  suspended: boolean;
+
+  @Prop({ required: false, default: null })
+  reason: string | null;
+}
+
+@Schema({ versionKey: false })
 export class Email {
   @Prop({ required: true })
   email: string;
@@ -83,6 +92,13 @@ export class Rescuer {
     type: Password,
   })
   password: Password;
+
+  @Prop({
+    _id: false,
+    required: false,
+    type: Suspended,
+  })
+  suspended: Suspended;
 }
 
 export const RescuerSchema = SchemaFactory.createForClass(Rescuer);

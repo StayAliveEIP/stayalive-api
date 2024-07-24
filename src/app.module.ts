@@ -34,6 +34,7 @@ import { AccountCallCenterModule } from './routes/callCenter/account/account.cal
 import { ReportRescuerModule } from './routes/rescuer/report/report.rescuer.module';
 import { ReportAdminModule } from './routes/admin/report/report.admin.module';
 import { RescuerPositionAdminModule } from './routes/admin/rescuer/position/rescuerPosition.admin.module';
+import { RescuerAdminModule } from './routes/admin/rescuer/rescuer.admin.module';
 
 @Module({
   imports: [
@@ -68,6 +69,7 @@ import { RescuerPositionAdminModule } from './routes/admin/rescuer/position/resc
     AuthAdminModule,
     AccountAdminModule,
     CallCenterAdminModule,
+    RescuerAdminModule,
     DocumentAdminModule,
     RescuerPositionAdminModule,
     DefibrillatorAdminModule,

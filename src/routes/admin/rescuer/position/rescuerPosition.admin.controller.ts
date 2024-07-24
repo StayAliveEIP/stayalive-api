@@ -7,7 +7,6 @@ import {
 } from '@nestjs/swagger';
 import { RescuerPositionAdminService } from './rescuerPosition.admin.service';
 import { RescuerPositionAdminResponse } from './rescuerPosition.admin.dto';
-import { async } from 'rxjs';
 import { AdminAuthGuard } from '../../../../guards/auth.route.guard';
 
 @Controller('/admin/rescuer/position')

@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Admin, AdminSchema } from '../../../../database/admin.schema';
 import { Rescuer, RescuerSchema } from '../../../../database/rescuer.schema';
 import { Document, DocumentSchema } from '../../../../database/document.schema';
 import { JwtStrategy } from '../../../../guards/jwt.strategy';
