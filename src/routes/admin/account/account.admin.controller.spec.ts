@@ -90,6 +90,7 @@ describe('AccountAdminController', () => {
         lastname: 'Doe',
         email: 'john@doe.com',
         emailVerified: true,
+        profilePictureUrl: null,
       };
 
       expect(await accountController.info(id)).toStrictEqual(result);
@@ -161,6 +162,89 @@ describe('AccountAdminController', () => {
         .mockResolvedValue(mockResponse);
 
       expect(await accountController.deleteMyAccount(userId, requestBody)).toBe(
+        mockResponse,
+      );
+    });
+  });
+
+  /*describe('Upload Profile Picture', () => {
+    it('should upload a profile picture', async () => {
+      const userId = new Types.ObjectId();
+      //fake File of type File[]
+      const file = {
+        fieldname: 'file',
+        originalname: 'profile.jpg',
+        encoding: '7bit',
+        mimetype: 'image/jpeg',
+        destination: 'uploads/',
+        filename: 'profile.jpg',
+      };
+      const mockResponse: SuccessMessage = {
+        message: 'Profile picture uploaded.',
+      };
+
+      jest
+        .spyOn(accountService, 'uploadProfilePicture')
+        .mockResolvedValue(mockResponse);
+
+      expect(await accountController.uploadProfilePicture(file, userId)).toBe(
+        mockResponse,
+      );
+    });
+  });*/
+
+  describe('Delete Profile Picture', () => {
+    it('should delete a profile picture', async () => {
+      const userId = new Types.ObjectId();
+      const mockResponse: SuccessMessage = {
+        message: 'Profile picture deleted.',
+      };
+
+      jest
+        .spyOn(accountService, 'deleteProfilePicture')
+        .mockResolvedValue(mockResponse);
+
+      expect(await accountController.deleteProfilePicture(userId)).toBe(
+        mockResponse,
+      );
+    });
+  });
+
+  describe('Change password', () => {
+    it('should change the password', async () => {
+      const userId = new Types.ObjectId();
+      const requestBody = {
+        oldPassword: 'password',
+        newPassword: 'newPassword',
+      };
+      const mockResponse: SuccessMessage = {
+        message: 'Password changed.',
+      };
+
+      jest
+        .spyOn(accountService, 'changePassword')
+        .mockResolvedValue(mockResponse);
+
+      expect(await accountController.changePassword(userId, requestBody)).toBe(
+        mockResponse,
+      );
+    });
+  });
+
+  describe('Change email', () => {
+    it('should change the email', async () => {
+      const userId = new Types.ObjectId();
+      const requestBody = {
+        email: 'bastiencantet@outlook.fr',
+        password: 'password',
+      };
+      const mockResponse: SuccessMessage = {
+        message: 'Email changed.',
+      };
+
+      jest.spyOn(accountService, 'changeEmail').mockResolvedValue(mockResponse);
+
+      expect(await accountController.changeEmail(userId, requestBody)).toBe(
         mockResponse,
       );
     });

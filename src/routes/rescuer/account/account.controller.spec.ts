@@ -197,5 +197,55 @@ describe('AuthController', () => {
         });
       });
     });
+
+    describe('Verify the email', () => {
+      it('should pass the verify email and get the message', async () => {
+        const userId = new Types.ObjectId();
+
+        jest.spyOn(accountController, 'verifyEmail').mockResolvedValue({
+          message: 'Votre adresse email a bien été vérifiée.',
+        });
+
+        const response = await accountController.verifyEmail(userId, {
+          code: '123456',
+        });
+        expect(response.message).toBe(
+          'Votre adresse email a bien été vérifiée.',
+        );
+      });
+    });
+
+    describe('Verify the phone', () => {
+      it('should pass the verify phone and get the message', async () => {
+        const userId = new Types.ObjectId();
+
+        jest.spyOn(accountController, 'verifyPhone').mockResolvedValue({
+          message: 'Votre numéro de téléphone a bien été vérifié.',
+        });
+
+        const response = await accountController.verifyPhone(userId, {
+          code: '123456',
+        });
+        expect(response.message).toBe(
+          'Votre numéro de téléphone a bien été vérifié.',
+        );
+      });
+    });
+
+    describe('Change the password', () => {
+      it('should pass the change password and get the message', async () => {
+        const userId = new Types.ObjectId();
+
+        jest.spyOn(accountController, 'changePassword').mockResolvedValue({
+          message: 'Votre mot de passe a bien été changé.',
+        });
+
+        const response = await accountController.changePassword(userId, {
+          oldPassword: 'password123!',
+          newPassword: 'password1234!',
+        });
+        expect(response.message).toBe('Votre mot de passe a bien été changé.');
+      });
+    });
   });
 });
