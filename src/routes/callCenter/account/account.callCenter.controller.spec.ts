@@ -156,4 +156,44 @@ describe('AccountCallCenterController', () => {
       expect(updateAddress).toEqual(result);
     });
   });
+
+  /*describe('uploadProfilePicture', () => {
+    it('should upload the call center profile picture', async () => {
+        const userId = new Types.ObjectId('60e6f7b3f5b6f0b3f4f9f6e0');
+        const files = [
+            {
+                fieldname: 'profilePicture',
+                originalname: 'test.jpg',
+                encoding: '7bit',
+                mimetype: 'image/jpeg',
+                destination: './uploads/',
+                filename: 'test.jpg',
+            }
+        ];
+
+        const result = {
+            message: 'Profile picture uploaded.',
+        };
+
+        jest.spyOn(accountService, 'uploadProfilePicture').mockResolvedValue(result);
+
+        const uploadProfilePicture = await accountController.uploadProfilePicture(userId, files);
+    })*/
+
+  describe('deleteProfilePicture', () => {
+    it('should delete the call center profile picture', async () => {
+      const userId = new Types.ObjectId('60e6f7b3f5b6f0b3f4f9f6e0');
+      const result = {
+        message: 'Profile picture deleted.',
+      };
+
+      jest
+        .spyOn(accountService, 'deleteProfilePicture')
+        .mockResolvedValue(result);
+
+      const deleteProfilePicture =
+        await accountController.deleteProfilePicture(userId);
+      expect(deleteProfilePicture).toEqual(result);
+    });
+  });
 });
