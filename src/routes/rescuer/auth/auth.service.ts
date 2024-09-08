@@ -91,7 +91,7 @@ export class AuthService {
         'Le mot de passe est incorrect pour ce compte.',
       );
     }
-    if (user.suspended.suspended) {
+    if (user && user.suspended && user.suspended.suspended) {
       throw new NotFoundException(
         'Votre compte est suspendu pour la raison suivante : ' +
           user.suspended.reason,
