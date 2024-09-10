@@ -25,6 +25,7 @@ export class GoogleApiService {
     ) {
       const element = data.rows[0].elements[0];
       if (element.status === 'OK') {
+        console.log(element.duration);
         return element.duration.value; // Duration in seconds
       } else {
         throw new Error(`Error in fetching duration: ${element.status}`);
