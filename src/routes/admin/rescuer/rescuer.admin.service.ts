@@ -3,7 +3,10 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Rescuer } from '../../../database/rescuer.schema';
 import { Model, Types } from 'mongoose';
 import { SuccessMessage } from '../../../dto.dto';
-import { SuspendRescuerAdminRequest } from './rescuer.admin.dto';
+import {
+  RescuerInfoAdminResponse,
+  SuspendRescuerAdminRequest,
+} from './rescuer.admin.dto';
 
 @Injectable()
 export class RescuerAdminService {
@@ -54,5 +57,18 @@ export class RescuerAdminService {
     return {
       message: 'Le sauveteur a été réactivé',
     };
+  }
+
+  async getAllRescuers(): Promise<RescuerInfoAdminResponse[]> {
+    const result: Array<Rescuer> = await this.rescuerModel.find();
+    return result.map((rescuer) => {
+      return {
+        _id: rescuer._id,
+        firstname: rescuer.firstname,
+        lastname: rescuer.lastname,
+        profilePictureUrl: rescuer.profilePictureUrl,
+        suspended: rescuer.suspended.suspended,
+      };
+    });
   }
 }

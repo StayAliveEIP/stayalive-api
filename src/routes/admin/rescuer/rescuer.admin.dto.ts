@@ -1,6 +1,7 @@
 import { IsMongoId, IsNotEmpty, IsString, Length } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { string } from 'joi';
+import { Types } from 'mongoose';
+import { boolean } from 'joi';
 
 export class SuspendRescuerAdminRequest {
   @IsString({ message: "L'id du sauveteur doit être une chaîne de caractères" })
@@ -23,4 +24,42 @@ export class SuspendRescuerAdminRequest {
     example: 'Comportement inapproprié',
   })
   reason: string;
+}
+
+export class RescuerInfoAdminResponse {
+  @ApiProperty({
+    type: String,
+    description: 'The id of the rescuer.',
+    example: '5f9d7a3b9d1e8c1b7c9d4401',
+  })
+  _id: Types.ObjectId;
+
+  @ApiProperty({
+    type: String,
+    description: 'The firstname of the rescuer.',
+    example: 'John',
+  })
+  firstname: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'The lastname of the rescuer.',
+    example: 'Doe',
+  })
+  lastname: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'The url of the profile picture of the rescuer.',
+    example: 'https://mybucket.s3.amazonaws.com/myimage.jpg',
+    nullable: true,
+  })
+  profilePictureUrl: string | null;
+
+  @ApiProperty({
+    type: boolean,
+    description: 'If the rescuer is suspended or not.',
+    example: false,
+  })
+  suspended: boolean;
 }

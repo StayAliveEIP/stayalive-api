@@ -9,13 +9,32 @@ import {
 import { AdminAuthGuard } from '../../../guards/auth.route.guard';
 import { SuccessMessage } from '../../../dto.dto';
 import { RescuerAdminService } from './rescuer.admin.service';
-import { SuspendRescuerAdminRequest } from './rescuer.admin.dto';
+import {
+  RescuerInfoAdminResponse,
+  SuspendRescuerAdminRequest,
+} from './rescuer.admin.dto';
 
 @Controller('/admin/rescuer')
 @ApiTags('Rescuer')
 @ApiBearerAuth()
 export class RescuerAdminController {
   constructor(private readonly service: RescuerAdminService) {}
+
+  @Get('/all')
+  @UseGuards(AdminAuthGuard)
+  @ApiOperation({
+    summary: 'Get all rescuers',
+    description: 'Get all rescuers.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'The rescuers were found.',
+    type: RescuerInfoAdminResponse,
+    isArray: true,
+  })
+  async getAllRescuers(): Promise<RescuerInfoAdminResponse[]> {
+    return this.service.getAllRescuers();
+  }
 
   @Get('/suspend/:id')
   @UseGuards(AdminAuthGuard)
