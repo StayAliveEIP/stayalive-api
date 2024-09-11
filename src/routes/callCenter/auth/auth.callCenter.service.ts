@@ -34,6 +34,7 @@ export class AuthCallCenterService {
     // Verify the password
     const passwordBody = body.password;
     const passwordAdmin = admin.password.password;
+    console.log(passwordBody, passwordAdmin);
     const validPassword = verifyPassword(passwordAdmin, passwordBody);
     if (!validPassword) {
       throw new UnauthorizedException('Le mot de passe est incorrect.');
