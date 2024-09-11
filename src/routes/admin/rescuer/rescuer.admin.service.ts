@@ -61,13 +61,15 @@ export class RescuerAdminService {
 
   async getAllRescuers(): Promise<RescuerInfoAdminResponse[]> {
     const result: Array<Rescuer> = await this.rescuerModel.find();
+
     return result.map((rescuer) => {
+      const suspended = rescuer.suspended?.suspended || false;
       return {
         _id: rescuer._id,
         firstname: rescuer.firstname,
         lastname: rescuer.lastname,
         profilePictureUrl: rescuer.profilePictureUrl,
-        suspended: rescuer.suspended.suspended,
+        suspended: suspended,
       };
     });
   }
