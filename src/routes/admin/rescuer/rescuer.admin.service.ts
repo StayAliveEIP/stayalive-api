@@ -68,6 +68,7 @@ export class RescuerAdminService {
         _id: rescuer._id,
         firstname: rescuer.firstname,
         lastname: rescuer.lastname,
+        email: rescuer.email.email,
         profilePictureUrl: rescuer.profilePictureUrl,
         suspended: suspended,
       };

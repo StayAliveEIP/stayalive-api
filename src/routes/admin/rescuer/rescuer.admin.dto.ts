@@ -50,6 +50,13 @@ export class RescuerInfoAdminResponse {
 
   @ApiProperty({
     type: String,
+    description: 'The email of the rescuer',
+    example: 'john@doe.net',
+  })
+  email: string;
+
+  @ApiProperty({
+    type: String,
     description: 'The url of the profile picture of the rescuer.',
     example: 'https://mybucket.s3.amazonaws.com/myimage.jpg',
     nullable: true,

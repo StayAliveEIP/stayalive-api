@@ -52,18 +52,17 @@ export class DocumentAdminService {
         data: null,
       };
       const document = await this.documentModel.findOne({
-        user: rescuerId,
+        user: new Types.ObjectId(rescuerId),
         type: documentType,
       });
       if (document) {
-        const data: DocumentRescuerAdminInfoDataResponse = {
+        resultType.data = {
           id: document._id.toString(),
           documentType: document.type,
           status: document.status,
           message: document.message,
           lastUpdate: document.lastUpdate,
         };
-        resultType.data = data;
       }
       allDocuments.push(resultType);
     }
