@@ -59,6 +59,7 @@ async function main() {
   app.useGlobalPipes(new ValidationPipe());
   app.useBodyParser('json', { limit: '100mb' });
   app.useWebSocketAdapter(redisIoAdapter);
+  app.enableCors();
 
   createSwaggerForApi(
     app,
