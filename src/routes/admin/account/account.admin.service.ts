@@ -122,20 +122,19 @@ export class AccountAdminService {
   }
 
   async delete(body: DeleteAdminRequest): Promise<SuccessMessage> {
-    const idToDelete = body.id;
-    const objectId = Types.ObjectId.isValid(idToDelete);
-    if (!objectId) {
+    if (!Types.ObjectId.isValid(body.id)) {
       throw new UnprocessableEntityException(
         "Le format de l'id n'est pas valide.",
       );
     }
+    const objectId = new Types.ObjectId(body.id);
     // Find the admin
-    const admin = await this.adminModel.findById(idToDelete);
+    const admin = await this.adminModel.findById(objectId);
     if (!admin) {
       throw new NotFoundException("L'administrateur n'a pas pu être trouvé.");
     }
     // Delete the admin
-    const result = await this.adminModel.deleteOne({ _id: admin.id });
+    const result = await this.adminModel.deleteOne({ _id: objectId });
     if (!result || result.deletedCount === 0) {
       throw new InternalServerErrorException(
         "L'administrateur n'a pas pu être supprimé.",
