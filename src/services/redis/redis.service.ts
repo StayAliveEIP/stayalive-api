@@ -200,4 +200,22 @@ export class RedisService implements OnModuleDestroy {
   private getPositionKey(rescuerId: Types.ObjectId): string {
     return 'stayAlive:position:' + rescuerId.toString();
   }
+
+  //shared array of websocket clients in redis you need to store a websocket call center array and a websocket rescuer array in redis create function to add and remove clients from the array
+  //store the websocket clients in redis with the key 'stayAlive:clients:callCenter' and 'stayAlive:clients:rescuer'
+  public async addClientToRescuerArray(clientId: Types.ObjectId) {
+    await this.client.sadd('stayAlive:clients:rescuer', clientId.toString());
+  }
+
+  public async addClientToCallCenterArray(clientId: Types.ObjectId) {
+    await this.client.sadd('stayAlive:clients:callCenter', clientId.toString());
+  }
+
+  public async removeClientFromRescuerArray(clientId: Types.ObjectId) {
+    await this.client.srem('stayAlive:clients:rescuer', clientId.toString());
+  }
+
+  public async removeClientFromCallCenterArray(clientId: Types.ObjectId) {
+    await this.client.srem('stayAlive:clients:callCenter', clientId.toString());
+  }
 }

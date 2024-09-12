@@ -18,7 +18,6 @@ import { AccountType } from '../../../guards/auth.route.guard';
 import { SuccessMessage } from '../../../dto.dto';
 import { ReactEmailService } from '../../../services/react-email/react-email.service';
 import * as process from 'process';
-import { async } from 'rxjs';
 
 @Injectable()
 export class AuthService {
@@ -129,5 +128,14 @@ export class AuthService {
     return {
       message: 'Un lien magique vous a été envoyé par email.',
     };
+  }
+
+  async validateUser(profile: any): Promise<any> {
+    const user = {
+      googleId: profile.id,
+      email: profile.emails[0].value,
+      displayName: profile.displayName,
+    };
+    return user;
   }
 }

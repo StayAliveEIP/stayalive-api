@@ -1,4 +1,12 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import {
   LoginDTO,
@@ -9,6 +17,7 @@ import {
 } from './auth.dto';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SuccessMessage } from '../../../dto.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('/rescuer')
 @ApiTags('Authentification')
@@ -51,5 +60,16 @@ export class AuthController {
     @Body() body: SendMagicLinkRequest,
   ): Promise<SuccessMessage> {
     return this.service.sendMagicLink(body);
+  }
+
+  @Get('auth/google')
+  @UseGuards(AuthGuard('google'))
+  async googleAuth() {}
+
+  @Get('auth/google/callback')
+  @UseGuards(AuthGuard('google'))
+  googleAuthRedirect(@Req() req, @Res() res) {
+    const user = req.user;
+    res.json(user);
   }
 }

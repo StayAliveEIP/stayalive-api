@@ -58,9 +58,13 @@ export class ChatWebsocket
       }
       if (decoded.account === 'rescuer') {
         this.rescuerClients.set(new Types.ObjectId(decoded.id), client);
+        //join the client in a room with the id of the rescuer
+        client.join(decoded.id);
         this.logger.log(`Rescuer ${decoded.id} connected.`);
       } else {
         this.callCenterClients.set(new Types.ObjectId(decoded.id), client);
+        //join the client in a room with the id of the call center
+        client.join(decoded.id);
         this.logger.log(`Call center ${decoded.id} connected.`);
       }
     } catch (e) {
@@ -126,9 +130,10 @@ export class ChatWebsocket
     }
     const callCenterId = conversation.callCenterId;
     //send the message to the call center
-    this.callCenterClients.forEach((value, key) => {
-      if (key.equals(callCenterId)) {
-        value.emit('messageRescuer', {
+    this.rescuerClients.forEach((value, key) => {
+      if (key.equals(clientId)) {
+        this.logger.log(`Rescuer ${key} sent a message to call center.`);
+        value.to(callCenterId.toString()).emit('messageRescuer', {
           conversationId: chatReceive.conversationId,
           message: chatReceive.message,
         });
@@ -173,9 +178,21 @@ export class ChatWebsocket
     }
     const rescuerId = conversation.rescuerId;
     //send the message to the call center
-    this.rescuerClients.forEach((value, key) => {
+    /* this.rescuerClients.forEach((value, key) => {
       if (key.equals(rescuerId)) {
+
         value.emit('messageCallCenter', {
+          conversationId: chatReceive.conversationId,
+          message: chatReceive.message,
+        });
+      }
+    });*/
+    // use rooms to send the message to the rescuer
+    //get the callcenter associated with the conversation and his socket
+    this.callCenterClients.forEach((value, key) => {
+      if (key.equals(clientId)) {
+        //send the message to the rescuer
+        value.to(rescuerId.toString()).emit('messageCallCenter', {
           conversationId: chatReceive.conversationId,
           message: chatReceive.message,
         });

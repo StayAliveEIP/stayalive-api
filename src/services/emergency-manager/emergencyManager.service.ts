@@ -208,23 +208,22 @@ export class EmergencyManagerService {
     let nearestPosition: {
       id: Types.ObjectId;
       position: RescuerPosition;
-      distance: { value: number; text: string };
+      distance: number;
     };
     for (const rescuer of allPositions) {
       this.logger.log('Calculating distance for rescuer ' + rescuer.id);
-      const googleObject = await this.google.calculateFootDistanceLatLong(
+      const googleObject = await this.google.calculateTimeToGo(
+        placeId,
         rescuer.position.lat,
         rescuer.position.lng,
-        placeId,
       );
-      const distance = googleObject.distance;
-      this.logger.log('Distance calculated: ' + JSON.stringify(distance));
-      if (!nearestPosition || distance.value < nearestPosition.distance.value) {
+      this.logger.log('Distance calculated: ' + JSON.stringify(googleObject));
+      if (!nearestPosition || googleObject < nearestPosition.distance) {
         this.logger.log('New nearest position found: ' + rescuer.id);
         nearestPosition = {
           id: rescuer.id,
           position: rescuer.position,
-          distance: distance,
+          distance: googleObject,
         };
       }
     }
