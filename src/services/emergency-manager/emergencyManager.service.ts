@@ -218,8 +218,9 @@ export class EmergencyManagerService {
         placeId,
       );
       const distance = googleObject.distance;
-
+      this.logger.log('Distance calculated: ' + JSON.stringify(distance));
       if (!nearestPosition || distance.value < nearestPosition.distance.value) {
+        this.logger.log('New nearest position found: ' + rescuer.id);
         nearestPosition = {
           id: rescuer.id,
           position: rescuer.position,
