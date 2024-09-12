@@ -217,6 +217,7 @@ export class EmergencyManagerService {
         rescuer.position.lng,
         placeId,
       );
+      console.log(googleObject);
       const distance = googleObject.distance;
       this.logger.log('Distance calculated: ' + JSON.stringify(distance));
       if (!nearestPosition || distance.value < nearestPosition.distance.value) {
