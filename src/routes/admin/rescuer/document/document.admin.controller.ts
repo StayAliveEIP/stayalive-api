@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Query,
   Res,
@@ -75,7 +76,7 @@ export class DocumentAdminController {
   @UseGuards(AdminAuthGuard)
   async download(
     @Res({ passthrough: true }) res: Response,
-    @Query('id') id: string,
+    @Param('id') id: string,
   ): Promise<StreamableFile> {
     return this.service.download(id, res);
   }
