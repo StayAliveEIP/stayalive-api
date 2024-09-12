@@ -4,6 +4,7 @@ import { AuthService } from './auth.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Rescuer, RescuerSchema } from '../../../database/rescuer.schema';
 import { ReactEmailModule } from '../../../services/react-email/react-email.module';
+import { GoogleStrategy } from '../../../stategies/google.strategy';
 
 @Module({
   imports: [
@@ -11,6 +12,6 @@ import { ReactEmailModule } from '../../../services/react-email/react-email.modu
     ReactEmailModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, GoogleStrategy],
 })
 export class AuthModule {}
