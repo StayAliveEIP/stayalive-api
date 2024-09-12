@@ -68,10 +68,10 @@ export class EmergencyManagerService {
         placeId,
         nearestPosition.position.lat,
         nearestPosition.position.lng,
-      )) > 5
+      )) > 320
     ) {
       this.logger.warn(
-        'The neares rescuer is at more than 5 minutes than the emergency',
+        'The nearest rescuer is at more than 5 minutes than the emergency',
       );
       return;
     }
@@ -211,13 +211,16 @@ export class EmergencyManagerService {
       distance: { value: number; text: string };
     };
     for (const rescuer of allPositions) {
+      this.logger.log('Calculating distance for rescuer ' + rescuer.id);
       const googleObject = await this.google.calculateFootDistanceLatLong(
         rescuer.position.lat,
         rescuer.position.lng,
         placeId,
       );
       const distance = googleObject.distance;
+      this.logger.log('Distance calculated: ' + JSON.stringify(distance));
       if (!nearestPosition || distance.value < nearestPosition.distance.value) {
+        this.logger.log('New nearest position found: ' + rescuer.id);
         nearestPosition = {
           id: rescuer.id,
           position: rescuer.position,
@@ -225,6 +228,10 @@ export class EmergencyManagerService {
         };
       }
     }
+
+    this.logger.log(
+      'Nearest position found: ' + JSON.stringify(nearestPosition),
+    );
     return {
       id: nearestPosition.id,
       position: nearestPosition.position,
