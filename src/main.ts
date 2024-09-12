@@ -26,6 +26,7 @@ import { ReportRescuerModule } from './routes/rescuer/report/report.rescuer.modu
 import { ReportAdminModule } from './routes/admin/report/report.admin.module';
 import { RescuerPositionAdminModule } from './routes/admin/rescuer/position/rescuerPosition.admin.module';
 import { RescuerAdminModule } from './routes/admin/rescuer/rescuer.admin.module';
+import { RedisIoAdapter } from './adapters/redis-io.adapter';
 
 const createSwaggerForApi = (
   app: INestApplication,
@@ -53,9 +54,11 @@ const createSwaggerForApi = (
 };
 async function main() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  app.enableCors();
+  const redisIoAdapter = new RedisIoAdapter(app);
+  await redisIoAdapter.connectToRedis();
   app.useGlobalPipes(new ValidationPipe());
   app.useBodyParser('json', { limit: '100mb' });
+  app.useWebSocketAdapter(redisIoAdapter);
 
   createSwaggerForApi(
     app,
