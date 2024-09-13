@@ -90,7 +90,7 @@ describe('AccountAdminController', () => {
         lastname: 'Doe',
         email: 'john@doe.com',
         emailVerified: true,
-        profilePictureUrl: null,
+        profilePictureUrl: undefined,
       };
 
       expect(await accountController.info(id)).toStrictEqual(result);
@@ -107,6 +107,7 @@ describe('AccountAdminController', () => {
           lastname: 'Doe',
           email: 'john@doe.com',
           emailVerified: true,
+          profilePictureUrl: undefined,
         },
       ];
       expect(await accountController.all()).toStrictEqual(result);
