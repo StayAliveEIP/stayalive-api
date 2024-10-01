@@ -3,6 +3,7 @@ import {
   IsNotEmpty,
   IsPhoneNumber,
   IsString,
+  IsStrongPassword,
   MaxLength,
   MinLength,
 } from 'class-validator';
@@ -77,8 +78,8 @@ export class RegisterDTO {
     message: "L'email doit contenir au moins 4 caractères.",
   })
   @IsEmail({}, { message: "L'email doit être une adresse email valide." })
-  @MaxLength(100, {
-    message: "L'email doit contenir au plus 100 caractères.",
+  @MaxLength(320, {
+    message: "L'email doit contenir au plus 320 caractères.",
   })
   @ApiProperty({
     example: 'joh@doe.net',
@@ -91,8 +92,8 @@ export class RegisterDTO {
   @MinLength(4, {
     message: 'Le prénom doit contenir au moins 4 caractères.',
   })
-  @MaxLength(100, {
-    message: 'Le prénom doit contenir au plus 100 caractères.',
+  @MaxLength(30, {
+    message: 'Le prénom doit contenir au plus 30 caractères.',
   })
   @ApiProperty({
     example: 'John',
@@ -105,8 +106,8 @@ export class RegisterDTO {
   @MinLength(4, {
     message: 'Le nom de famille doit contenir au moins 4 caractères.',
   })
-  @MaxLength(100, {
-    message: 'Le nom de famille doit contenir au plus 100 caractères.',
+  @MaxLength(30, {
+    message: 'Le nom de famille doit contenir au plus 30 caractères.',
   })
   @ApiProperty({
     example: 'Doe',
@@ -118,11 +119,12 @@ export class RegisterDTO {
   @IsString({
     message: 'Le mot de passe doit être une chaine de caractère.',
   })
-  @MinLength(8, {
-    message: 'Le mot de passe doit contenir au moins 8 caractères.',
-  })
-  @MaxLength(20, {
-    message: 'Le mot de passe doit contenir au plus 20 caractères.',
+  @IsStrongPassword({
+    minLength: 8,
+    minLowercase: 1,
+    minUppercase: 1,
+    minNumbers: 1,
+    minSymbols: 1,
   })
   @ApiProperty({
     example: 'myPassword',

@@ -30,7 +30,7 @@ export class AuthService {
     const passwordEncrypted: string = hashPassword(body.password);
 
     const user: Rescuer = await this.rescuerModel.findOne({
-      'email.email': body.email,
+      'email.email': body.email.toLowerCase(),
     });
     if (user) {
       throw new NotFoundException('Un compte existe déjà avec cet email.');
@@ -42,7 +42,7 @@ export class AuthService {
       lastname: body.lastname.toUpperCase(),
       profilePictureUrl: null,
       email: {
-        email: body.email,
+        email: body.email.toLowerCase(),
         verified: false,
         lastCodeSent: null,
         code: null,
@@ -78,7 +78,7 @@ export class AuthService {
    */
   async login(body: LoginDTO): Promise<LoginResponse> {
     const user: Rescuer = await this.rescuerModel.findOne({
-      'email.email': body.email,
+      'email.email': body.email.toLowerCase(),
     });
     if (!user) {
       throw new NotFoundException(

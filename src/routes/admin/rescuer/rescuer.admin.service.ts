@@ -26,7 +26,7 @@ export class RescuerAdminService {
     if (!rescuer) {
       throw new BadRequestException("Le sauveteur n'existe pas");
     }
-    if (rescuer.suspended) {
+    if (rescuer.suspended.suspended) {
       throw new BadRequestException('Le sauveteur est déjà suspendu');
     }
     rescuer.suspended.suspended = true;

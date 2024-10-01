@@ -36,7 +36,7 @@ export class RescuerAdminController {
     return this.service.getAllRescuers();
   }
 
-  @Get('/suspend/:id')
+  @Get('/suspend')
   @UseGuards(AdminAuthGuard)
   @ApiOperation({
     summary: 'Suspend a rescuer',
