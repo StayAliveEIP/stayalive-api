@@ -35,6 +35,10 @@ import { ReportRescuerModule } from './routes/rescuer/report/report.rescuer.modu
 import { ReportAdminModule } from './routes/admin/report/report.admin.module';
 import { RescuerPositionAdminModule } from './routes/admin/rescuer/position/rescuerPosition.admin.module';
 import { RescuerAdminModule } from './routes/admin/rescuer/rescuer.admin.module';
+import { FaqAdminModule } from './routes/admin/faq/faq.module';
+import { FaqRescuerQuestionsModule } from './routes/rescuer/faq/question/questions.module';
+import { FaqRescuerSubsectionModule } from './routes/rescuer/faq/subsection/subsection.module';
+import { FaqRescuerSectionModule } from './routes/rescuer/faq/section/section.module';
 
 @Module({
   imports: [
@@ -84,6 +88,10 @@ import { RescuerAdminModule } from './routes/admin/rescuer/rescuer.admin.module'
     DefibrillatorModule,
     ChatRescuerModule,
     ChatCallcenterModule,
+    FaqAdminModule,
+    FaqRescuerQuestionsModule,
+    FaqRescuerSubsectionModule,
+    FaqRescuerSectionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
