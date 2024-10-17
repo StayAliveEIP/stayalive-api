@@ -68,7 +68,7 @@ export class EmergencyManagerService {
         placeId,
         nearestPosition.position.lat,
         nearestPosition.position.lng,
-      )) > 320
+      )) > 640
     ) {
       this.logger.warn(
         'The nearest rescuer is at more than 5 minutes than the emergency',
